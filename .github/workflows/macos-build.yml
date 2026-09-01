@@ -188,7 +188,8 @@ jobs:
       - name: Create disk image
         run: |
           npm install -g create-dmg
-          create-dmg src/MaaMacGui/MAA.xcarchive/Products/Applications/MAA.app
+          # --nosign: no Developer ID on the runner; an unsigned DMG is fine, Gatekeeper checks the app not the image
+          create-dmg --nosign src/MaaMacGui/MAA.xcarchive/Products/Applications/MAA.app
           mv MAA*.dmg "MAA-${{ needs.meta.outputs.tag }}-macos-universal.dmg"
 
       - name: Upload MAA to GitHub
