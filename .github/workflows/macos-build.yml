@@ -188,8 +188,8 @@ jobs:
       - name: Create disk image
         run: |
           npm install -g create-dmg
-          # --nosign: no Developer ID on the runner; an unsigned DMG is fine, Gatekeeper checks the app not the image
-          create-dmg --nosign src/MaaMacGui/MAA.xcarchive/Products/Applications/MAA.app
+          # --no-code-sign: the runner has no Developer ID; the DMG image need not be signed (Gatekeeper verifies the app, already ad-hoc signed)
+          create-dmg --no-code-sign src/MaaMacGui/MAA.xcarchive/Products/Applications/MAA.app
           mv MAA*.dmg "MAA-${{ needs.meta.outputs.tag }}-macos-universal.dmg"
 
       - name: Upload MAA to GitHub
