@@ -180,8 +180,34 @@ jobs:
           xcodebuild CODE_SIGNING_ALLOWED=NO -scheme MAA archive -archivePath MAA.xcarchive
         working-directory: src/MaaMacGui
 
+      - name: Re-sign app (ad-hoc)
+        run: |
+          APP=src/MaaMacGui/MAA.xcarchive/Products/Applications/MAA.app
+          codesign --verify "$APP" || codesign -s - --force --deep --timestamp=none "$APP"
+
+      - name: Create disk image
+        run: |
+          npm install -g create-dmg
+          create-dmg src/MaaMacGui/MAA.xcarchive/Products/Applications/MAA.app
+          mv MAA*.dmg "MAA-${{ needs.meta.outputs.tag }}-macos-universal.dmg"
+
       - name: Upload MAA to GitHub
         uses: actions/upload-artifact@v7
         with:
-          name: MAA-macos-universal
-          path: src/MaaMacGui/MAA.xcarchive/**
+          name: MAA-macos-universal-dmg
+          path: MAA-*.dmg
+          compression-level: 0
+
+      - name: First-run instructions
+        run: |
+          {
+            echo "### 首次打开方式"
+            echo
+            echo '下载 MAA-macos-universal-dmg，挂载后把 MAA.app 拖入 Applications，然后执行一次：'
+            echo
+            echo '```bash'
+            echo 'xattr -dr com.apple.quarantine /Applications/MAA.app'
+            echo '```'
+            echo
+            echo 'ad-hoc 签名无法通过 Gatekeeper 自动校验，每台机器首次需手动去隔离；之后可正常打开。'
+          } >> $GITHUB_STEP_SUMMARY
