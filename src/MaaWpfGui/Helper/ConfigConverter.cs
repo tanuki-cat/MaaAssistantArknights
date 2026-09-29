@@ -48,10 +48,10 @@ namespace MaaWpfGui.Helper;
 public class ConfigConverter
 {
     private static readonly ILogger _logger = Log.ForContext<ConfigConverter>();
-    private static readonly string ConfigurationNewFile = ConfigFactory.ConfigFile;
-    private static readonly string ConfigurationOldBakFile = ConfigurationHelper.ConfigFile + ".old";
-    private static readonly string ConfigurationOldFile = ConfigurationHelper.ConfigFile;
-    private static bool HasBackupOldConfig = false;
+    private static readonly string _configurationNewFile = ConfigFactory.ConfigFile;
+    private static readonly string _configurationOldBakFile = ConfigurationHelper.ConfigFile + ".old";
+    private static readonly string _configurationOldFile = ConfigurationHelper.ConfigFile;
+    private static bool _hasBackupOldConfig = false;
 
     public static bool ConvertConfig()
     {
@@ -61,13 +61,13 @@ public class ConfigConverter
         }
 
         // Load configuration file
-        var parsedOld = ParseJsonFile(ConfigurationOldFile);
+        var parsedOld = ParseJsonFile(_configurationOldFile);
         if (parsedOld is null)
         {
             return false;
         }
 
-        var root = ParseJsonFile(ConfigurationNewFile);
+        var root = ParseJsonFile(_configurationNewFile);
 
         bool ret = true;
         JObject? configurations = root?["Configurations"] as JObject;
@@ -104,7 +104,7 @@ public class ConfigConverter
         {
             if (!ConfigurationHelper.SwitchConfiguration(configName))
             {
-                _logger.Error("配置迁移失败，无法切换到old配置: {ConfigName}", configName);
+                _logger.Error("Config migration failed, unable to switch to old config: {ConfigName}", configName);
                 continue;
             }
             if (ConfigFactory.Root.Configurations.ContainsKey(configName))
@@ -112,14 +112,14 @@ public class ConfigConverter
             }
             else if (ConfigFactory.AddConfiguration(configName) is false)
             {
-                _logger.Error("配置迁移失败，无法添加配置: {ConfigName}", configName);
-                throw new Exception($"配置迁移失败，无法添加配置{configName}");
+                _logger.Error("Config migration failed, unable to add config: {ConfigName}", configName);
+                throw new Exception($"Config migration failed, unable to add config: {configName}");
             }
 
             if (!ConfigFactory.SwitchConfig(configName))
             {
-                _logger.Error("配置迁移失败，无法切换到配置: {ConfigName}", configName);
-                throw new Exception($"配置迁移失败，无法切换到配置{configName}");
+                _logger.Error("Config migration failed, unable to switch to config: {ConfigName}", configName);
+                throw new Exception($"Config migration failed, unable to switch to config: {configName}");
             }
 
             // 删除旧的配置
@@ -287,7 +287,7 @@ public class ConfigConverter
                     }
                     else
                     {
-                        _logger.Error("Enum.TryParse<InfrastRoomType> 失败，room: {Room}", room);
+                        _logger.Error("Enum.TryParse<InfrastRoomType> failed, room: {Room}", room);
                     }
                 }
 
@@ -366,7 +366,12 @@ public class ConfigConverter
                 roguelikeTask.Theme = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeTheme, RoguelikeTheme.Sarkaz);
                 roguelikeTask.Difficulty = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeDifficulty, int.MaxValue);
                 roguelikeTask.Mode = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeMode, RoguelikeMode.Exp);
-                roguelikeTask.CoreChar = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeCoreChar, string.Empty);
+                var legacyCoreChar = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeCoreChar, string.Empty);
+                var legacyUseSupport = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeUseSupportUnit, false);
+                if (!string.IsNullOrEmpty(legacyCoreChar) || legacyUseSupport)
+                {
+                    roguelikeTask.StartingOpers = [new() { Name = legacyCoreChar, UseSupport = legacyUseSupport }];
+                }
                 roguelikeTask.Squad = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeSquad, string.Empty);
                 roguelikeTask.SquadCollectible = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeCollectibleModeSquad, string.Empty);
                 roguelikeTask.Roles = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeRoles, string.Empty);
@@ -376,7 +381,6 @@ public class ConfigConverter
                 roguelikeTask.InvestWithMoreScore = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeInvestmentEnterSecondFloor, false);
                 roguelikeTask.StopWhenDepositFull = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeStopWhenInvestmentFull, false);
                 roguelikeTask.StopAtFinalBoss = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeStopAtFinalBoss, false);
-                roguelikeTask.UseSupport = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeUseSupportUnit, false);
                 roguelikeTask.UseSupportNonFriend = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeEnableNonfriendSupport, false);
                 roguelikeTask.RefreshTraderWithDice = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeRefreshTraderWithDice, false);
                 roguelikeTask.StartWithEliteTwo = ConfigurationHelper.GetValue(ConfigurationKeys.RoguelikeStartWithEliteTwo, false);
@@ -547,13 +551,13 @@ public class ConfigConverter
         {
             if (!ConfigurationHelper.SwitchConfiguration(configName))
             {
-                _logger.Error("配置迁移失败，无法切换到old配置: {ConfigName}", configName);
+                _logger.Error("Config migration failed, unable to switch to old config: {ConfigName}", configName);
                 continue;
             }
             if (!ConfigFactory.SwitchConfig(configName))
             {
-                _logger.Error("配置迁移失败，无法切换到配置: {ConfigName}", configName);
-                throw new Exception($"配置迁移失败，无法切换到配置{configName}");
+                _logger.Error("Config migration failed, unable to switch to config: {ConfigName}", configName);
+                throw new Exception($"Config migration failed, unable to switch to config: {configName}");
             }
 
             // 性能设置
@@ -748,9 +752,9 @@ public class ConfigConverter
                 ConfigFactory.CurrentConfig.Gui.RuntimeSettings.ExecuteScriptOnManualStop = ConfigurationHelper.GetValue(ConfigurationKeys.ManualStopWithScript, false);
                 ConfigFactory.CurrentConfig.Gui.RuntimeSettings.BlockSleep = ConfigurationHelper.GetValue(ConfigurationKeys.BlockSleep, false);
                 ConfigFactory.CurrentConfig.Gui.RuntimeSettings.BlockSleepWithScreenOn = ConfigurationHelper.GetValue(ConfigurationKeys.BlockSleepWithScreenOn, true);
-                ConfigFactory.CurrentConfig.Gui.RuntimeSettings.ReportToPenguin = ConfigurationHelper.GetValue(ConfigurationKeys.EnablePenguin, true);
-                ConfigFactory.CurrentConfig.Gui.RuntimeSettings.ReportToYituliu = ConfigurationHelper.GetValue(ConfigurationKeys.EnableYituliu, true);
-                ConfigFactory.CurrentConfig.Gui.RuntimeSettings.PenguinId = ConfigurationHelper.GetValue(ConfigurationKeys.PenguinId, string.Empty);
+                ConfigFactory.CurrentConfig.Gui.ThirdParty.ReportToPenguin = ConfigurationHelper.GetValue(ConfigurationKeys.EnablePenguin, true);
+                ConfigFactory.CurrentConfig.Gui.ThirdParty.ReportToYituliu = ConfigurationHelper.GetValue(ConfigurationKeys.EnableYituliu, true);
+                ConfigFactory.CurrentConfig.Gui.ThirdParty.PenguinId = ConfigurationHelper.GetValue(ConfigurationKeys.PenguinId, string.Empty);
                 ConfigFactory.CurrentConfig.Gui.RuntimeSettings.EnableStallTimeout = ConfigurationHelper.GetValue(ConfigurationKeys.StallTimeoutEnabled, true);
                 ConfigFactory.CurrentConfig.Gui.RuntimeSettings.StallTimeoutMinutes = ConfigurationHelper.GetValue(ConfigurationKeys.StallTimeoutMinutes, 25).Clamp(0, GameSettingsUserControlModel.TimeoutMaxMinutes);
                 ConfigFactory.CurrentConfig.Gui.RuntimeSettings.StallTimeoutReminderIntervalMinutes = ConfigurationHelper.GetValue(ConfigurationKeys.ReminderIntervalMinutes, 30).Clamp(1, GameSettingsUserControlModel.TimeoutMaxMinutes);
@@ -838,7 +842,11 @@ public class ConfigConverter
                 {
                     var extra = new Win32Extra {
                         ScreencapMethod = ConfigurationHelper.GetValue(ConfigurationKeys.AttachWindowScreencapMethod, AsstWin32ScreencapMethod.PrintWindow),
-                        MouseMethod = ConfigurationHelper.GetValue(ConfigurationKeys.AttachWindowMouseMethod, AsstWin32InputMethod.SendMessageWithWindowPos),
+                        MouseMethod = ConfigurationHelper.GetValue(ConfigurationKeys.AttachWindowMouseMethod, AsstWin32InputMethod.PostMessageWithWindowPos) switch {
+                            AsstWin32InputMethod.SendMessage or AsstWin32InputMethod.PostMessage or AsstWin32InputMethod.SendMessageWithCursorPos => AsstWin32InputMethod.PostMessageWithCursorPos,
+                            AsstWin32InputMethod.SendMessageWithWindowPos => AsstWin32InputMethod.PostMessageWithWindowPos,
+                            var method => method,
+                        },
                         KeyboardMethod = ConfigurationHelper.GetValue(ConfigurationKeys.AttachWindowKeyboardMethod, AsstWin32KeyboardInputMethod.SendMessage),
                     };
                     ConfigFactory.CurrentConfig.Gui.ConnectSettings.Extras.Win32Extra = extra;
@@ -1202,18 +1210,18 @@ public class ConfigConverter
 
     private static void BackupOldConfig()
     {
-        if (HasBackupOldConfig)
+        if (_hasBackupOldConfig)
         {
             return;
         }
-        HasBackupOldConfig = true;
+        _hasBackupOldConfig = true;
         try
         {
-            File.Copy(ConfigurationOldFile, ConfigurationOldBakFile, true);
+            File.Copy(_configurationOldFile, _configurationOldBakFile, true);
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, "备份配置失败: {Message}", ex.Message);
+            _logger.Error(ex, "Failed to backup config: {Message}", ex.Message);
         }
     }
 }

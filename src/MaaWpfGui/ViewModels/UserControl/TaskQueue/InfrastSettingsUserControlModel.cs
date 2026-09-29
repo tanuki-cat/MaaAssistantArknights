@@ -31,11 +31,10 @@ using MaaWpfGui.Utilities.ValueType;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Serilog;
+using static MaaWpfGui.Main.AsstProxy;
+using Mode = MaaWpfGui.ViewModels.UserControl.TaskQueue.InfrastMode;
 
 namespace MaaWpfGui.ViewModels.UserControl.TaskQueue;
-
-using static MaaWpfGui.Main.AsstProxy;
-using Mode = InfrastMode;
 
 /// <summary>
 /// 基建任务
@@ -56,17 +55,20 @@ public class InfrastSettingsUserControlModel : TaskSettingsViewModel, InfrastSet
     public static InfrastSettingsUserControlModel Instance { get; }
 
     private static readonly ILogger _logger = Log.ForContext<InfrastSettingsUserControlModel>();
+
+    // 默认模式的固定顺序，也是自定义模式未拖拽改序时的执行顺序；宿舍须在换人设施之后，否则换下的干员送不进宿舍
     private static readonly InfrastRoomType[] _normalFacilityOrder =
     [
-        InfrastRoomType.Dorm,
         InfrastRoomType.Power,
         InfrastRoomType.Office,
         InfrastRoomType.Control,
         InfrastRoomType.Mfg,
         InfrastRoomType.Trade,
         InfrastRoomType.Reception,
+        InfrastRoomType.Dorm,
         InfrastRoomType.Processing,
         InfrastRoomType.Training,
+        InfrastRoomType.AssistantChange,
     ];
 
     private static readonly (string Value, string LocalizationKey)[] _fiammettaTargetEntries =
@@ -90,6 +92,7 @@ public class InfrastSettingsUserControlModel : TaskSettingsViewModel, InfrastSet
     {
         var preList = GetTaskConfig<InfrastTask>().RoomList;
         var set = new HashSet<InfrastRoomType>(preList.Select(i => i.Room));
+        bool assistantChangeMissing = !set.Contains(InfrastRoomType.AssistantChange);
 
         // 房间列表不完整，补全
         if (set.Count != Enum.GetValues<InfrastRoomType>().Length || set.Count != preList.Count)
@@ -105,7 +108,7 @@ public class InfrastSettingsUserControlModel : TaskSettingsViewModel, InfrastSet
             SetTaskConfig<InfrastTask>(t => t.RoomList.SequenceEqual(list), t => t.RoomList = list);
             preList = GetTaskConfig<InfrastTask>().RoomList;
         }
-        if (GetTaskConfig<InfrastTask>().Mode == Mode.Normal)
+        if (!assistantChangeMissing && GetTaskConfig<InfrastTask>().Mode == Mode.Normal)
         {
             var list = new List<InfrastTask.RoomInfo>();
             foreach (var room in _normalFacilityOrder)
@@ -293,6 +296,15 @@ public class InfrastSettingsUserControlModel : TaskSettingsViewModel, InfrastSet
     {
         get => GetTaskConfig<InfrastTask>().FiammettaTarget3;
         set => SetTaskConfig<InfrastTask>(t => t.FiammettaTarget3 == value, t => t.FiammettaTarget3 = value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether 常规模式换班开始时使用菲亚梅塔为恢复目标恢复心情。
+    /// </summary>
+    public bool FiammettaRecoveryEnabled
+    {
+        get => GetTaskConfig<InfrastTask>().FiammettaRecoveryEnabled;
+        set => SetTaskConfig<InfrastTask>(t => t.FiammettaRecoveryEnabled == value, t => t.FiammettaRecoveryEnabled = value);
     }
 
     public bool UsePinusSylvestris
@@ -642,6 +654,9 @@ public class InfrastSettingsUserControlModel : TaskSettingsViewModel, InfrastSet
         InfrastModeList.RefreshLocalization();
         FiammettaTargetList.RefreshLocalization();
         OptionalFiammettaTargetList.RefreshLocalization();
+
+        // 重建显示列表以刷新 _defaultItem 固化的 ｢自动切换（xx）｣ 前缀，选中值由重建逻辑保留
+        RefreshCustomInfrastPlanList();
     }
 
     private interface ISerialize : ITaskQueueModelSerialize
@@ -668,6 +683,7 @@ public class InfrastSettingsUserControlModel : TaskSettingsViewModel, InfrastSet
                 ReceptionClueExchange = infrast.ReceptionClueExchange,
                 ReceptionSendClue = infrast.SendClue,
                 FiammettaTargets = [infrast.FiammettaTarget1, infrast.FiammettaTarget2, infrast.FiammettaTarget3],
+                FiammettaRecoveryEnabled = infrast.FiammettaRecoveryEnabled,
                 UsePinusSylvestris = infrast.UsePinusSylvestris,
                 UsePerceptionInformation = infrast.UsePerceptionInformation,
                 UseWorldlyPlight = infrast.UseWorldlyPlight,

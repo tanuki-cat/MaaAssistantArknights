@@ -1,5 +1,5 @@
 ---
-order: 13
+order: 14
 icon: icon-park-solid:other
 ---
 
@@ -121,6 +121,7 @@ If automatic downloads fail or your network is poor, you can manually download t
   - **OTA package**: `MAAComponent-OTA-<current_version>_<target_version>-win-<arch>.zip`. The source version must match your current version.
 - After dragging, MAA will automatically extract and apply the update on next restart.
 - **Full package updates require manual confirmation**: Full packages clean old files in the installation directory (preserving `config`, `data`, `debug`, `cache`, `achievement`, etc.). Ensure MAA is installed in a standalone folder.
+- **Update restrictions while the installation is incomplete**: When resources are corrupted or a previous update failed and has not recovered, MAA rejects OTA packages (both automatic updates and drag-and-drop) and only accepts full packages; dragging in a full package of the same version is also allowed for recovery.
 
 ::: danger Full Package Update Risk
 If you place MAA directly in a disk root, Desktop, Downloads, or mix it with other programs/personal files at the same directory level, full package updates may delete sibling files. Always install MAA in a standalone folder and manually back up before updating.
@@ -150,6 +151,6 @@ If the dragged file is not one of the above update packages (e.g., software pack
 ## Additional Notes
 
 - Tasks on the left side of the main page can be dragged to change their order, as can facilities in the base management settings.
-- All click operations target random positions within buttons, following a Poisson distribution (higher probability at the center, decreasing with distance from center).
+- All click operations target random positions within buttons, following a normal distribution (higher probability at the center, decreasing with distance from center).
 - The core algorithms are developed in C++ with multi-level caching to minimize CPU and memory usage.
 - The software supports automatic updates ✿✿ ヽ(°▽°)ノ ✿. We recommend non-critical users try the beta version, which typically updates faster and has fewer bugs. (What MIUI? (╯‵□′)╯︵┻━┻)

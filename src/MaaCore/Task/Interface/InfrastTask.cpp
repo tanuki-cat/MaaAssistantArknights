@@ -3,6 +3,7 @@
 #include "Utils/Logger.hpp"
 
 #include "Task/Infrast/DronesForShamareTaskPlugin.h"
+#include "Task/Infrast/InfrastAssistantChangeTask.h"
 #include "Task/Infrast/InfrastControlTask.h"
 #include "Task/Infrast/InfrastDormTask.h"
 #include "Task/Infrast/InfrastInfoTask.h"
@@ -32,7 +33,8 @@ asst::InfrastTask::InfrastTask(const AsstCallback& callback, Assistant* inst) :
     m_processing_task_ptr(std::make_shared<InfrastProcessingTask>(callback, inst, TaskType)),
     m_training_task_ptr(std::make_shared<InfrastTrainingTask>(callback, inst, TaskType)),
     m_dorm_task_ptr(std::make_shared<InfrastDormTask>(callback, inst, TaskType)),
-    m_dorm_task_ptr_post(std::make_shared<InfrastDormTask>(callback, inst, TaskType))
+    m_dorm_task_ptr_post(std::make_shared<InfrastDormTask>(callback, inst, TaskType)),
+    m_assistant_change_task_ptr(std::make_shared<InfrastAssistantChangeTask>(callback, inst, TaskType))
 {
     LogTraceFunction;
 
@@ -57,6 +59,8 @@ asst::InfrastTask::InfrastTask(const AsstCallback& callback, Assistant* inst) :
     m_dorm_task_ptr_post->set_ignore_error(true);
     m_dorm_task_ptr->set_prepare_phase(true);
     m_dorm_task_ptr_post->set_prepare_phase(false);
+    m_assistant_change_task_ptr->set_ignore_error(true);
+    m_assistant_change_task_ptr->set_retry_times(0);
 
     m_subtasks.emplace_back(m_infrast_begin_task_ptr);
 }
@@ -66,6 +70,8 @@ bool asst::InfrastTask::set_params(const json::value& params)
     LogTraceFunction;
 
     auto mode = static_cast<Mode>(params.get("mode", 0));
+    // 仅常规模式支持菲亚梅塔配对；关闭时不把前置宿舍步骤纳入子任务序列。
+    const bool fiammetta_recovery_enabled = mode == Mode::Default && params.get("fiammetta_recovery_enabled", false);
     const std::initializer_list<std::shared_ptr<InfrastProductionTask>> shift_tasks = { m_mfg_task_ptr,
                                                                                         m_trade_task_ptr,
                                                                                         m_reception_task_ptr };
@@ -92,9 +98,19 @@ bool asst::InfrastTask::set_params(const json::value& params)
 
         m_task_data = std::make_shared<infrast::TaskData>();
         const std::initializer_list<std::shared_ptr<InfrastAbstractTask>> data_tasks = {
-            m_info_task_ptr,       m_mfg_task_ptr,      m_mfg_info_task_ptr,  m_trade_task_ptr,
-            m_power_task_ptr,      m_control_task_ptr,  m_reception_task_ptr, m_office_task_ptr,
-            m_processing_task_ptr, m_training_task_ptr, m_dorm_task_ptr,      m_dorm_task_ptr_post,
+            m_info_task_ptr,
+            m_mfg_task_ptr,
+            m_mfg_info_task_ptr,
+            m_trade_task_ptr,
+            m_power_task_ptr,
+            m_control_task_ptr,
+            m_reception_task_ptr,
+            m_office_task_ptr,
+            m_processing_task_ptr,
+            m_training_task_ptr,
+            m_dorm_task_ptr,
+            m_dorm_task_ptr_post,
+            m_assistant_change_task_ptr,
         };
         for (const auto& task : data_tasks) {
             task->set_task_data(m_task_data);
@@ -122,7 +138,7 @@ bool asst::InfrastTask::set_params(const json::value& params)
             switch (step) {
             case infrast::FacilityStep::DormPrepare:
                 return m_dorm_task_ptr;
-            case infrast::FacilityStep::DormFill:
+            case infrast::FacilityStep::DormRearrange:
                 return m_dorm_task_ptr_post;
             case infrast::FacilityStep::MfgInspect:
                 return m_mfg_info_task_ptr;
@@ -142,6 +158,8 @@ bool asst::InfrastTask::set_params(const json::value& params)
                 return m_processing_task_ptr;
             case infrast::FacilityStep::Training:
                 return m_training_task_ptr;
+            case infrast::FacilityStep::AssistantChange:
+                return m_assistant_change_task_ptr;
             }
             return nullptr;
         };
@@ -168,6 +186,9 @@ bool asst::InfrastTask::set_params(const json::value& params)
             return false;
         }
         for (const auto step : *plan) {
+            if (step == infrast::FacilityStep::DormPrepare && mode == Mode::Default && !fiammetta_recovery_enabled) {
+                continue;
+            }
             // 贸易站评分依赖赤金生产线数量。制造站未启用时只读取产品类型，
             // 不进入干员选择，也不执行无人机或补货操作。
             add_facility(get_task(step));
@@ -208,7 +229,7 @@ bool asst::InfrastTask::set_params(const json::value& params)
 
     const bool default_mode = mode == Mode::Default;
     const auto fiammetta_targets =
-        default_mode
+        default_mode && fiammetta_recovery_enabled
             ? infrast::normalize_fiammetta_targets(params.get("fiammetta_targets", std::vector<std::string> {}))
             : std::vector<std::string> {};
     m_dorm_task_ptr->set_fiammetta_targets(fiammetta_targets);

@@ -39,7 +39,7 @@ icon: iconoir:developer
 
 1. かなり前にフォークした場合は、まず自分のリポジトリの `Settings` の一番下で削除します
 2. [MAA メインリポジトリ](https://github.com/MaaAssistantArknights/MaaAssistantArknights)を開き、`Fork` → `Create fork` をクリック
-3. 自身のリポジトリの dev-v2 ブランチをクローン（サブモジュール含む）
+3. 自身のリポジトリの `dev-v2` ブランチをクローン（サブモジュール含む）
 
    ```bash
    git clone --recurse-submodules <リポジトリの git リンク> -b dev-v2 --single-branch
@@ -225,7 +225,7 @@ pipインストール後もPre-commitを実行できない場合は、PIPイン�
 
 ### Visual Studioでclang-formatを有効にする
 
-1. clang-format バージョン20.1.0以上をインストールします。
+1. clang-format バージョン23.1.1以上をインストールします。
 
    ```bash
    python -m pip install clang-format

@@ -193,6 +193,7 @@ B 服：`張三`，可輸入 `張三`、`張`、`三`
   :::  
   ::: field series  
   @type number
+  @default 1
   @optional
   代理倍率，`-1` ~ `10`。
   <br>
@@ -319,6 +320,12 @@ B 服：`張三`，可輸入 `張三`、`張`、`三`
 @required
 會被自動點選確認的 Tag 等級。若只想計算結果而不實際招募，請設定為空陣列。  
 :::  
+::: field level3_recruitment_permit_reserve
+@type number
+@default 0
+@optional
+自動確認 3 星時保留的招聘許可數量。目前許可數量小於等於此值時會跳過 3 星招募，4 星以上不受影響；設為 `0` 時停用。啟用後若數量辨識失敗，也會跳過目前的 3 星招募，以避免誤用保留的許可。
+:::
 ::: field first_tags  
 @type array<string>
 @optional
@@ -359,7 +366,7 @@ B 服：`張三`，可輸入 `張三`、`張`、`三`
 ::: field expedite_times  
 @type number
 @optional
-加急次數，僅在 `expedite` 為 `true` 時有效。預設無限次使用（直到 `times` 達到上限）。  
+加急次數，僅在 `expedite` 為 `true` 時有效。當前版本已不生效，加急不受次數限制，直至 `times` 達到上限。  
 :::  
 ::: field skip_robot  
 @type boolean
@@ -424,6 +431,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
    "refresh": true,
    "select": [5, 4],
    "confirm": [4, 3],
+   "level3_recruitment_permit_reserve": 8,
    "first_tags": ["高级资深干员"],
    "extra_tags_mode": 1,
    "times": 4,
@@ -474,7 +482,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 <br>
 `mode = 0` 時該陣列為啟用集合，順序與重複項不參與調度（換班順序由演算法統一安排）；`mode = 10000` / `20000` 時按陣列順序執行。
 <br>
-設施名稱：`Mfg` | `Trade` | `Power` | `Control` | `Reception` | `Office` | `Dorm` | `Processing` | `Training`  
+設施名稱：`Mfg` | `Trade` | `Power` | `Control` | `Reception` | `Office` | `Dorm` | `Processing` | `Training` | `AssistantChange`  
 :::  
 ::: field drones  
 @type string
@@ -516,9 +524,15 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 @type array<string>
 @default ["清流", "可露希尔", "但书"]
 @optional
-菲亞梅塔恢復目標名單，換班時會優先將名單中當前心情最低的幹員與菲亞梅塔一同進駐宿舍。僅 `mode = 0` 時生效。
+菲亞梅塔恢復目標名單，換班開始時會將名單中當前心情最低的幹員與菲亞梅塔一同進駐宿舍互換心情。僅 `mode = 0` 且 `fiammetta_recovery_enabled` 為 true 時生效。
 <br>
 選項：`清流` | `可露希尔` | `但书` | `巫恋` | `龙舌兰` | `歌蕾蒂娅`（不在選項內或重複的條目會被忽略）  
+:::  
+::: field fiammetta_recovery_enabled  
+@type boolean
+@default false
+@optional
+是否在換班開始時使用菲亞梅塔為恢復目標恢復心情；關閉時換班將跳過宿舍準備步驟。僅 `mode = 0` 時生效。  
 :::  
 ::: field use_pinus_sylvestris  
 @type boolean
@@ -575,6 +589,12 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 使用配置中的方案序號。不支援在執行中更改設定。
 <br>
 <Badge type="warning" text="僅在 mode = 10000 時才適用" />  
+:::  
+::: field continue_training  
+@type boolean
+@default false
+@optional
+訓練室是否繼續未完成的專精訓練。  
 :::  
 ::::
 
@@ -736,6 +756,9 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 @optional
 領取五週年贈送的月卡獎勵。  
 :::  
+::: field name="signinevent" type="boolean" optional default="false"  
+領取限時簽到活動獎勵（僅支援常見橫向版型）。  
+:::  
 ::::
 
 <details>
@@ -749,7 +772,37 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
    "recruit": true,
    "orundum": false,
    "mining": true,
-   "specialaccess": false
+   "specialaccess": false,
+   "signinevent": false
+}
+```
+
+</details>
+
+- `SwitchTheme`  
+   更換遊戲主介面主題
+
+:::: field-group  
+::: field enable  
+@type boolean
+@default true
+@optional
+是否啟用本任務。  
+:::  
+::: field themes  
+@type string[]
+@required
+候選主題名稱列表，需與遊戲內主題列表中顯示的名稱一致；包含多個時每次執行隨機選擇一個，為空陣列時跳過本任務。  
+:::  
+::::
+
+<details>
+<summary>Example</summary>
+
+```json
+{
+   "enable": true,
+   "themes": ["夜間", "銀淞"]
 }
 ```
 
@@ -793,9 +846,9 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 <br>
 `1` - 刷源石錠：第一層投資完後立即退出。
 <br>
-`2` - <Badge type="danger" text="已棄用" /> 兼顧模式 0 與 1，投資後再退出；若無投資則繼續往後打。
+`2` - <Badge type="danger" text="已移除" /> 原兼顧模式 0 與 1，當前版本傳入會被拒絕。
 <br>
-`3` - 開發中...
+`3` - <Badge type="danger" text="未開放" /> 傳入會被拒絕。
 <br>
 `4` - 凹開局：先在難度 0 下到達第三層後重啟，再到指定難度下凹開局獎勵。若未獲得「熱水壺」或「希望」則回到難度 0 重新開始。在 Phantom 主題下則不切換難度，僅在目前難度下嘗試到達第三層、重開、凹開局。
 <br>
@@ -804,6 +857,10 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 `6` - 刷月度小隊獎勵：除了模式適配外，其餘邏輯同模式 0。
 <br>
 `7` - 刷深入調查獎勵：除了模式適配外，其餘邏輯同模式 0。
+<br>
+`10001` - 快速通過第一層；僅適用於 Sarkaz 主題。
+<br>
+`20001` - 刷常樂節點，第一層進洞，找不到需要的節點就重開；僅適用於 JieGarden 主題，需配合 `find_playTime_target`。
 <br>
 `30001` - 刷襁褓動物；僅適用於 BlackFlow 主題。  
 :::  
@@ -822,19 +879,24 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 ::: field core_char  
 @type string
 @optional
-開局幹員名稱。僅支援單個幹員的**中文名稱**（不分遊戲伺服器）；若留空或設定為空字串 `""` 則根據練度自動選擇。  
+開局幹員名稱。僅支援單個幹員的**中文名稱**（不分遊戲伺服器）；若留空或設定為空字串 `""` 則根據練度自動選擇。等價於 `core_char_list` 的第 1 順位，僅為向下相容保留。  
+:::  
+::: field core_char_list  
+@type array<object>
+@optional
+開局幹員列表。每項為 `{ "name": 幹員名稱, "use_support": 是否借助戰 }`，幹員名稱同樣僅支援**中文名稱**（不分遊戲伺服器）；按陣列順序對應開局第 1、2、3 次招募，三個位置的幹員職業不能相同。招募只在前幾頁內翻找指定幹員，希望消耗低的幹員可能因排位靠後而找不到，某位置未招募到指定幹員（自有與助戰均未出現）時按預設優先順序進行，因此建議將希望消耗高的幹員排在前面；與 `core_char` 同時傳入時以本欄位為準。  
 :::  
 ::: field use_support  
 @type boolean
 @default false
 @optional
-開局幹員是否使用助戰幹員。  
+開局幹員是否使用助戰幹員。等價於 `core_char_list` 第 1 順位的借助戰標記，僅為向下相容保留。  
 :::  
 ::: field use_nonfriend_support  
 @type boolean
 @default false
 @optional
-是否接受非好友助戰幹員。僅在 `use_support` 為 `true` 時有效。  
+是否接受非好友助戰幹員。全域開關，作用於所有借助戰的開局幹員位置。  
 :::  
 ::: field starts_count  
 @type number
@@ -1014,6 +1076,11 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 @optional
 刷襁褓動物模式的目標。可選值：`swaddled_cat` | `swaddled_feathered_serpent` | `swaddled_dog` | `swaddled_cerberus`；僅在 `blackflow_strategy` 為 `baby_animal` 時使用。  
 :::  
+::: field find_playTime_target  
+@type number
+@optional
+刷常樂節點模式的目標常樂節點。`1` - 令（擲地有聲）；`2` - 黍（種因得果）；`3` - 年（三缺一）。僅在主題為 JieGarden 且模式為 20001 時使用，該模式下必填；不填或其他值會導致任務參數設定失敗。  
+:::  
 ::::
 
 <details>
@@ -1025,9 +1092,12 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
    "theme": "Sami",
    "mode": 5,
    "squad": "指挥分队",
-   "roles": "取长补短",
-   "core_char": "塑心",
-   "use_support": false,
+   "roles": "稳扎稳打",
+   "core_char_list": [
+      { "name": "维什戴尔", "use_support": true },
+      { "name": "古米", "use_support": false },
+      { "name": "史都华德", "use_support": false }
+   ],
    "use_nonfriend_support": false,
    "starts_count": 3,
    "difficulty": 8,
@@ -1247,9 +1317,11 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 單一作業 json 檔案路徑。支援絕對或相對路徑。不支援在執行中更改設定。與 `list` 二選一（必填）。  
 :::  
 ::: field list  
-@type array<string>
+@type array`<object>` | array`<string>`
 @required
-作業 json 列表。支援絕對或相對路徑。不支援在執行中更改設定。與 `filename` 二選一（必填）。  
+作業列表。不支援在執行中更改設定。與 `filename` 二選一（必填）。
+<br>
+陣列元素支援兩種形式：物件形式包含 `id`（作業標識，會原樣透傳至 `CopilotListLoadTaskFileSuccess` 回呼）與 `filename`（作業 json 檔案路徑，支援絕對或相對路徑）；也可直接使用作業路徑字串。  
 :::  
 ::::
 
@@ -1356,9 +1428,15 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 :::  
 ::: field tools_to_craft  
 @type array<string>
-@default [&quot;荧光棒&quot;]
+@default []
 @optional
-自動製造的物品清單。建議填寫名稱關鍵字即可。僅 Tales 主題有效。  
+自動製造的物品清單。建議填寫名稱關鍵字即可，留空則不製造。僅 Tales 主題的有存檔模式（mode = 1）有效。  
+:::  
+::: field clear_store  
+@type boolean
+@default false
+@optional
+任務完成後是否購買（清空）商店商品。僅 Tales 主題的無存檔模式（mode = 0）有效。  
 :::  
 ::: field increment_mode  
 @type number
@@ -1413,11 +1491,12 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 ::: field params  
 @type object
 @optional
-任務附加參數。目前僅像素畫任務（`MiniGame@PixelPaint@Begin`）使用：
+任務附加參數。目前像素畫任務（`MiniGame@PixelPaint@Begin`）與自動提升潛能任務（`MiniGame@AutoRaisePotential@Begin`）使用：
 
 - `params.pixel_paint.groups`：按色分組點列。`color` 為色板序號（0~39，與遊戲右側色板順序一致），`points` 為 `[x, y]` 格子座標陣列（0~23，左上為原點）。
 - `params.pixel_paint.swipe`（bool，可選，預設 true）：同色同行的連續格用拖動一次畫完，更快但部分觸控模式可能異常。
 - `params.pixel_paint.grid_delay`（int，可選，預設 0）：每格額外等待（ms）。點擊後 sleep，拖動時長按格累加。各觸控方式內建基礎間隔，一般無需調整。相容舊鍵 `grid_click_delay`。
+- `params.auto_raise_potential.use_normal_token`（bool，可選，預設 false）：中堅信物不足時確認彈窗預設點 × 放棄提升；設為 true 時改點 √，消耗普通信物繼續提升。
 
 :::  
 ::::
@@ -1464,12 +1543,12 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 @required
 任務類型。目前僅支援 `"copilot"`。  
 :::  
-::: field subtask  
+::: field subtype  
 @type string
 @required
 子任務類型。
 <br>
-`stage`：設定關卡名稱，格式為 `"details": { "stage": "xxxx" }`。
+`stage`：設定關卡名稱，格式為 `"details": { "stage_name": "xxxx" }`。
 <br>
 `start`：開始作戰，無需設定 `details`。
 <br>
@@ -1489,9 +1568,9 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 {
    "enable": true,
    "type": "copilot",
-   "subtask": "stage",
+   "subtype": "stage",
    "details": {
-      "stage": "1-7"
+      "stage_name": "1-7"
    }
 }
 ```
@@ -1532,7 +1611,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 #### 介面原型
 
 ```cpp
-bool ASSTAPI AsstSetTaskParams(AsstHandle handle, AsstTaskId id, const char* params);
+AsstBool ASSTAPI AsstSetTaskParams(AsstHandle handle, AsstTaskId id, const char* params);
 ```
 
 #### 介面說明
@@ -1541,7 +1620,7 @@ bool ASSTAPI AsstSetTaskParams(AsstHandle handle, AsstTaskId id, const char* par
 
 #### 回傳值
 
-- `bool`  
+- `AsstBool`  
    回傳是否設定成功。
 
 #### 參數說明
@@ -1552,7 +1631,7 @@ bool ASSTAPI AsstSetTaskParams(AsstHandle handle, AsstTaskId id, const char* par
 @required
 實例控制代碼（Handle）。  
 :::  
-::: field task  
+::: field id  
 @type AsstTaskId
 @required
 任務 ID，為 `AsstAppendTask` 介面的回傳值。  
@@ -1570,7 +1649,7 @@ bool ASSTAPI AsstSetTaskParams(AsstHandle handle, AsstTaskId id, const char* par
 #### 介面原型
 
 ```cpp
-bool ASSTAPI AsstSetStaticOption(AsstStaticOptionKey key, const char* value);
+AsstBool ASSTAPI AsstSetStaticOption(AsstStaticOptionKey key, const char* value);
 ```
 
 #### 介面說明
@@ -1579,7 +1658,7 @@ bool ASSTAPI AsstSetStaticOption(AsstStaticOptionKey key, const char* value);
 
 #### 回傳值
 
-- `bool`  
+- `AsstBool`  
    回傳是否設定成功。
 
 #### 參數說明
@@ -1599,14 +1678,31 @@ bool ASSTAPI AsstSetStaticOption(AsstStaticOptionKey key, const char* value);
 
 ##### 鍵值一覽
 
-暫無
+:::: field-group  
+::: field Invalid  
+@type number
+@default 0
+@optional
+無效佔位。列舉值：0。  
+:::  
+::: field CpuOCR  
+@type boolean
+@optional
+使用 CPU 進行 OCR。值不參與解析。資源載入後不支援切換。列舉值：1。  
+:::  
+::: field GpuOCR  
+@type string
+@optional
+使用 GPU 進行 OCR。值為 GPU 裝置序號（整數），Windows 上也可傳 `luid:<十六進制 LUID>`。資源載入後不支援切換。列舉值：2。  
+:::  
+::::
 
 ### `AsstSetInstanceOption`
 
 #### 介面原型
 
 ```cpp
-bool ASSTAPI AsstSetInstanceOption(AsstHandle handle, AsstInstanceOptionKey key, const char* value);
+AsstBool ASSTAPI AsstSetInstanceOption(AsstHandle handle, AsstInstanceOptionKey key, const char* value);
 ```
 
 #### 介面說明
@@ -1615,7 +1711,7 @@ bool ASSTAPI AsstSetInstanceOption(AsstHandle handle, AsstInstanceOptionKey key,
 
 #### 回傳值
 
-- `bool`  
+- `AsstBool`  
    回傳是否設定成功。
 
 #### 參數說明
@@ -1656,7 +1752,7 @@ bool ASSTAPI AsstSetInstanceOption(AsstHandle handle, AsstInstanceOptionKey key,
 @type string
 @default minitouch
 @optional
-觸控模式設定。可選值：minitouch | maatouch | adb | MaaFwAdb | MumuExtras。預設為 minitouch。列舉值：2。  
+觸控模式設定。可選值：minitouch | maatouch | adb | MacPlayTools | MaaFwAdb | MumuExtras。預設為 minitouch。列舉值：2。  
 :::  
 ::: field DeploymentWithPause  
 @type boolean

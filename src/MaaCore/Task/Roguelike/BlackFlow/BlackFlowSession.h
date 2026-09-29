@@ -99,6 +99,16 @@ struct PageIdentityResolution
     const MovePreview* preview,
     const EnteredPageObservation& entered_page);
 
+struct EncounterContext
+{
+    std::uint64_t run_revision = 0;
+    std::uint64_t page_revision = 0;
+    std::uint64_t sequence = 0;
+    std::string event_name;
+    std::size_t option_num = 0;
+    std::optional<EncounterRule> rule;
+};
+
 struct PageExecutionContext
 {
     std::uint64_t run_revision = 0;
@@ -114,6 +124,9 @@ struct PageExecutionContext
     PageExecutionStage stage = PageExecutionStage::None;
     std::optional<NodeStateUpdate> result;
     bool resolution_reported = false;
+    std::optional<int> remaining_route_battles;
+    std::uint64_t encounter_sequence = 0;
+    std::optional<EncounterSelection> encounter_selection;
 };
 
 class BlackFlowSession
@@ -166,6 +179,12 @@ public:
 
     void mark_map_settled() noexcept { m_movement_inventory_refresh_required = false; }
 
+    void request_movement_inventory_observation() noexcept
+    {
+        m_movement_inventory_assumed = false;
+        m_movement_inventory_refresh_required = true;
+    }
+
     // 开局干员、分队、职业组整局不变，策略条件靠它们判断这一局能不能拿到结构性原理。
     // 必须在 initialize() 之前设置：事实是在 initialize() 末尾写入的，reset_run() 也会再写一次。
     void set_start_loadout(std::string core_char, std::string squad, std::string roles);
@@ -178,6 +197,16 @@ public:
     bool apply_node_task_result(
         const NodeTaskResult& result,
         const json::value& callback_details,
+        std::string* error = nullptr);
+
+    [[nodiscard]] std::optional<EncounterContext> prepare_encounter(
+        std::string event_name,
+        std::size_t option_num,
+        const std::vector<std::string>& available_options,
+        std::string* error = nullptr) const;
+    bool apply_encounter_selection(
+        const EncounterContext& context,
+        EncounterSelection selection,
         std::string* error = nullptr);
 
     void fail(std::string outcome, std::string reason, FailureDisposition disposition = FailureDisposition::StopTask);
@@ -219,6 +248,7 @@ private:
     bool update_in_place(const BlackFlowPerceptionSnapshot& snapshot, std::string* error);
     bool synchronize_resource_facts(std::string* error);
     bool apply_granted_scraps(std::string* error);
+    [[nodiscard]] std::optional<int> remaining_route_battles(const MoveCandidate& move) const;
     void refresh_mission();
     void publish_milestone_facts();
     void evaluate_milestone_miss_actions();
@@ -240,7 +270,11 @@ private:
     void request_diagnostics(DiagnosticTrigger trigger, json::object snapshot = {});
     bool apply_observed_facts(const FactStore& facts, std::string* error);
     bool set_fact(std::string_view name, FactValue value, std::string* error);
-    bool apply_node_signal(const NodeStrategySignal& signal, const json::value& callback_details, std::string* error);
+    bool apply_node_signal(
+        FactContext& facts,
+        const NodeStrategySignal& signal,
+        const json::value& callback_details,
+        std::string* error);
 
     std::string m_profile;
     std::string m_start_core_char;

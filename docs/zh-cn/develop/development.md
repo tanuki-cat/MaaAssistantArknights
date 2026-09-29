@@ -39,7 +39,7 @@ icon: iconoir:developer
 
 1. 如果很久以前 Fork 过，先在自己仓库的 `Settings` 里，翻到最下面，删除
 2. 打开 [MAA 主仓库](https://github.com/MaaAssistantArknights/MaaAssistantArknights)，点击 `Fork`，继续点击 `Create fork`
-3. 克隆你自己仓库下的 dev 分支到本地，并拉取子模块
+3. 克隆你自己仓库下的 `dev-v2` 分支到本地，并拉取子模块
 
    ```bash
    git clone --recurse-submodules <你的仓库的 git 链接> -b dev-v2 --single-branch
@@ -221,7 +221,7 @@ MAA 使用一系列的格式化工具来保证仓库中的代码和资源文件�
 
 ### 在 Visual Studio 中启用 clang-format
 
-1. 安装 clang-format 20.1.0 或更高版本
+1. 安装 clang-format 23.1.1 或更高版本
 
    ```bash
    python -m pip install clang-format

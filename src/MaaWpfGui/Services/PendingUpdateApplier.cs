@@ -43,13 +43,13 @@ internal static partial class PendingUpdateApplier
     [GeneratedRegex(@"^MAA-(?<version>v.+?)-win-(?<arch>x64|arm64)\.zip$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.CultureInvariant)]
     private static partial Regex FullPackageNameRegex();
 
-    private static readonly HashSet<string> s_controlFiles = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly HashSet<string> _controlFiles = new(StringComparer.OrdinalIgnoreCase)
     {
         "removelist.txt",
         "changes.json",
     };
 
-    private static readonly HashSet<string> s_fullPackagePreservedEntries = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly HashSet<string> _fullPackagePreservedEntries = new(StringComparer.OrdinalIgnoreCase)
     {
         "achievement",
         "cache",
@@ -62,7 +62,7 @@ internal static partial class PendingUpdateApplier
     // 完整包清理时的嵌套保留目录（相对安装根目录，反斜杠分隔）：
     // 用于随包发布、同时允许用户存放自有文件的目录（如壁纸目录 Res\Backgrounds\Wallpapers），
     // 不随完整包更新清理，其上级目录（如 Res）下的其他内容仍正常清理
-    private static readonly HashSet<string> s_fullPackagePreservedNestedEntries = new(StringComparer.OrdinalIgnoreCase)
+    private static readonly HashSet<string> _fullPackagePreservedNestedEntries = new(StringComparer.OrdinalIgnoreCase)
     {
         @"Res\Backgrounds\Wallpapers",
     };
@@ -386,10 +386,28 @@ internal static partial class PendingUpdateApplier
         }
     }
 
-    public static bool TryConsumeDelegatedUpdateFailure(out string? failureReason)
+    /// <summary>
+    /// 判断委托更新失败标志文件是否存在（只读检查，无副作用）。
+    /// 存在期间安装可能处于半更新状态，只允许完整包更新。
+    /// </summary>
+    /// <returns>失败标志文件存在时为 <c>true</c>。</returns>
+    public static bool HasDelegatedUpdateFailure()
+    {
+        return File.Exists(DelegatedUpdateFailureStatusFilePath);
+    }
+
+    /// <summary>
+    /// 读取外部更新器写入的失败状态。标志文件只读不删：须跨启动持久保留
+    /// （避免用户忽略提示后重启导致半更新状态无人提醒），直至完整包安装时随根目录清场、
+    /// 或注册新更新包时（注册即代表用户已着手修复，旧失败原因失效）移除。
+    /// 读取同时会清空待应用更新包配置（沿用旧消费语义：失败后不再自动重试该包）。
+    /// </summary>
+    /// <param name="failureReason">更新器写入的 UTF-8 失败原因，读取失败时为 <c>null</c>。</param>
+    /// <returns>失败标志文件存在（上次更新失败）时为 <c>true</c>。</returns>
+    public static bool TryReadDelegatedUpdateFailure(out string? failureReason)
     {
         failureReason = null;
-        if (!File.Exists(DelegatedUpdateFailureStatusFilePath))
+        if (!HasDelegatedUpdateFailure())
         {
             return false;
         }
@@ -397,18 +415,78 @@ internal static partial class PendingUpdateApplier
         try
         {
             failureReason = File.ReadAllText(DelegatedUpdateFailureStatusFilePath).Trim();
-            return true;
         }
         catch (Exception ex)
         {
             _logger.Warning(ex, "Failed to read delegated update failure state: {FailureStateFilePath}", DelegatedUpdateFailureStatusFilePath);
-            return true;
         }
-        finally
+
+        ClearPendingUpdatePackageState();
+        return true;
+    }
+
+    /// <summary>
+    /// 写入更新失败状态文件，格式与外部更新器写入的一致（UTF-8 纯文本原因），
+    /// 供进程内应用失败（RequiresManualRecovery）等场景持久化失败状态。
+    /// </summary>
+    /// <param name="failureReason">失败原因，原样写入状态文件</param>
+    public static void MarkDelegatedUpdateFailure(string failureReason)
+    {
+        try
         {
-            ClearPendingUpdatePackageState();
-            SafeDeleteFile(DelegatedUpdateFailureStatusFilePath);
+            File.WriteAllText(DelegatedUpdateFailureStatusFilePath, failureReason, Encoding.UTF8);
         }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Failed to write delegated update failure state: {FailureStateFilePath}", DelegatedUpdateFailureStatusFilePath);
+        }
+    }
+
+    /// <summary>
+    /// 删除委托更新失败标志，供所有注册新更新包的路径统一调用。
+    /// 注册即代表用户已着手修复（手动下载完整包、拖入本地包等），旧失败原因失效；
+    /// 标志不删的话，下次启动 <see cref="TryReadDelegatedUpdateFailure"/> 会连刚注册的包一起清空，形成死循环。
+    /// </summary>
+    public static void ClearDelegatedUpdateFailureState()
+    {
+        SafeDeleteFile(DelegatedUpdateFailureStatusFilePath, "delegated update failure state");
+    }
+
+    /// <summary>
+    /// 将更新器写入的英文失败原因映射为本地化的展示文案。
+    /// </summary>
+    /// <param name="failureReason">更新器写入的失败原因。</param>
+    /// <returns>可直接展示给用户的文案；双语 reason（多实例互斥等）原样返回。</returns>
+    public static string GetDelegatedUpdateFailureDescription(string? failureReason)
+    {
+        if (string.IsNullOrWhiteSpace(failureReason))
+        {
+            return LocalizationHelper.GetString("DelegatedUpdateFailureReasonUnknown");
+        }
+
+        // 文件搬移类失败：多为文件占用（安全软件扫描新解压的文件、其他程序锁定）
+        if (failureReason.Contains("Failed to move to backup:", StringComparison.Ordinal) ||
+            failureReason.Contains("Failed to back up existing entry:", StringComparison.Ordinal) ||
+            failureReason.Contains("Failed to move file into place:", StringComparison.Ordinal))
+        {
+            return LocalizationHelper.GetString("DelegatedUpdateFailureReasonFileLocked");
+        }
+
+        // 计划文件/路径类失败：更新包或其解压产物异常
+        if (failureReason.Contains("Plan file", StringComparison.Ordinal) ||
+            failureReason.Contains("Failed to open file:", StringComparison.Ordinal) ||
+            failureReason.Contains("Failed to read file:", StringComparison.Ordinal) ||
+            failureReason.Contains("Illegal path", StringComparison.Ordinal) ||
+            failureReason.Contains("Non-full package", StringComparison.Ordinal))
+        {
+            return LocalizationHelper.GetString("DelegatedUpdateFailureReasonPackageError");
+        }
+
+        // 更新器对用户可干预的场景（多实例互斥等）写入的是中英双语文案，含非 ASCII 字符，直接展示；
+        // 其余未匹配的纯英文技术串不直接进弹窗，引导用户看日志
+        return failureReason.Any(c => c > 0x7f)
+            ? failureReason
+            : LocalizationHelper.GetString("DelegatedUpdateFailureReasonUnknown");
     }
 
     public static bool TryConsumeDelegatedUpdateSuccess()
@@ -581,7 +659,7 @@ internal static partial class PendingUpdateApplier
     private static string[] GetFullPackageMoveEntries(string extractDir)
     {
         // 新包侧：嵌套保留目录只下钻输出其中的文件条目（逐文件覆盖、新增），不整体替换该目录
-        return [.. ExpandFullPackageEntries(extractDir, string.Empty, s_fullPackagePreservedEntries, includePreserved: true)
+        return [.. ExpandFullPackageEntries(extractDir, string.Empty, _fullPackagePreservedEntries, includePreserved: true)
             .Where(entry => !IsControlFile(entry))
             .Distinct(StringComparer.OrdinalIgnoreCase)];
     }
@@ -621,7 +699,7 @@ internal static partial class PendingUpdateApplier
             }
 
             bool isDirectory = Directory.Exists(entryPath);
-            if (!insidePreserved && isDirectory && s_fullPackagePreservedNestedEntries.Contains(relativePath))
+            if (!insidePreserved && isDirectory && _fullPackagePreservedNestedEntries.Contains(relativePath))
             {
                 if (includePreserved)
                 {
@@ -670,7 +748,7 @@ internal static partial class PendingUpdateApplier
     private static bool ContainsNestedPreservedEntry(string relativePath)
     {
         string prefix = relativePath + Path.DirectorySeparatorChar;
-        return s_fullPackagePreservedNestedEntries.Any(entry => entry.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+        return _fullPackagePreservedNestedEntries.Any(entry => entry.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
     }
 
     private static string PrepareDelegatedUpdaterExecutable(PendingUpdateContext context)
@@ -692,7 +770,7 @@ internal static partial class PendingUpdateApplier
 
     private static HashSet<string> CreateFullPackagePreservedEntries(PendingUpdateContext context)
     {
-        var preservedEntries = new HashSet<string>(s_fullPackagePreservedEntries, StringComparer.OrdinalIgnoreCase)
+        var preservedEntries = new HashSet<string>(_fullPackagePreservedEntries, StringComparer.OrdinalIgnoreCase)
         {
             Path.GetFileName(context.ExtractDir),
             Path.GetFileName(context.BackupDir),
@@ -818,7 +896,7 @@ internal static partial class PendingUpdateApplier
 
     private static bool IsControlFile(string relativePath)
     {
-        return relativePath.IndexOf(Path.DirectorySeparatorChar) < 0 && s_controlFiles.Contains(relativePath);
+        return relativePath.IndexOf(Path.DirectorySeparatorChar) < 0 && _controlFiles.Contains(relativePath);
     }
 
     private static bool PathExists(string path)
@@ -854,7 +932,7 @@ internal static partial class PendingUpdateApplier
         }
     }
 
-    private static void SafeDeleteFile(string filePath)
+    private static void SafeDeleteFile(string filePath, string fileDescription = "pending update package")
     {
         try
         {
@@ -865,7 +943,7 @@ internal static partial class PendingUpdateApplier
         }
         catch (Exception ex)
         {
-            _logger.Warning(ex, "Failed to delete pending update package: {FilePath}", filePath);
+            _logger.Warning(ex, "Failed to delete {FileDescription}: {FilePath}", fileDescription, filePath);
         }
     }
 
@@ -912,6 +990,8 @@ internal static partial class PendingUpdateApplier
         }
 
         ConfigFactory.Root.Update.UpdatePackage = packagePath;
+
+        ClearDelegatedUpdateFailureState();
     }
 
     private static void ClearPendingUpdatePackageState()
