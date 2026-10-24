@@ -1,6 +1,6 @@
 // <copyright file="AsstWin32InputMethod.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -23,4 +23,6 @@ public enum AsstWin32InputMethod
     PostMessageWithCursorPos = 64,
     SendMessageWithWindowPos = 128,
     PostMessageWithWindowPos = 256,
+    Interception = 512,
+    AnchoredTouch = 1024,
 }

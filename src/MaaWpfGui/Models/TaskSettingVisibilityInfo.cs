@@ -1,6 +1,6 @@
 // <copyright file="TaskSettingVisibilityInfo.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -53,8 +53,6 @@ public class TaskSettingVisibilityInfo : PropertyChangedBase
     public bool OperProgress { get => field; set => SetAndNotify(ref field, value); }
 
     public bool Roguelike { get => field; set => SetAndNotify(ref field, value); }
-
-    public bool Reclamation { get => field; set => SetAndNotify(ref field, value); }
 
     public bool UserDataUpdate { get => field; set => SetAndNotify(ref field, value); }
 
@@ -159,7 +157,6 @@ public class TaskSettingVisibilityInfo : PropertyChangedBase
             AwardTask => Award = enable,
             OperProgressTask => OperProgress = enable,
             RoguelikeTask => Roguelike = enable,
-            ReclamationTask => Reclamation = enable,
             UserDataUpdateTask => UserDataUpdate = enable,
             DepotMaintainTask => DepotMaintain = enable,
             SwitchThemeTask => SwitchTheme = enable,
@@ -187,7 +184,6 @@ public class TaskSettingVisibilityInfo : PropertyChangedBase
     {
         AdvancedSettingsVisibility = task switch {
             AwardTask or StartUpTask or UserDataUpdateTask or OperProgressTask => false,
-            ReclamationTask rt => rt.Theme == ReclamationTheme.Tales,
             _ => true,
         };
     }
@@ -202,7 +198,6 @@ public class TaskSettingVisibilityInfo : PropertyChangedBase
         Award = false;
         OperProgress = false;
         Roguelike = false;
-        Reclamation = false;
         UserDataUpdate = false;
         DepotMaintain = false;
         SwitchTheme = false;

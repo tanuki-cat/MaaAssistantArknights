@@ -14,6 +14,12 @@
     <system:String x:Key="StartupSettings">起動設定</system:String>
     <system:String x:Key="ScheduleSettings">スケジュール実行設定</system:String>
     <system:String x:Key="UiSettings">UI設定</system:String>
+    <system:String x:Key="LanguageSettings">言語</system:String>
+    <system:String x:Key="ThemeAndAnimationSettings">テーマとアニメーション</system:String>
+    <system:String x:Key="TitleBarSettings">タイトルバー設定</system:String>
+    <system:String x:Key="LogDisplaySettings">ログ表示設定</system:String>
+    <system:String x:Key="TraySettings">トレイ</system:String>
+    <system:String x:Key="OperationGuideSettings">操作とガイド</system:String>
     <system:String x:Key="BackgroundSettings">背景設定</system:String>
     <system:String x:Key="BackgroundImage">背景画像</system:String>
     <system:String x:Key="BackgroundOpacity">背景の不透明度</system:String>
@@ -48,22 +54,18 @@
     <system:String x:Key="ResourceVersion">リソースバーション</system:String>
     <system:String x:Key="ResourceDateTime">リソース日付</system:String>
     <system:String x:Key="Off">シャットダウン</system:String>
-    <system:String x:Key="ExternalNotificationTips">注:外部通知機能は現在、 ｢すべてのタスクが完了しました｣ という通知のみを送信します。</system:String>
     <system:String x:Key="ExternalNotificationSettings">外部通知</system:String>
-    <system:String x:Key="ExternalNotificationEnabled">通知構成の有効化</system:String>
-    <system:String x:Key="ExternalNotificationEnableDetails">詳細情報を出力</system:String>
-    <system:String x:Key="ExternalNotificationSendWhenComplete">タスク完了時に通知を送信</system:String>
-    <system:String x:Key="ExternalNotificationSendWhenError">タスクが失敗したときに通知を送信</system:String>
-    <system:String x:Key="ExternalNotificationSendWhenStalled">タスクログ出力停滞時に通知を送信</system:String>
-    <system:String x:Key="ExternalNotificationSendWhenStalledTip">｢{key=GameSettings}｣ で ｢{key=StallTimeoutEnabled}｣ を有効にした場合にのみ有効になります</system:String>
+    <system:String x:Key="ExternalNotificationEnabled">通知チャネル</system:String>
+    <system:String x:Key="ExternalNotificationSendBeforeScheduledStart">定時実行前</system:String>
+    <system:String x:Key="ExternalNotificationSendBeforeScheduledStartTip" xml:space="preserve">定時タスクの開始前に外部通知を送信します。&#10;通知するタイミングは ｢{key=ScheduleSettings}｣ の ｢{key=ScheduledStartNotificationMinutes}｣ 設定を使用します。</system:String>
     <system:String x:Key="ExternalNotificationSendSuccess">正常に送信</system:String>
     <system:String x:Key="ExternalNotificationSendFail">送信に失敗しました</system:String>
     <system:String x:Key="ExternalNotificationSendTest">テストを送信する</system:String>
     <system:String x:Key="ExternalNotificationAddConfig">通知を追加</system:String>
     <system:String x:Key="ExternalNotificationSendTestTitle">MAA 外部通知テスト</system:String>
     <system:String x:Key="ExternalNotificationSendTestContent">これは MAA 外部通知テスト情報です。 このコンテンツが表示された場合、通知は正常に送信されました！</system:String>
-    <system:String x:Key="ExternalNotificationServerChanSendKey">ServerChan Send Key</system:String>
-    <system:String x:Key="ExternalNotificationBarkSendKey">Bark Send Key</system:String>
+    <system:String x:Key="ExternalNotificationServerChanSendKey">Server Chan 送信キー</system:String>
+    <system:String x:Key="ExternalNotificationBarkSendKey">Bark 送信キー</system:String>
     <system:String x:Key="ExternalNotificationBarkServer">Bark サーバ</system:String>
     <system:String x:Key="ExternalNotificationSmtpServer">SMTP サーバ</system:String>
     <system:String x:Key="ExternalNotificationSmtpPort">ポート</system:String>
@@ -87,7 +89,7 @@
     <system:String x:Key="ExternalNotificationQmsgBot">ボットを送信するQQ</system:String>
     <system:String x:Key="ExternalNotificationGotifyServer">サーバー URL</system:String>
     <system:String x:Key="ExternalNotificationGotifyToken">アプリケーショントークン</system:String>
-    <system:String x:Key="ExternalNotificationCustomWebhook">Custom Webhook</system:String>
+    <system:String x:Key="ExternalNotificationCustomWebhook">カスタム Webhook</system:String>
     <system:String x:Key="ExternalNotificationCustomWebhook.Url">Webhook URL</system:String>
     <system:String x:Key="ExternalNotificationCustomWebhook.Headers">Webhook Headers</system:String>
     <system:String x:Key="ExternalNotificationCustomWebhook.HeadersPlaceholders">1行に1つ、形式：名前: 値</system:String>
@@ -103,8 +105,8 @@
     <system:String x:Key="GpuOptionDisable">使用しない</system:String>
     <system:String x:Key="GpuOptionSystemDefault">システムデフォルトGPU</system:String>
     <system:String x:Key="GpuDeprecatedMessage">現在選択されている推論加速 GPU（{0}）には互換性の問題があり、認識ミスやずれ、その他の予期しない不具合が発生する可能性があります。\n ｢{key=Settings} - {key=PerformanceSettings}｣ で別の GPU に変更することをおすすめします。</system:String>
-    <system:String x:Key="GpuDriverOutdatedMessage">現在選択されている推論加速 GPU（{0}）のドライバーバージョン（{1}、リリース日：{2}）は{3}年以上経過しており、互換性の問題が発生する可能性があります。\nグラフィックスドライバーを更新するか、 ｢{key=Settings} - {key=PerformanceSettings}｣ で別の GPU に変更することをおすすめします。</system:String>
-    <system:String x:Key="GpuDriverInfoUnavailableMessage">現在選択されている推論加速 GPU（{0}）のドライバー情報を読み取れません。ドライバーが正しくインストールされていないか異常な状態である可能性があり、互換性の問題が発生する可能性があります。\nグラフィックスドライバーを更新または再インストールするか、 ｢{key=Settings} - {key=PerformanceSettings}｣ で別の GPU に変更することをおすすめします。</system:String>
+    <system:String x:Key="GpuDriverOutdatedMessage">現在選択されている推論加速 GPU（{0}）のドライバーバージョン（{1}、リリース日：{2}）は{3}年以上経過しており、互換性の問題が発生する可能性があります。\nグラフィックスドライバーを更新するか、｢{key=Settings} - {key=PerformanceSettings}｣ で別の GPU に変更することをおすすめします。</system:String>
+    <system:String x:Key="GpuDriverInfoUnavailableMessage">現在選択されている推論加速 GPU（{0}）のドライバー情報を読み取れません。ドライバーが正しくインストールされていないか異常な状態である可能性があり、互換性の問題が発生する可能性があります。\nグラフィックスドライバーを更新または再インストールするか、｢{key=Settings} - {key=PerformanceSettings}｣ で別の GPU に変更することをおすすめします。</system:String>
     <system:String x:Key="GpuAllowDeprecated">非推奨 GPU の使用を許可する</system:String>
     <system:String x:Key="Copy">コピー</system:String>
     <!--  Toast 不可用  -->
@@ -130,8 +132,6 @@
     <system:String x:Key="GuideConfirmCountdownSuffix">秒</system:String>
     <system:String x:Key="ToolTipGuide">マウスを乗せるとヒントあり</system:String>
     <system:String x:Key="TaskGuide">↑ タスク</system:String>
-    <system:String x:Key="OftenUsedGuide">↑ よく使われる</system:String>
-    <system:String x:Key="SometimesUsedGuide">あまり使われていない ↑</system:String>
     <system:String x:Key="LinkStartGuide">← タスクを開始</system:String>
     <system:String x:Key="HoverActionButtons">ホバーでコピー/名前変更/削除</system:String>
     <system:String x:Key="GearContextMenuTip">歯車を右クリックで操作一覧 ↓</system:String>
@@ -145,7 +145,7 @@
     <system:String x:Key="GuideGitHubIssueDescription">MAA Team は、Issue テンプレートの仕様に従って GitHub プラットフォームを通じてユーザーから提出されたフィードバックのみを受け付け、すべてのフィードバックの処理に関する決定権を留保します。</system:String>
     <system:String x:Key="GuideOpenSourceTitle">💡 オープンソースへの参加</system:String>
     <system:String x:Key="GuideOpenSourceDescription">オープンソースプロジェクトとして、ユーザーは AGPL-3.0 ライセンスの下で GitHub プラットフォーム上で MAA の開発に参加できます。MAA Team は、問題報告の代わりに価値あるコード貢献をすることを推奨しています。</system:String>
-    <system:String x:Key="GuideUserAgreement">MAA を使用することにより、 ｢利用規約｣ に同意したものとみなされます。完全な規約は、公式サイトの下部のリンクからご覧いただけます。</system:String>
+    <system:String x:Key="GuideUserAgreement">MAA を使用することにより、｢利用規約｣ に同意したものとみなされます。完全な規約は、公式サイトの下部のリンクからご覧いただけます。</system:String>
     <system:String x:Key="RestartGuide">設定ガイドを再表示</system:String>
     <system:String x:Key="RestartGuidePrompt">設定ガイドはメイン画面に表示されます。今すぐアプリケーションを再起動しますか？</system:String>
     <!--  !設定ガイド  -->
@@ -153,7 +153,18 @@
     <system:String x:Key="Mfg">製造所</system:String>
     <system:String x:Key="Processing">加工所</system:String>
     <system:String x:Key="Training">訓練室</system:String>
+    <system:String x:Key="Recycle">回収所（推測訳名・未実装）</system:String>
     <system:String x:Key="AssistantChange">補佐交代替え</system:String>
+    <system:String x:Key="InfrastTraineeNotFound">訓練枠の候補がすべて一致しなかったため、訓練枠はそのまま維持されます: {0}</system:String>
+    <system:String x:Key="InfrastAssistantNotFound">補佐者の候補がすべて一致しなかったため、補佐者はそのまま維持されます: {0}</system:String>
+    <system:String x:Key="InfrastAssistantWorkingExcluded">補佐者の候補が他の施設で勤務中のためスキップし、補佐者はそのまま維持されます: {0}</system:String>
+    <system:String x:Key="InfrastAssistantLowMood">補佐者の候補の体力がしきい値未満のためスキップし、補佐者はそのまま維持されます: {0}</system:String>
+    <system:String x:Key="InfrastRoomKeptUnchanged">この部屋は配置意思が未設定のため、そのまま維持されます</system:String>
+    <system:String x:Key="InfrastFacilityKeptUnchanged">はスケジュール表で部屋が未設定のため、施設全体をそのまま維持します</system:String>
+    <system:String x:Key="InfrastCandidatesUnavailable">候補オペレーターがいずれも利用できないため、そのまま維持されます</system:String>
+    <system:String x:Key="InfrastCandidatesWorking">候補オペレーターがすべて他の施設で勤務中のため、そのまま維持されます</system:String>
+    <system:String x:Key="InfrastCandidatesLowMood">候補オペレーターの体力が条件を満たさないため、そのまま維持されます</system:String>
+    <system:String x:Key="InfrastRoomsNotConfigured">番目から未設定のため、そのまま維持されます</system:String>
     <system:String x:Key="Trade">貿易所</system:String>
     <system:String x:Key="Power">発電所</system:String>
     <system:String x:Key="Reception">応接室</system:String>
@@ -187,6 +198,11 @@
     <system:String x:Key="InfrastFiammettaTargetShamare">シャマレ</system:String>
     <system:String x:Key="InfrastFiammettaTargetTequila">テキーラ</system:String>
     <system:String x:Key="InfrastFiammettaTargetGladiia">グレイディーア</system:String>
+    <system:String x:Key="InfrastFiammettaTargetSaileach">サイラッハ</system:String>
+    <system:String x:Key="InfrastFiammettaTargetGreyy2">承曦グレイ</system:String>
+    <system:String x:Key="InfrastFiammettaTargetWeedy">ウィーディ</system:String>
+    <system:String x:Key="InfrastFiammettaTargetWaaiFu">ワイフー</system:String>
+    <system:String x:Key="InfrastFiammettaTargetMinimalist">ミニマリスト</system:String>
     <system:String x:Key="InfrastFiammettaTargetsTips">理論上はシャマレとテキーラを回復対象にすると007が可能ですが、自動交代では実現が難しいため、シャマレとテキーラの選択は推奨しません。</system:String>
     <system:String x:Key="InfrastUsePinusSylvestris">ピヌス・シルベストリス連携を使用</system:String>
     <system:String x:Key="InfrastUsePinusSylvestrisTips" xml:space="preserve">必須オペレーター：フレイムテイル（昇進2）、ヴィヴィアナ（昇進2）、ワイルドメイン（昇進2）/アッシュロック（昇進2）/ファートゥース（昇進2）のうち1名以上&#10;計算対象オペレーター：グラベル</system:String>
@@ -218,7 +234,7 @@
     <system:String x:Key="243Time4">243 4周/日</system:String>
     <system:String x:Key="333Time3">333 3周/日</system:String>
     <system:String x:Key="CustomInfrastFile">基地構成ファイルの指定</system:String>
-    <system:String x:Key="CustomInfrastTimeSchedule">时间轮换 ({0})</system:String>
+    <system:String x:Key="CustomInfrastTimeSchedule">時間ローテーション ({0})</system:String>
     <system:String x:Key="CustomInfrastFileParseFailed">基地構成ファイルのパースエラー！</system:String>
     <system:String x:Key="CustomInfrastFileHasPlanNoPeriod">カスタムインフラストラクチャ設定では、一部のプランにのみ時間帯が設定されている場合があり、予期しない動作が発生する可能性があります。シフト交代時間帯を設定する必要がある場合は、すべてのプランに時間帯が設定されていることを確認してください。設定されていない場合は、すべてのプランを空白のままにしてください。</system:String>
     <system:String x:Key="CustomInfrastPlanSelectOutOfIndex">カスタムインフラストラクチャ構成の選択がインデックスを超えています</system:String>
@@ -226,15 +242,18 @@
     <system:String x:Key="CustomInfrastTitle" xml:space="preserve">基地構成ファイルの設定: </system:String>
     <system:String x:Key="CustomInfrastPlan">基地計画</system:String>
     <system:String x:Key="CustomInfrastPlanToolTip">
-        ｢{key=CustomInfrastPlan}｣に実行時間が設定されている場合、｢{key=Base}｣タスク開始前やタスク実行中には自動で切り替わらず、{key=LinkStart}時点の状態を維持します。切り替えはアイドル時またはタスク完了後のみ行われます。
+        ｢{key=CustomInfrastPlan}｣ に実行時間が設定されている場合、｢{key=Base}｣ タスク開始前やタスク実行中には自動で切り替わらず、{key=LinkStart}時点の状態を維持します。切り替えはアイドル時またはタスク完了後のみ行われます。
     </system:String>
     <system:String x:Key="CustomInfrastPlanIndexAutoSwitch">次の計画を自動保存</system:String>
     <system:String x:Key="CustomizeInfrastSelectionEmpty">カスタム施設設定が空です。設定を確認するか、カスタマイズ機能をオフにしてください。</system:String>
     <system:String x:Key="General">一般モード</system:String>
     <system:String x:Key="BlueStacks">BlueStacks</system:String>
     <system:String x:Key="MuMuEmulator12">MuMu Player</system:String>
-    <system:String x:Key="LDPlayer">LDPlayer</system:String>
+    <system:String x:Key="MuMuArm">MuMu エミュレータ（Windows ARM）</system:String>
+    <system:String x:Key="MuMuArmDetectAndTest">自動検出してテスト</system:String>
+    <system:String x:Key="MuMuArmConnectionNotReady">MuMu ARM の ADB アドレスを読み取れません。エミュレータの起動完了後に再試行するか、自動検出を無効にして接続アドレスを手動で入力してください。</system:String>
     <system:String x:Key="AVD">Android Virtual Device (AVD)</system:String>
+    <system:String x:Key="LDPlayer">LDPlayer</system:String>
     <system:String x:Key="Androws">Androws</system:String>
     <system:String x:Key="Nox">NoxPlayer</system:String>
     <system:String x:Key="XYAZ">MEmu</system:String>
@@ -249,13 +268,63 @@
     <system:String x:Key="RoguelikeStrategyExp">経験値を取得し、できるだけクリア</system:String>
     <system:String x:Key="RoguelikeStrategyGold">源石錐を収集、投資完了後に自動で終了</system:String>
     <system:String x:Key="RoguelikeStrategyBlackFlowExp">レベル稼ぎ、素早く第3層へ</system:String>
-    <system:String x:Key="RoguelikeStrategyBlackFlowInvestment">源石錠稼ぎ、投資完了後に自動退出</system:String>
-    <system:String x:Key="RoguelikeStrategyBlackFlowBabyAnimal">襁褓動物を育成</system:String>
-    <system:String x:Key="RoguelikeBlackFlowCultivationTarget">育成する襁褓動物</system:String>
+    <system:String x:Key="RoguelikeStrategyBlackFlowInvestment">源石錐稼ぎ、投資完了後に自動退出</system:String>
+    <system:String x:Key="RoguelikeStrategyBlackFlowStartRun">初期報酬リセマラ、目標を引いたら退出してこの探索を保持</system:String>
+    <system:String x:Key="RoguelikeBlackFlowFlightRequirement">素質を全解放した機械師が必要</system:String>
+    <system:String x:Key="RoguelikeBlackFlowFastFlight">第3層まで素早く飛ぶ</system:String>
+    <system:String x:Key="RoguelikeBlackFlowFlightTip" xml:space="preserve">常に特別行動分隊・攻守一体・自分の機械師で開局し、機械師のみを招集して、第2層で初期所持の構造性原理を使い第3層へ直接飛び、到達後にリスタートします。&#10;チェック中は一般設定の分隊・職業・最初のオペレーターは変更できません。チェックを外すと編集でき、目標エンディングに向けて進行します。開局構成がこの組み合わせでも飛びません。&#10;機械師の素質を全解放していないと飛べないため、チェックしないでください。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowFastFlightLockTip">｢{key=RoguelikeBlackFlowFastFlight}｣ にチェックを入れている間はこの項目は変更できません。チェックを外すと編集できます</system:String>
+    <system:String x:Key="RoguelikeBlackFlowEndingFlightTip">エンディングは ｢{key=RoguelikeBlackFlowFastFlight}｣ のチェックを外した場合のみ選択できます</system:String>
+    <system:String x:Key="RoguelikeBlackFlowEnding">目標エンディング</system:String>
+    <system:String x:Key="RoguelikeBlackFlowEnding1">第一エンディング · 強制再起動（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowEnding2">第二エンディング · 次元再構築（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowEnding3">第三エンディング · 絡み合い、調和（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowStartAnimal1">襁褓動物 · 1体目</system:String>
+    <system:String x:Key="RoguelikeBlackFlowStartAnimal2">襁褓動物 · 2体目</system:String>
+    <system:String x:Key="RoguelikeBlackFlowStartAnimalNone">指定なし</system:String>
+    <system:String x:Key="RoguelikeBlackFlowStartRewards">狙う報酬</system:String>
+    <system:String x:Key="RoguelikeBlackFlowStartRewardsAnyHit">いずれか1つで停止</system:String>
+    <system:String x:Key="RoguelikeBlackFlowStartRewardsTip" xml:space="preserve">狙う報酬と羽蛇の報酬でチェックした項目はすべて候補となり、開局時にいずれか1つが出れば停止します。&#10;選択肢にマウスを重ねると効果を確認できます。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowSerpentRewards">羽蛇の報酬</system:String>
+    <system:String x:Key="RoguelikeBlackFlowSerpentRewardsInactive">襁褓の羽蛇を選んだ場合のみ有効</system:String>
+    <system:String x:Key="RoguelikeBlackFlowPrepSquad">準備用探索の分隊</system:String>
+    <system:String x:Key="RoguelikeBlackFlowStartUtopia">第1層の实托邦（第1層の種類）を厳選</system:String>
+    <system:String x:Key="RoguelikeBlackFlowStartUtopiaTip" xml:space="preserve">目標の探索で支援画面に狙う報酬が出たら、｢{key=RoguelikeBlackFlowStartRewardPriority}｣ の順にカードを選んで第1層に入ります。&#10;第1層が实托邦ならこの探索を保持したまま退出し、そうでなければこの探索を放棄して準備用探索をやり直します。&#10;目標の探索は一般設定の職業と最初のオペレーターで開局します。&#10;難易度6以上が必要です。&#10;難易度を切り替えない設定では難易度を確認しません。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowStartRewardPriority">初期報酬の選択優先順位</system:String>
+    <system:String x:Key="RoguelikeBlackFlowStartRewardPriorityTip" xml:space="preserve">ドラッグで順序を変更します。&#10;支援画面に出ているカードのうち、上にあるものから選びます。&#10;順序は上の動物や報酬の選択とは関係ありません。&#10;｢{key=RoguelikeBlackFlowCultivationTargetFeatheredSerpent}｣ を指定していなくても連れていることがあるため、羽蛇の報酬も並べています。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardUnnumberedItem">番号なしの品（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardSurveyAdvance">調査前払金（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardSpaceLease">空間賃貸（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardRegressionCompensation">退行補償（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardForestRide">林間の乗り物（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardNestParasitism">托卵（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardPegasus">襁褓のペガサス（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardHippogriff">襁褓のヒッポグリフ（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardDragon">襁褓の巨竜（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardHydra">襁褓のヒュドラ（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardBaiZe">襁褓の白沢（仮）</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardGoldenCrow">襁褓の金烏（仮）</system:String>
     <system:String x:Key="RoguelikeBlackFlowCultivationTargetCat">襁褓の猫</system:String>
     <system:String x:Key="RoguelikeBlackFlowCultivationTargetFeatheredSerpent">襁褓の羽蛇</system:String>
     <system:String x:Key="RoguelikeBlackFlowCultivationTargetDog">襁褓の犬</system:String>
     <system:String x:Key="RoguelikeBlackFlowCultivationTargetCerberus">襁褓のケルベロス</system:String>
+    <system:String x:Key="RoguelikeBlackFlowCultivationTargetCatTip">次の探索の開始時に源石錐を5個追加で獲得。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowCultivationTargetDogTip">次の探索の開始時に希望を1追加で獲得。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowCultivationTargetCerberusTip">次の探索で支援選択の機会が1回増える。育成するこの探索では少なくとも2つの層を通過する必要がある。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowCultivationTargetFeatheredSerpentTip">次の探索の支援選択肢に、ランダムな青色の襁褓の生き物が1つ追加される。育成するこの探索では少なくとも2つの層を通過する必要がある。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardUnnumberedItemTip">通常の秘宝を1つ獲得。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardSurveyAdvanceTip">源石錐を8個獲得。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardSpaceLeaseTip">源石錐を6個消費し、パーツボックスの容量が2増加。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardRegressionCompensationTip">最大耐久値を2消費し、ランダムな秘宝を1つ獲得。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardForestRideTip">加工品を1つ獲得。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardNestParasitismTip">パーツボックスの容量が1減少し、レアな秘宝を1つ獲得。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardPegasusTip">各層で行動力を1追加で獲得。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardHippogriffTip">開始時に希望を1追加で獲得し、最初の2層は最初から視界がすべて開放される。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardDragonTip">最初の2層では、すべての敵の最大HPが50%減少。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardHydraTip">すべての敵の攻撃力とHPが30%上昇。新しい層に入るたびに、味方ユニットの攻撃力とHPが10%上昇。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardBaiZeTip">臨時招集オペレーターの出現確率が上昇。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowRewardGoldenCrowTip">第3層 ｢血色空脈（仮）｣ に入ると、ランダムな秘宝を3つ獲得。</system:String>
+    <system:String x:Key="RoguelikeBlackFlowPrepFlightTip" xml:space="preserve">準備用探索は常に特別行動分隊・攻守一体・自分の機械師で開局し、機械師のみを招集して、第2層で初期所持の構造性原理を使い第3層へ直接飛びます。&#10;チェックすると準備用探索の分隊は特別行動分隊と表示されて変更できなくなり、チェックを外すと元の設定に戻ります。一般設定の職業と最初のオペレーターには影響しません。&#10;機械師の素質を全解放していないと飛べないため、チェックしないでください。</system:String>
     <system:String x:Key="RoguelikeStrategyLastReward">支援選択あるいは昇進した{key=Operator}を得るため3層到着後に終了</system:String>
     <system:String x:Key="RoguelikeStrategyCollapse">パラダイムロストをファーミングして、非レアパラダイムロストに遭遇したらすぐに再起動します</system:String>
     <system:String x:Key="RoguelikeCollectibleModeSquad">支援選択を得るモードの分隊</system:String>
@@ -336,11 +405,13 @@
     <system:String x:Key="IS5NewSquad9">代理人分隊（サポートされていません）</system:String>
     <system:String x:Key="IS5NewSquad10">知学分隊</system:String>
     <system:String x:Key="IS5NewSquad11">商人分隊</system:String>
-    <system:String x:Key="IS6NewSquad1">本源研修分队</system:String>
-    <system:String x:Key="IS6NewSquad2">文明开化分队</system:String>
-    <system:String x:Key="IS6NewSquad3">开拓者分队</system:String>
-    <system:String x:Key="IS6NewSquad4">多边贸易分队</system:String>
-    <system:String x:Key="IS6NewSquad5">地质调查分队</system:String>
+    <system:String x:Key="IS6NewSquad1">本源研修分隊（仮）</system:String>
+    <system:String x:Key="IS6NewSquad2">文明開化分隊（仮）</system:String>
+    <system:String x:Key="IS6NewSquad3">開拓者分隊（仮）</system:String>
+    <system:String x:Key="IS6NewSquad4">多角貿易分隊（仮）</system:String>
+    <system:String x:Key="IS6NewSquad5">地質調査分隊（仮）</system:String>
+    <system:String x:Key="IS6NewSquad6">団結戦線分隊（仮）</system:String>
+    <system:String x:Key="IS6NewSquad7">踏破遍歴分隊（仮）</system:String>
     <system:String x:Key="SpecialForceSquad">特別行動分隊</system:String>
     <system:String x:Key="LeaderSquad">指揮分隊</system:String>
     <system:String x:Key="GatheringSquad">集団分隊</system:String>
@@ -381,6 +452,7 @@
     <system:String x:Key="EmulatorNotFound">エミュレータが検出されません\nエミュレータが起動していることを確認してください\nエミュレータが管理者権限で起動されている場合、本ソフトも管理者権限で起動してください\nそれでも検出できない場合は、手動で接続設定を行ってください</system:String>
     <system:String x:Key="EmulatorTooMany">複数のシミュレータが検出されたため\n不要なエミュレータを閉じるか\n手動で接続設定を行ってください</system:String>
     <system:String x:Key="EmulatorStartFailed">エミュレータの起動に失敗しました\n管理者権限でこのソフトウェアを開いていただくか\n手動でエミュレータを起動してください。</system:String>
+    <system:String x:Key="PcClientStartFailed">PC クライアントの起動に失敗しました\n管理者権限でこのソフトウェアを開くか\n手動でクライアントを起動してください。</system:String>
     <system:String x:Key="SwitchLanguage">言語を切り替える 🌐</system:String>
     <system:String x:Key="Language">言語</system:String>
     <system:String x:Key="LanguageChangedTip">言語設定が変更されました。一部のコンテンツは再起動後に完全に反映されます。</system:String>
@@ -392,10 +464,16 @@
     <system:String x:Key="Yes">はい</system:String>
     <system:String x:Key="No">いいえ</system:String>
     <system:String x:Key="Ok">はい</system:String>
+    <system:String x:Key="Success">成功</system:String>
+    <system:String x:Key="Failed">失敗</system:String>
+    <system:String x:Key="Skipped">スキップ</system:String>
     <system:String x:Key="Cancel">キャンセル</system:String>
     <system:String x:Key="Confirm">認識する</system:String>
     <system:String x:Key="Rename">名前を変更</system:String>
+    <system:String x:Key="Add">追加</system:String>
     <system:String x:Key="Delete">削除</system:String>
+    <system:String x:Key="ParseClipboard">クリップボードから読み取り</system:String>
+    <system:String x:Key="ParseFailed">解析に失敗しました</system:String>
     <system:String x:Key="RenameTask">タスク名を変更</system:String>
     <system:String x:Key="RenameTaskPrompt">新しいタスク名を入力してください：</system:String>
     <system:String x:Key="AddTaskQueueTask">新しいタスクを追加</system:String>
@@ -408,6 +486,7 @@
     <system:String x:Key="TaskCopied">タスクをコピーしました: {0}</system:String>
     <system:String x:Key="StartGuideDemo">デモでは実際にタスクは実行されません</system:String>
     <system:String x:Key="GuideDemoTaskAddLimitTip">デモリストに追加できるタスクは最大 5 個です。追加する前に一部を削除してください</system:String>
+    <system:String x:Key="GuideDemoTaskRequiredTip">次に進むには、｢{key=AddTaskQueueTask}｣ ボタンでタスクを追加してください</system:String>
     <system:String x:Key="TaskCopyFailed">タスクのコピーに失敗しました</system:String>
     <system:String x:Key="HotKeyShowGui">[ホットキー] MAAの表示/最小化</system:String>
     <system:String x:Key="HotKeyLinkStart">[ホットキー] Link 開始/停止</system:String>
@@ -432,7 +511,6 @@
 システム通知が無効な場合はアプリ内通知に切り替わりますが、アプリ内通知には操作可能なダウンロードボタンは提供されません。</system:String>
     <system:String x:Key="AutoInstallUpdatePackage">自動インストール更新</system:String>
     <system:String x:Key="AutoInstallUpdatePackageTip">新しいバージョンが見つかっても確認ダイアログを表示せず、タスクの空き時間に自動的にアップデートして MAA を再起動します</system:String>
-    <system:String x:Key="WindowUpdateInfoTip">クリックで今すぐ更新</system:String>
     <system:String x:Key="ShowUpdaterConsole">更新中にアップデーターのコンソール出力を表示</system:String>
     <system:String x:Key="ShowUpdaterProgress">アップデーターの進行状況ウィンドウを表示</system:String>
     <system:String x:Key="ShowUpdaterProgressTip" xml:space="preserve">更新時にアップデーターが独立した進行状況ウィンドウを表示し、現在のステータスとファイル処理の進捗を示します。
@@ -490,7 +568,7 @@
     <system:String x:Key="ForceGithubGlobalSourceTip">更新を検出後、Githubから強制的に更新パッケージをダウンロード</system:String>
     <system:String x:Key="MirrorChyan">MirrorChyan</system:String>
     <system:String x:Key="MirrorChyanSelectedButNoCdk">｢{key=Settings} - {key=UpdateSettings}｣ に移動して MirrorChyan CDK を設定するか、グローバル ソースに切り替えてください。</system:String>
-    <system:String x:Key="MirrorChyanResourceUpdateTip">リソース更新 {0} が検出されました。 ｢{key=Settings} - {key=UpdateSettings} - {key=ResourceUpdate}｣ に移動して手動で更新するか、MirrorChyan CDK を入力して自動的に更新してください。</system:String>
+    <system:String x:Key="MirrorChyanResourceUpdateTip">リソース更新 {0} が検出されました。｢{key=Settings} - {key=UpdateSettings} - {key=ResourceUpdate}｣ に移動して手動で更新するか、MirrorChyan CDK を入力して自動的に更新してください。</system:String>
     <system:String x:Key="MirrorChyanResourceUpdateShortTip">リソース更新 {0} が検出されました</system:String>
     <system:String x:Key="MirrorChyanCdkExpired">CDK の有効期限が切れました。新しい CDK を使用して認証してください。</system:String>
     <system:String x:Key="MirrorChyanCdkInvalid">CDK が無効です。入力が正しいか確認してください。</system:String>
@@ -555,7 +633,15 @@ D:\
     <system:String x:Key="ShowWindowBeforeForceScheduledStart">強制的なタイミングで起動前の表示ウィンドウ</system:String>
     <system:String x:Key="ShowWindowBeforeForceScheduledStartTip">起動前にメインウィンドウを表示し、最小化中にカウントダウンが見えないのを防ぎます</system:String>
     <system:String x:Key="TimerCustomConfig">カスタム構成オプション</system:String>
-    <system:String x:Key="TimerCustomConfigTip">起動時刻の2分前にゲームを再起動して設定を切り替えます</system:String>
+    <system:String x:Key="TimerCustomConfigTip">起動時刻の2分前にMAAを再起動して設定を切り替えます</system:String>
+    <system:String x:Key="NotifyBeforeScheduledStart">定時実行前にシステム通知を送信</system:String>
+    <system:String x:Key="NotifyBeforeScheduledStartTip" xml:space="preserve">設定したタイミングでシステム通知を送信します。&#10;外部通知は ｢{key=Settings} - {key=NotificationSettings} - {key=ExternalNotificationSettings}｣ で個別に有効にでき、通知するタイミングは共通です。</system:String>
+    <system:String x:Key="NotifyBeforeScheduledStartSharedTimeTip">外部通知はこの事前通知時間を共有します。</system:String>
+    <system:String x:Key="ScheduledStartNotificationMinutes">通知するタイミング（分前）</system:String>
+    <system:String x:Key="ScheduledStartNotificationTitle">まもなく定時タスクを実行します</system:String>
+    <system:String x:Key="ScheduledStartNotificationContent">タイマー {0} は {1}（{2} 分後）に実行開始予定です。ゲームのログイン状態にご注意ください。</system:String>
+    <system:String x:Key="ScheduledWakeUp">スケジュール起動前にコンピュータのスリープ解除と MAA の起動を試みる</system:String>
+    <system:String x:Key="ScheduledWakeUpTip" xml:space="preserve">この機能は Windows タスクスケジューラにタスクを登録し、有効化された各タイマーの 5 分前にコンピュータのスリープ解除と MAA の起動を試みます。その後はアプリ内の定時起動ロジックに引き継がれます。&#10;スリープ解除による起動時は、｢{key=StartupSettings}｣ の起動時自動実行項目（{key=RunTaskAfterLaunch}、{key=OpenEmulatorAfterLaunch}など）はスキップされます。&#10;MAA 終了後もタスクは保持され、このスイッチをオフにすると削除されます。&#10;タスク開始後の長時間実行はこの機能では保持されないため、実行時間が長いタスクでは、タスク実行中にシステムがスリープしないよう ｢{key=GameSettings}｣ の ｢{key=BlockSleep}｣ を有効にすることをおすすめします。&#10;休止状態からのスリープ解除はデバイスのファームウェア対応に依存し、一部のデバイスはスリープからの解除のみに対応しています。</system:String>
     <system:String x:Key="Timer">タイマー</system:String>
     <system:String x:Key="GlobalConfigTip">このオプション ページはグローバル設定用です</system:String>
     <system:String x:Key="MultiTasksShareTip">以下のオプションは複数のタスクで共有されます</system:String>
@@ -569,7 +655,7 @@ D:\
 MAA は非インストール型のアプリケーションであり、レジストリを自動で削除しません。
 レジストリの残留が気になる場合は、削除前にこのオプションを無効にしてください。</system:String>
     <system:String x:Key="LaunchOnSystemStartupAdminPrompt">
-        管理者権限での起動は、起動時の自動実行をサポートしていません。MAAを長時間管理者権限で実行することはお勧めしません。\n必要な場合は、 ｢コントロールパネル &gt; Windowsツール &gt; タスクスケジューラ｣ に移動してカスタムタスクを作成してください。トリガーを設定する際に、 ｢最も高い特権で実行｣ を必ず選択してください。
+        管理者権限での起動は、起動時の自動実行をサポートしていません。MAAを長時間管理者権限で実行することはお勧めしません。\n必要な場合は、｢コントロールパネル &gt; Windowsツール &gt; タスクスケジューラ｣ に移動してカスタムタスクを作成してください。トリガーを設定する際に、｢最も高い特権で実行｣ を必ず選択してください。
     </system:String>
     <system:String x:Key="RunTaskAfterLaunch">アプリの起動時に自動的に実行</system:String>
     <system:String x:Key="SkipStartupAutoRunAfterUpdate">更新のため直ちに再起動する時は自動実行しない</system:String>
@@ -579,26 +665,38 @@ MAA は非インストール型のアプリケーションであり、レジス�
     <system:String x:Key="StartupAutoRunCountdownTaskOnly">まもなくタスクを自動実行します。キャンセルしますか？</system:String>
     <system:String x:Key="StartupAutoRunCountdownEmulatorOnly">まもなくエミュレータを自動起動します。キャンセルしますか？</system:String>
     <system:String x:Key="StartupAutoRunCountdownTaskAndEmulator">まもなくタスクを自動実行し、エミュレータを起動します。キャンセルしますか？</system:String>
+    <system:String x:Key="StartupAutoRunCountdownPcClientOnly">まもなく PC クライアントを自動起動します。キャンセルしますか？</system:String>
+    <system:String x:Key="StartupAutoRunCountdownTaskAndPcClient">まもなくタスクを自動実行し、PC クライアントを起動します。キャンセルしますか？</system:String>
     <system:String x:Key="MinimizeAfterLaunch">アプリの起動時に自動的に最小化</system:String>
     <system:String x:Key="ClientType">クライアントバージョン</system:String>
     <system:String x:Key="StartGameLaunchClient">起動時にクライアントを開始する</system:String>
     <system:String x:Key="UseWeeklySchedule">週次スケジュールを有効にする</system:String>
     <system:String x:Key="UseWeeklyScheduleTip">ここでの曜日はゲーム内時間に基づいており、現実時間ではありません。例えば、ゲームが4:00にリセットされる場合、3:59は前日としてカウントされます。</system:String>
     <system:String x:Key="FightSkippedWeeklySchedule">週次スケジュールで今日が未選択</system:String>
+    <system:String x:Key="InfrastSkippedWeeklySchedule">週次スケジュールで今日が未選択</system:String>
     <system:String x:Key="FightSkippedEmptyStagePlan">ステージ計画が空です</system:String>
     <system:String x:Key="FightSkippedNoOpenStage">計画内に本日開放中のステージがありません</system:String>
     <system:String x:Key="HelpUsWithOverseasServersTip">グローバルサーバーの対応は非常に大変で、皆様の協力が必要です！プログラミングの知識は必要ありません。</system:String>
     <system:String x:Key="OpenEmulatorAfterLaunch">起動時にエミュレータ自動起動</system:String>
     <system:String x:Key="OpenEmulatorAfterLaunchTip">エミュレータは MAA 起動時に一度だけ起動され、｢{key=LinkStart}｣ をクリックするたびに起動されるわけではありません。\nそのような動作が必要な場合は ｢{key=RetryOnDisconnected}｣ を有効にしてください</system:String>
+    <system:String x:Key="OpenPcClientAfterLaunch">MAA 起動後に PC クライアントを起動</system:String>
+    <system:String x:Key="OpenPcClientAfterLaunchTip">PC クライアントは MAA 起動時に一度だけ起動されます。｢{key=LinkStart}｣ のたびに起動する場合は ｢{key=RetryOnPcDisconnected}｣ を有効にしてください</system:String>
     <system:String x:Key="WaitForEmulator">エミュレータを待つ時間（秒）</system:String>
+    <system:String x:Key="WaitForPcClient">PC クライアントの起動待機時間（秒）</system:String>
     <system:String x:Key="WaitForEmulatorFinish">待ち時間は終わりました</system:String>
     <system:String x:Key="EmulatorPath">エミュレータパス</system:String>
-    <system:String x:Key="SelectShortcutTip" xml:space="preserve">エミュレーター本体を選択（ ｢{key=AdditionCommand}｣ 起動パラメータでインスタンス指定可能）、または直接エミュレーター/ゲームのショートカットを選択できます。&#10; ｢{key=WakeUp}｣ タスクがエミュレーター起動遅延で失敗する場合、ゲームショートカットを使用し ｢{key=WaitForEmulator}｣ を延長することを推奨します。</system:String>
+    <system:String x:Key="PcClientPath">PC クライアントのパス</system:String>
+    <system:String x:Key="SelectShortcutTip" xml:space="preserve">エミュレーター本体を選択（｢{key=AdditionCommand}｣ 起動パラメータでインスタンス指定可能）、または直接エミュレーター/ゲームのショートカットを選択できます。&#10; ｢{key=WakeUp}｣ タスクがエミュレーター起動遅延で失敗する場合、ゲームショートカットを使用し ｢{key=WaitForEmulator}｣ を延長することを推奨します。</system:String>
+    <system:String x:Key="SelectPcClientTip">PC クライアント本体またはショートカットを選択できます。｢{key=AdditionCommand}｣ で起動引数を追加できます。</system:String>
+    <system:String x:Key="PcClientAddCommandTip" xml:space="preserve">PC クライアント起動時に渡す追加引数です。&#10;対応する引数の形式は、クライアントまたはランチャーのドキュメントを参照してください。&#10;ショートカットを使用する場合は、そのショートカットに保存された引数が使用されます。</system:String>
+    <system:String x:Key="PcClientPathEmptyError">PC クライアントのパスが空です。先にクライアントを選択してください。</system:String>
+    <system:String x:Key="PcClientPathNotExist">PC クライアントのパスが存在しません</system:String>
+    <system:String x:Key="PcClientPathEmptyWarning">PC クライアントのパスが空です。｢{key=RetryOnPcDisconnected}｣ と ｢{key=OpenPcClientAfterLaunch}｣ のチェック状態がリセットされました</system:String>
     <system:String x:Key="EmulatorPathSelectionErrorPrompt">バーでバーを注文したいですか？</system:String>
     <system:String x:Key="EmulatorPathSelectionErrorImSure">確かに間違って選択していないと思います</system:String>
     <system:String x:Key="EmulatorPathSelectionErrorSelectAgain">はい、もう一度選択します</system:String>
     <system:String x:Key="EmulatorPathNotExist">エミュレータのパスが存在しません</system:String>
-    <system:String x:Key="EmulatorPathEmptyWarning">エミュレータのパスが空です。 ｢{key=RetryOnDisconnected}｣ と ｢{key=OpenEmulatorAfterLaunch}｣ のチェック状態がリセットされました</system:String>
+    <system:String x:Key="EmulatorPathEmptyWarning">エミュレータのパスが空です。｢{key=RetryOnDisconnected}｣ と ｢{key=OpenEmulatorAfterLaunch}｣ のチェック状態がリセットされました</system:String>
     <system:String x:Key="Select">選択</system:String>
     <system:String x:Key="Test">テスト</system:String>
     <system:String x:Key="ForcedReplaceAdb">ADB強制置き換え</system:String>
@@ -609,9 +707,9 @@ MAA は非インストール型のアプリケーションであり、レジス�
     <system:String x:Key="AdbTouchMode">ADB Input (非推奨)</system:String>
     <system:String x:Key="MaaFwAdbTouchMode">MaaFwAdb (実験機能)</system:String>
     <system:String x:Key="MumuExtrasTouchMode">MuMu タッチ (実験機能)</system:String>
-    <system:String x:Key="TouchModeTip" xml:space="preserve">ADB Input は、OS バージョンが古い物理デバイスのみに使用します。他のモードが使える場合は、ADB Input を選択しないでください。&#10;ADB Input のスワイプはズレやすいため、スワイプ速度が非常に遅く設定され、スワイプ距離も他のモードと異なります。正確な座標制御が必要な場面では使用できません。&#10;&#10;MaaFwAdb は追加スワイプに非対応のため、追加スワイプでドラッグの暴走を防いでいるページはこのモードで暴走します。&#10;追加スワイプとは、メインスワイプの終了後に垂直方向へ少し追加分の｢ブレーキ｣スワイプを行うもので（軌跡は 90° に曲がる L 字型）、リストの慣性を打ち消すために使用します。</system:String>
+    <system:String x:Key="TouchModeTip" xml:space="preserve">ADB Input は、OS バージョンが古い物理デバイスのみに使用します。他のモードが使える場合は、ADB Input を選択しないでください。&#10;ADB Input のスワイプはズレやすいため、スワイプ速度が非常に遅く設定され、スワイプ距離も他のモードと異なります。正確な座標制御が必要な場面では使用できません。&#10;&#10;MaaFwAdb は追加スワイプに非対応のため、追加スワイプでドラッグの暴走を防いでいるページはこのモードで暴走します。&#10;追加スワイプとは、メインスワイプの終了後に垂直方向へ少し追加分の ｢ブレーキ｣ スワイプを行うもので（軌跡は 90° に曲がる L 字型）、リストの慣性を打ち消すために使用します。</system:String>
     <system:String x:Key="AdditionCommand">追加コマンド</system:String>
-    <system:String x:Key="AdditionCommandTip" xml:space="preserve">エミュレーター起動パラメータの追加コマンド（例： ｢--instance 1｣ は 1 番インスタンス）。&#10;コマンド形式はエミュレーターにより異なり、通常はインスタンス番号やウィンドウモードなどを含みます。</system:String>
+    <system:String x:Key="AdditionCommandTip" xml:space="preserve">エミュレーター起動パラメータの追加コマンド（例：｢--instance 1｣ は 1 番インスタンス）。&#10;コマンド形式はエミュレーターにより異なり、通常はインスタンス番号やウィンドウモードなどを含みます。</system:String>
     <system:String x:Key="StartsWithScript">スクリプトを使用して始めます</system:String>
     <system:String x:Key="StartsWithScriptPlaceholder">例: "C:\1.cmd" -minimized</system:String>
     <system:String x:Key="EndsWithScript">終了時にスクリプトを使用します</system:String>
@@ -642,7 +740,7 @@ MAA は非インストール型のアプリケーションであり、レジス�
 {key=StartingRoles}: {key=SlowAndSteadyWinsTheRace}
 {key=StartingCoreChar}: ウィシャデル
 
-1. 強力な6★オペレーターが多い場合は｢{key=IS2NewSquad3}｣を推奨します
+1. 強力な6★オペレーターが多い場合は ｢{key=IS2NewSquad3}｣ を推奨します
 2. 最高難易度がN4以上の場合、6★オペレーターの希望消費が+1になり、一部の分隊では開始時に6★オペレーターを招集できず、エラーや失敗を招く可能性があります</system:String>
     <system:String x:Key="RoguelikeThemeTipSami" xml:space="preserve">{key=RoguelikeThemeSami}推奨構成:
 
@@ -658,7 +756,7 @@ MAA は非インストール型のアプリケーションであり、レジス�
 {key=StartingCoreChar}: ウィシャデル
 
 1. ｢{key=IS4NewSquad3}｣：完全回避戦術を採用し、攻略を狙わない高速レベリングに適します
-2. ｢{key=IS4NewSquad6}｣を使用すると源石錐稼ぎ効率が向上しますが、戦略を ｢源石錐稼ぎ｣ に設定する必要があります
+2. ｢{key=IS4NewSquad6}｣ を使用すると源石錐稼ぎ効率が向上しますが、戦略を ｢源石錐稼ぎ｣ に設定する必要があります
 3. 最高難易度がN15以上の場合、6★オペレーターの希望消費が+1になり、一部の分隊では開始時に6★オペレーターを招集できず、エラーや失敗を招く可能性があります</system:String>
     <system:String x:Key="RoguelikeThemeTipJieGarden" xml:space="preserve">{key=RoguelikeThemeJieGarden}推奨構成:
 
@@ -666,7 +764,7 @@ MAA は非インストール型のアプリケーションであり、レジス�
 {key=StartingRoles}: {key=SlowAndSteadyWinsTheRace}
 {key=StartingCoreChar}: ウィシャデル
 
-1. 戦略を ｢源石錐稼ぎ｣ にし、難易度を N3 以上または ｢MAX｣ に設定し、{key=StartingSquad}を｢{key=LeaderSquad}｣にすると指揮回避戦闘戦術が有効になります
+1. 戦略を ｢源石錐稼ぎ｣ にし、難易度を N3 以上または ｢MAX｣ に設定し、{key=StartingSquad}を ｢{key=LeaderSquad}｣ にすると指揮回避戦闘戦術が有効になります
 2. 指揮回避戦闘戦術を使うと源石錐稼ぎ効率が大幅に向上し、高速レベリング（攻略を狙わない）にも使用できますが、戦略を ｢源石錐稼ぎ｣ に設定する必要があります
 3. 解放済みの最高難易度が N3 未満、または関連知識を解放していない場合は指揮回避戦闘戦術を使用しないでください。エラーの原因になります
 4. 最高難易度が N15 以上の場合、6★オペレーターの希望消費が+1になり、一部の分隊では開始時に6★オペレーターを招集できず、エラーや失敗を招く可能性があります</system:String>
@@ -677,7 +775,7 @@ MAA は非インストール型のアプリケーションであり、レジス�
 {key=StartingRoles}: ｢{key=SlowAndSteadyWinsTheRace}｣ / ｢{key=Unbreakable}｣
 
 1. 現時点では専用の戦闘戦略はなく、戦闘は募集スコアリングによる自動判断に任されています。
-    源石錠稼ぎ・レベル稼ぎ・襁褓動物育成は、いずれも昇進済み機械師の ｢飛び｣ を軸に回っています。
+    源石錐稼ぎ・レベル稼ぎ・襁褓動物育成は、いずれも昇進済み機械師の ｢飛び｣ を軸に回っています。
     今回のローグライクは特殊なギミックが多く、上記の構成で開局しない場合はデフォルトの経路探索と戦闘しか使えず、ほぼ失敗します。
     機械師を招集した後は、効率化のため昇進状態を確認せず昇進済みとして戦略を実行します。
     未昇進の機械師を選ぶと停止や無限ループが発生するため、必ず昇進済みの機械師を使用してください。
@@ -686,12 +784,12 @@ MAA は非インストール型のアプリケーションであり、レジス�
     解放はとても簡単で、昇進後にパーツを合計 10 個売るだけです
 3. レベル稼ぎでは、機械師（要昇進済み）+ 上記の分隊・職業グループ + 重装券の組み合わせで 3 層を一気に飛んで駆け抜けられます
 4. 昇進済みの機械師がない場合は選ばないでください。選ぶと停止や無限ループが発生します。
-    選ばなければ通常どおり源石錠を稼げますが、戦闘はほぼ敗走します。他の戦略は今後の最適化をお待ちください
-5. レベル稼ぎ + ｢{key=InvestmentEnabled}｣をチェックしないことで商店をスキップできます</system:String>
+    選ばなければ通常どおり源石錐を稼げますが、戦闘はほぼ敗走します。他の戦略は今後の最適化をお待ちください
+5. レベル稼ぎ + ｢{key=InvestmentEnabled}｣ をチェックしないことで商店をスキップできます</system:String>
     <system:String x:Key="RoguelikeDifficulty">難易度</system:String>
-    <system:String x:Key="RoguelikeJieGardenDifficultyTip" xml:space="preserve">｢{key=RoguelikeThemeJieGarden}｣に関連する知識を解放すると、{key=LeaderSquad}で N3 以上の難易度を探索する際に ｢時の果て｣ を追加で携帯し、 ｢一戦一跳｣ の貯蓄戦術を行えます。
-まだ解放していない場合は、N3 以上の難易度（ ｢MAX｣ を含む）を選択しないでください。
-この機能を有効にするには、難易度を N3 以上に設定してください（ ｢{key=NotSwitch} (-1)｣ を除く）。</system:String>
+    <system:String x:Key="RoguelikeJieGardenDifficultyTip" xml:space="preserve">｢{key=RoguelikeThemeJieGarden}｣ に関連する知識を解放すると、{key=LeaderSquad}で N3 以上の難易度を探索する際に ｢時の果て｣ を追加で携帯し、｢一戦一跳｣ の貯蓄戦術を行えます。
+まだ解放していない場合は、N3 以上の難易度（｢MAX｣ を含む）を選択しないでください。
+この機能を有効にするには、難易度を N3 以上に設定してください（｢{key=NotSwitch} (-1)｣ を除く）。</system:String>
     <system:String x:Key="Strategy">ストラテジー</system:String>
     <system:String x:Key="StartTimesLimit">冒険をN回始めた後に停止する</system:String>
     <system:String x:Key="GoldTimesLimit">N回投資した後に停止する</system:String>
@@ -718,6 +816,7 @@ MAA は非インストール型のアプリケーションであり、レジス�
     <system:String x:Key="ThirdPartyGroupYituliu">Yituliu</system:String>
     <system:String x:Key="YituliuOpenApiToken">OpenAPIトークン</system:String>
     <system:String x:Key="YituliuTokenVerify">検証</system:String>
+    <system:String x:Key="YituliuTokenLink">{key=ThirdPartyGroupYituliu}でトークンを取得</system:String>
     <system:String x:Key="YituliuTokenEmpty">先にトークンを入力してください</system:String>
     <system:String x:Key="YituliuTokenValid">トークンは有効です。合計 {0} 名のオペレーター</system:String>
     <system:String x:Key="YituliuTokenValidNoData">トークンは有効ですが、アカウントにまだオペレーターデータがありません</system:String>
@@ -725,7 +824,7 @@ MAA は非インストール型のアプリケーションであり、レジス�
     <system:String x:Key="YituliuTokenInvalid">トークンが無効または期限切れです。再生成してください</system:String>
     <system:String x:Key="YituliuTokenNetworkError">ネットワークエラーが発生しました。後でもう一度お試しください</system:String>
     <system:String x:Key="EnableOperBoxYituliuApi">{key=OperBoxRecognition}をYituliuから取得</system:String>
-    <system:String x:Key="EnableOperBoxYituliuApiTip" xml:space="preserve">有効にすると、｢{key=Toolbox}｣と｢{key=UserDataUpdate}｣の{key=OperBoxRecognition}はエミュレーターに接続してスクリーンショット識別を行わず、トークンに対応するYituliuの育成データを直接読み取ります。&#10;｢{key=UserDataUpdate}｣によるトリガーでは、｢{key=LinkStart}｣押下後にエミュレーターへ接続次第、他のタスクと並行して取得を開始します。&#10;Yituliuに保存されるのは育成データのスナップショットのため、事前にYituliuサイトへオペレーターデータをアップロードしている必要があります。&#10;スクリーンショット識別と異なり、スキルレベル・スキル特化・モジュール情報も追加で取得できます。&#10;トークンはYituliuの「アカウント」ページの「サードパーティ API Token」で生成できます。アカウントデータを保護するため、読み取り専用のトークンのみ使用してください。</system:String>
+    <system:String x:Key="EnableOperBoxYituliuApiTip" xml:space="preserve">有効にすると、｢{key=Toolbox}｣ と ｢{key=UserDataUpdate}｣ の{key=OperBoxRecognition}はエミュレーターに接続してスクリーンショット識別を行わず、トークンに対応するYituliuの育成データを直接読み取ります。&#10;｢{key=UserDataUpdate}｣ によるトリガーでは、｢{key=LinkStart}｣ 押下後にエミュレーターへ接続次第、他のタスクと並行して取得を開始します。&#10;Yituliuに保存されるのは育成データのスナップショットのため、事前にYituliuサイトへオペレーターデータをアップロードしている必要があります。&#10;スクリーンショット識別と異なり、スキルレベル・スキル特化・モジュール情報も追加で取得できます。&#10;トークンはYituliuの ｢アカウント｣ ページの ｢サードパーティ API Token｣ で生成できます。アカウントデータを保護するため、読み取り専用のトークンのみ使用してください。</system:String>
     <system:String x:Key="OperBoxFetchingFromYituliu">Yituliuからオペレーターデータを取得中…</system:String>
     <system:String x:Key="YituliuFetchFailed">Yituliuからの取得に失敗しました：{0}</system:String>
     <system:String x:Key="YituliuNoOperBoxData">トークンに対応するYituliuアカウントにオペレーターデータがなく、ローカルの識別結果を保持しました</system:String>
@@ -733,6 +832,7 @@ MAA は非インストール型のアプリケーションであり、レジス�
     <system:String x:Key="OperBoxExportHeaderMainSkillLevel">スキルLv</system:String>
     <system:String x:Key="OperBoxExportHeaderSkills">スキル特化</system:String>
     <system:String x:Key="OperBoxExportHeaderEquips">モジュール</system:String>
+    <system:String x:Key="OperBoxAvatarMode">アイコン表示</system:String>
     <system:String x:Key="DrGrandet">Dr.グランデモード</system:String>
     <system:String x:Key="DrGrandetTip">理性の回復画面で、現在の待機中の回復が完了するまで待ってから、理性剤などを使用します。</system:String>
     <system:String x:Key="SocialPtShop">FP交換</system:String>
@@ -741,9 +841,16 @@ MAA は非インストール型のアプリケーションであり、レジス�
     <system:String x:Key="CreditFightTip" xml:space="preserve">基地訪問後、OF-1でサポートを使用すると、30FP獲得できます。
 この機能は、ステージを ｢{key=DefaultStage}｣ に選択している場合は無効です。
 ステージOF-1がアンロックされていない場合は、チェックしないでください。</system:String>
-    <system:String x:Key="CreditFightWhenOF-1Warning">｢{key=Fight}｣ タスクのステージリストに ｢{key=DefaultStage}｣ が存在するし、 ｢{key=Mall}｣ タスクはOF-1での戦友サポート借用の戦闘をスキップします。タスク名: {0} (シーケンス番号 {1})、レベル シーケンス番号 {2}</system:String>
+    <system:String x:Key="CreditFightWhenOF-1Warning">｢{key=Fight}｣ タスクのステージリストに ｢{key=DefaultStage}｣ が存在するし、｢{key=Mall}｣ タスクはOF-1での戦友サポート借用の戦闘をスキップします。タスク名: {0} (シーケンス番号 {1})、レベル シーケンス番号 {2}</system:String>
     <system:String x:Key="HighPriority">優先購入（セミコロンで区切）</system:String>
     <system:String x:Key="Blacklist">ブラックリスト（セミコロンで区切）</system:String>
+    <system:String x:Key="MiniGame@EventShop@BlacklistTip">チェックした商品をブラックリストに追加します</system:String>
+    <system:String x:Key="MiniGame@EventShop@CommonItemsTip">ドロップダウンでよく使う商品を選択</system:String>
+    <system:String x:Key="MiniGame@EventShop@DataSupplementInstrument">データ補完マシン</system:String>
+    <system:String x:Key="MiniGame@EventShop@DataSupplementStick">データ補完チップ</system:String>
+    <system:String x:Key="MiniGame@EventShop@Lmd">龍門幣</system:String>
+    <system:String x:Key="MiniGame@EventShop@FurniturePart">家具パーツ</system:String>
+    <system:String x:Key="MiniGame@EventShop@Other">その他のカスタム商品</system:String>
     <system:String x:Key="HighPriorityDefault">求人票</system:String>
     <system:String x:Key="BlacklistDefault">炭素材;家具;緊急招集票</system:String>
     <system:String x:Key="Drink">飲み物はいかがですか🍷？ドクター</system:String>
@@ -790,10 +897,10 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Notifications\Settin
     <system:String x:Key="ResolutionInfoYoStarEN">エミュレータが1920x1080に設定されていることを確認してください</system:String>
     <system:String x:Key="AllowUseStoneSave">源石の数を割る保存状態を許可</system:String>
     <system:String x:Key="AllowUseStoneSaveTip">デフォルトでは ｢{key=UseOriginitePrime}｣ は一度だけ有効です。チェックするとその状態が保存され、左クリックで通常どおり切り替えられ、右クリックで選択した場合も一度だけ有効になります</system:String>
-    <system:String x:Key="AllowUseStoneSaveWarning">この機能は危険な機能と見なされます。 ｢{key=Confirm}｣ ボタンを押すと、リスクを理解し、受け入れることに同意したと見なされます。</system:String>
+    <system:String x:Key="AllowUseStoneSaveWarning">この機能は危険な機能と見なされます。｢{key=Confirm}｣ ボタンを押すと、リスクを理解し、受け入れることに同意したと見なされます。</system:String>
     <system:String x:Key="UseAlternateStage">代替ステージを選択可能にする</system:String>
     <system:String x:Key="UseExpiringMedicine">N日未満で期限が切れる回復剤を無制限に使用</system:String>
-    <system:String x:Key="MedicineExpireDaysTip">ゲーム内で「N日」未満と表示される回復剤のみ使用し、「N日」以上は使用しません。</system:String>
+    <system:String x:Key="MedicineExpireDaysTip">ゲーム内で ｢N日｣ 未満と表示される回復剤のみ使用し、｢N日｣ 以上は使用しません。</system:String>
     <system:String x:Key="UseExpireMedicineForActivity">今週中に期限切れとなる正気回復ポーションは、アクティビティ終了の48時間以内に使用してください。</system:String>
     <system:String x:Key="NoActivity">活動なし</system:String>
     <system:String x:Key="HideUnavailableStage">リストに当日開放されないステージを隠す</system:String>
@@ -808,7 +915,7 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Notifications\Settin
     <system:String x:Key="AutoDetectConnection">接続自動認識</system:String>
     <system:String x:Key="AutoDetectConnectionNotSupported">この接続構成では自動接続検出はサポートされていません。手動でポート番号を入力してみてください</system:String>
     <system:String x:Key="AutoDetectConnectionTip" xml:space="preserve">このチェックボックスは、検出が完了するたびに自動的にチェックが外れますが、再検出が必要な場合は再度チェックを入れることができます。
-ポートが頻繁に変更される場合にのみ、｢{key=AlwaysAutoDetectConnection}｣オプションにチェックを入れてください。
+ポートが頻繁に変更される場合にのみ、｢{key=AlwaysAutoDetectConnection}｣ オプションにチェックを入れてください。
 検出時には、接続する必要があるエミュレータのみを起動してください。複数のエミュレータを同時に起動すると、誤ったターゲットに接続する可能性があります。</system:String>
     <system:String x:Key="AlwaysAutoDetectConnection">毎回再検出する</system:String>
     <system:String x:Key="AlwaysAutoDetectConnectionTip" xml:space="preserve">このオプションはお勧めしません。
@@ -817,8 +924,8 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Notifications\Settin
     <system:String x:Key="AccountSwitch">アカウントの切り替え</system:String>
     <system:String x:Key="AccountSwitchManualRun">今すぐ切り替える</system:String>
     <system:String x:Key="AccountSwitchTip" xml:space="preserve">切り替える必要があるアカウントを入力し、空白のままにしてアカウントの切り替えを停止します。
-ログインインターフェイスに表示される内容を入力します（ ｢123****4567｣ など）。 ｢123****4567｣ 、 ｢4567｣ または ｢23****45｣ を入力できます。
-繁体字中国語サーバーとYostarKRサーバーのアカウントはEメール形式です（ ｢ab****01@gmail.com｣ など）。アスタリスクを含まない明文部分（ ｢01@gmail｣ など）の入力を推奨します。
+ログインインターフェイスに表示される内容を入力します（｢123****4567｣ など）。｢123****4567｣、｢4567｣ または ｢23****45｣ を入力できます。
+繁体字中国語サーバーとYostarKRサーバーのアカウントはEメール形式です（｢ab****01@gmail.com｣ など）。アスタリスクを含まない明文部分（｢01@gmail｣ など）の入力を推奨します。
 公式(CN)、Bilibili、繁体字中国語、YostarKRサーバーのみをサポートします。サードパーティのログイン方式はサポートされていません。</system:String>
     <system:String x:Key="AdbPath">ADBパス</system:String>
     <system:String x:Key="AdbPathFileSelectionErrorPrompt">選択されたファイル名にADBが含まれていません。誤ったファイルを選択していないか、エミュレータ自体を選択していないか確認してください。</system:String>
@@ -829,6 +936,7 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Notifications\Settin
     <system:String x:Key="ConnectionPreset">接続構成</system:String>
     <system:String x:Key="ScreenshotTest">スクリーンショットテスト</system:String>
     <system:String x:Key="WindowRestore">ウィンドウ復元</system:String>
+    <system:String x:Key="WindowMinimize">ウィンドウ最小化</system:String>
     <system:String x:Key="MuMu12ExtrasEnabled">MuMu のスクリーンショット拡張モードを有効にする</system:String>
     <system:String x:Key="MuMuExtrasTouchEnabled">MuMu タッチ強化を有効化（実験的、MuMu エミュレータ 6.3.2+、バックグラウンド常駐対応）</system:String>
     <system:String x:Key="MuMuEmulatorPathNotFound">MuMu エミュレータのパスが見つかりません。</system:String>
@@ -888,7 +996,10 @@ C:\leidian\LDPlayer9
     <system:String x:Key="LdExtrasNotEnabledMessage">LD スクリーンショットの強化 が有効になっていません。｢{key=Settings} - {key=ConnectionSettings} - {key=ConnectionPreset}｣ の下部に表示される強化設定を確認してください</system:String>
     <system:String x:Key="RetryOnDisconnected">ADB接続が失敗した場合、エミュレータの起動を試みる</system:String>
     <system:String x:Key="RetryOnDisconnectedTip">再接続に失敗した後、エミュレータを再起動してみてください，バックグラウンドのタイムドタスクを使用し、終了時にエミュレータを終了させるタスクを設定する場合は、必ずチェックを入れること</system:String>
-    <system:String x:Key="RetryOnDisconnectedEmulatorPathEmptyError">エミュレータのパスが空です！ ｢{key=Settings} - {key=StartupSettings} - {key=EmulatorPath}｣ を入力してから再度選択してください。</system:String>
+    <system:String x:Key="RetryOnDisconnectedEmulatorPathEmptyError">エミュレータのパスが空です！｢{key=Settings} - {key=StartupSettings} - {key=EmulatorPath}｣ を入力してから再度選択してください。</system:String>
+    <system:String x:Key="RetryOnPcDisconnected">PC クライアントの接続失敗時にクライアントを起動</system:String>
+    <system:String x:Key="RetryOnPcDisconnectedTip">ウィンドウ接続に失敗した後、PC クライアントを起動して再接続します</system:String>
+    <system:String x:Key="RetryOnPcDisconnectedPathEmptyError">PC クライアントのパスが空です！｢{key=Settings} - {key=StartupSettings} - {key=PcClientPath}｣ を入力してから再度選択してください。</system:String>
     <system:String x:Key="AllowAdbRestart">接続失敗後にADBサーバーの再起動を試みる</system:String>
     <system:String x:Key="AllowAdbHardRestart">接続失敗後にADBプロセスの再起動を試みる</system:String>
     <!--  !設定  -->
@@ -902,47 +1013,21 @@ C:\leidian\LDPlayer9
     <system:String x:Key="Infrast">{key=Base}</system:String>
     <system:String x:Key="Combat">作戦</system:String>
     <system:String x:Key="Fight">{key=Combat}</system:String>
+    <system:String x:Key="Ignore">無視</system:String>
     <system:String x:Key="OperProgress">オペレーター育成</system:String>
-    <!--  待确认移除（干员计划重构后 JSON 文本流程已废弃，以下键仅供已注释的 JSON 往返链路使用）  -->
-    <system:String x:Key="OperProgressParsePlan">プランを解析</system:String>
-    <system:String x:Key="OperProgressPlanValid">現在のテキストは解析済みです</system:String>
-    <system:String x:Key="OperProgressPlanPending">テキストが変更されました。実行時は最後に解析成功したプランを使用します</system:String>
-    <system:String x:Key="OperProgressPlanParsed">プランを解析しました：{0} 件</system:String>
-    <system:String x:Key="OperProgressJsonError">JSON の {0} 行 {1} 列でエラー：{2}</system:String>
-    <system:String x:Key="OperProgressPlanMustBeArray">プランは JSON 配列である必要があります</system:String>
-    <system:String x:Key="OperProgressPlanMustBeObject">プラン {0} はオブジェクトである必要があります</system:String>
-    <system:String x:Key="OperProgressUnknownField">プラン {0} に不明なフィールド「{1}」があります</system:String>
-    <system:String x:Key="OperProgressUnknownOperator">プラン {0} の「{1}」は中国版の有効なオペレーター名ではありません</system:String>
-    <system:String x:Key="OperProgressExactlyOneAction">プラン {0} には育成操作を1種類だけ指定してください</system:String>
-    <system:String x:Key="OperProgressMasteryPairRequired">プラン {0} の「{1}」にはもう一方の特化フィールドが必要です</system:String>
-    <system:String x:Key="OperProgressStringRequired">プラン {0} の「{1}」は空でない文字列である必要があります</system:String>
-    <system:String x:Key="OperProgressIntegerRequired">プラン {0} の「{1}」は整数である必要があります</system:String>
-    <system:String x:Key="OperProgressFieldRange">プラン {0} の「{1}」は {2}～{3} の範囲で指定してください</system:String>
-    <!--  待確認移除結束  -->
-    <system:String x:Key="OperProgressSkillLevelTarget">スキルランク {0}</system:String>
-    <system:String x:Key="OperProgressMasteryTarget">スキル {0} 特化 {1}</system:String>
-    <system:String x:Key="OperProgressEliteTarget">昇進段階 {0}</system:String>
-    <system:String x:Key="OperProgressDeleteCompletedEntries">育成タスクチェーン終了後に完了した項目を削除</system:String>
-    <system:String x:Key="OperProgressDeleteCompletedEntriesTip">育成タスクチェーン終了後、「成功」または「達成済み」の項目を自動的に削除します。失敗とスキップの項目は残ります</system:String>
-    <system:String x:Key="OperProgressTargetStartLog">育成プラン {0}：{1}、{2}</system:String>
-    <system:String x:Key="OperProgressTargetResultLog">育成プラン {0}：{1}、{2}、結果 {3}</system:String>
-    <system:String x:Key="OperProgressRecognizedElite">（現在の昇進段階 {0}）</system:String>
-    <system:String x:Key="OperProgressRecognizedSkillLevel">（現在のスキルランク {0}）</system:String>
-    <system:String x:Key="OperProgressRecognizedMastery">（現在の特化 {0}）</system:String>
-    <system:String x:Key="OperProgressSummaryLog">オペレーター育成完了：成功 {0}、達成済み {1}、失敗 {2}、スキップ {3}</system:String>
-    <system:String x:Key="OperProgressSelectOperator">オペレーターを選択</system:String>
-    <system:String x:Key="OperProgressAddTarget">追加</system:String>
-    <!--  待确认移除（弹窗专用：卡片内联编辑后不再使用）  -->
-    <system:String x:Key="OperProgressTargetTitle">{0} · 育成目標</system:String>
+    <system:String x:Key="OperProgress.SkillLevelTarget">スキルランク {0}</system:String>
+    <system:String x:Key="OperProgress.MasteryTarget">スキル {0} 特化 {1}</system:String>
+    <system:String x:Key="OperProgress.EliteTarget">昇進段階 {0}</system:String>
+    <system:String x:Key="OperProgress.Summary">オペレーター育成完了：成功 {0}、失敗 {1}、スキップ {2}</system:String>
     <system:String x:Key="OperProgressElite">昇進段階</system:String>
     <system:String x:Key="OperProgressSkillUpgrade">スキルランクアップ</system:String>
-    <system:String x:Key="OperProgressMastery">スキル特化</system:String>
+    <system:String x:Key="OperProgressNotSet">---</system:String>
+    <system:String x:Key="OperProgressMastery1">特化 1</system:String>
+    <system:String x:Key="OperProgressMastery2">特化 2</system:String>
+    <system:String x:Key="OperProgressMastery3">特化 3</system:String>
     <system:String x:Key="OperProgressSkillNumber">スキル{0}</system:String>
-    <system:String x:Key="OperProgressInvalidOperatorInput">入力したオペレーター名が無効です。リストから選択してください</system:String>
-    <system:String x:Key="OperProgressOperatorLimit">選択できるオペレーターは最大 5 人です</system:String>
-    <!--  待确认移除（弹窗专用：卡片内联编辑后不再使用）  -->
-    <system:String x:Key="OperProgressEdit">変更</system:String>
     <system:String x:Key="OperProgressOnlineEditor">アークナイツツールボックスでオンライン編集</system:String>
+    <system:String x:Key="OperProgress.Detail">{key=OperProgress} {0}:{1} {2}</system:String>
     <system:String x:Key="Visiting">戦友訪問</system:String>
     <system:String x:Key="Mall">FP獲得と交換</system:String>
     <system:String x:Key="Mission">報酬受取</system:String>
@@ -993,6 +1078,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="Hibernate">休止状態にする</system:String>
     <system:String x:Key="HibernateTip">Windows の電源オプションで休止状態を有効にする必要があります。そうしないと、この機能は無効になります。</system:String>
     <system:String x:Key="Sleep">スリープ</system:String>
+    <system:String x:Key="LockScreen">画面をロック</system:String>
     <system:String x:Key="Shutdown">シャットダウン</system:String>
     <system:String x:Key="Once">今回のみ*</system:String>
     <system:String x:Key="PostActionOnceTip" xml:space="preserve">チェックすると、オプションの変更が保存されず、次回 MAA 起動時または {key=LinkStart} 後に復元されます
@@ -1000,9 +1086,9 @@ C:\leidian\LDPlayer9
 他のオプションを右クリックすると、このオプションも同時にチェック/チェック解除されます</system:String>
     <system:String x:Key="SkipPostActionOnError">タスク失敗時はスキップ</system:String>
     <system:String x:Key="SkipPostActionOnErrorTip">チェックすると、タスクリスト内の1つ以上のタスクが失敗した場合、上記のすべての動作をスキップします。</system:String>
-    <system:String x:Key="PostActionSkippedDueToError">タスクが失敗したため、完了後アクションをスキップしました：{0}</system:String>
+    <system:String x:Key="PostActionSkippedDueToError">タスクが失敗したため、後続の処理はスキップされました。</system:String>
     <system:String x:Key="IfNoOtherMaa">他のMAAがない場合</system:String>
-    <system:String x:Key="IfNoOtherMaaTip">チェックすると、他の MAA インスタンスが実行されていない場合にのみ、スリープ/休止状態/シャットダウンを実行します</system:String>
+    <system:String x:Key="IfNoOtherMaaTip">チェックすると、他の MAA インスタンスが実行されていない場合にのみ、画面のロック/スリープ/休止状態/シャットダウンを実行します</system:String>
     <system:String x:Key="BackToAndroidHome">エミュレータのホーム画面に戻る</system:String>
     <system:String x:Key="LinkStart">Link Start!</system:String>
     <system:String x:Key="Stop">停止</system:String>
@@ -1047,13 +1133,14 @@ C:\leidian\LDPlayer9
     <system:String x:Key="DaysLeftOpen" xml:space="preserve">公開日まで: </system:String>
     <system:String x:Key="Inventory">在庫</system:String>
     <system:String x:Key="InventoryUpdateTip">在庫データは ｢{key=Toolbox}-{key=DepotRecognition}｣ で更新できます</system:String>
-    <system:String x:Key="SpecifiedDropsInventoryUnavailable">タスク ｢{0}｣ では {key=TargetInventory} が有効ですが、利用可能な在庫データがないためスキップされました。｢{key=Toolbox}-{key=DepotRecognition}｣ で在庫を更新してください。</system:String>
+    <system:String x:Key="SpecifiedDropsInventoryUnavailable">タスク ｢{0}｣ では {key=TargetInventory} が有効ですが、利用可能な在庫データがないためスキップされました。｢{key=UserDataUpdate}｣ タスクまたは ｢{key=Toolbox}-{key=DepotRecognition}｣ で在庫を更新してください。</system:String>
     <system:String x:Key="SpecifiedDropsInventoryEnough">{0} 十分 {1}/{2}</system:String>
     <system:String x:Key="UserDataUpdateCannotModifyExistingTask">追加済みの ｢{key=UserDataUpdate}｣ タスクのパラメータは変更できません</system:String>
     <system:String x:Key="UserDataUpdateNothingSelected">｢{key=OperBoxRecognition}｣ と ｢{key=DepotRecognition}｣ のどちらも選択されていません</system:String>
     <system:String x:Key="UserDataUpdateIntervalNotReached">前回の同期から ｢{0}｣ の実行間隔に達していません</system:String>
     <!--  在庫維持  -->
     <system:String x:Key="DepotUpdateBeforeStart">タスク開始前に在庫データを更新</system:String>
+    <system:String x:Key="DepotUpdateBeforeStartTip" xml:space="preserve">タスク開始時、当時キャッシュされていた在庫データで各プランの不足を判定する処理を事前チェックと呼びます。事前チェックで既に充足しているプランは今回の周回リストに追加されず、その後も再判定されません。&#10;各プランは開始時に最新キャッシュで再判定され、前のステージのドロップはリアルタイムでキャッシュに加算されます。&#10;チェック時、プランの実行前に倉庫認識を 1 回実行し、キャッシュを実際の在庫に修正します。&#10;認識後にスキップされたプランの実際の在庫が不足していたことが判明した場合、事前チェックでスキップされたプランは実行中に追加できないため、ログに記録されるだけで、タスクを再実行すると周回されます。</system:String>
     <system:String x:Key="AddPlan">追加</system:String>
     <system:String x:Key="DepotPreset">プリセット</system:String>
     <system:String x:Key="DepotPresetChip1">低級チップ（全職業）</system:String>
@@ -1061,6 +1148,9 @@ C:\leidian\LDPlayer9
     <system:String x:Key="DepotPresetLmd">龍門幣</system:String>
     <system:String x:Key="DepotPresetCertificate">購買資格証（赤チケ）</system:String>
     <system:String x:Key="DepotPresetSkillSummary">アーツ学・Ⅲ</system:String>
+    <system:String x:Key="DepotPresetPermanent">常設ステージ</system:String>
+    <system:String x:Key="DepotPresetCurrentActivity">現在のイベント</system:String>
+    <system:String x:Key="DepotPresetActivitySkipConflict">｢{key=DepotSkipDuringActivity}｣ が有効のため、取り込んだプランはイベント期間中は実行されません</system:String>
     <system:String x:Key="CollapseAll">折りたたむ</system:String>
     <system:String x:Key="ClearPlans">クリア</system:String>
     <system:String x:Key="ClearPlansConfirm">すべてのプランを削除しますか？</system:String>
@@ -1069,21 +1159,28 @@ C:\leidian\LDPlayer9
     <system:String x:Key="DepotPlanNoStage">#{0}：ステージ未指定または ｢現在/前回｣</system:String>
     <system:String x:Key="DepotPlanInventoryEnough">#{0}：{1} 十分 {2}/{3}</system:String>
     <system:String x:Key="DepotPlanInventoryInsufficient">#{0}：{1} 不足 {2}/{3}、{4} 個必要</system:String>
+    <system:String x:Key="DepotPlanCacheStaleSkipped">#{0}：{1} 実際 {2}/{3} 不足ですが、事前チェックでスキップされたプランは実行中に追加できません。タスクを再実行すると周回されます</system:String>
     <system:String x:Key="DepotPlanSanityInsufficient">#{0}：理性不足（現在 {1}、消費 {2} 未満）、スキップしました</system:String>
     <system:String x:Key="DepotPlanStageNotOpen">#{0}：ステージ ｢{1}｣ は公開されていません</system:String>
     <system:String x:Key="DepotPlanAddTaskFailed">#{0}：タスクの追加に失敗しました</system:String>
     <system:String x:Key="DepotPlanNoPlan">計画が設定されていません</system:String>
+    <system:String x:Key="DepotPlanSortedByProgress">在庫達成率の昇順で並べ替えて実行しました</system:String>
     <system:String x:Key="DepotSkipDuringActivity">イベント期間中はスキップ</system:String>
-    <system:String x:Key="DepotSkipDuringResourceCollection">資源收集限時全日開放期間中はスキップ</system:String>
+    <system:String x:Key="DepotSkipDuringResourceCollection">資源収集の期間限定全日開放中はスキップ</system:String>
     <system:String x:Key="DepotOnlyFirstInsufficientPlan">在庫不足の最初のプランのみ実行</system:String>
     <system:String x:Key="DepotOnlyFirstInsufficientPlanTip" xml:space="preserve">在庫不足かつ当日実行可能な最初のプランのみ実行します。&#10;ログはそのプランまでの表示で、以降のプランは今回実行されません。&#10;補充完了後は次回実行で後続のプランへ進みます。</system:String>
+    <system:String x:Key="DepotSortByProgress">在庫達成率の順で実行</system:String>
+    <system:String x:Key="DepotSortByProgressTip" xml:space="preserve">チェック時、各実行で在庫達成率の昇順に並べ替えて実行し、不足割合が最大のプランが優先的に理性を獲得します。&#10;リストの表示順は変わらず、ドラッグによる並べ替えはチェック解除時のみ有効です。&#10;並べ替えは前回識別のキャッシュデータを用い、各プラン開始時に最新在庫で不足数を再計算します。</system:String>
+    <system:String x:Key="DepotCountDualChipAsChipPack">デュアルチップをチップセットとして換算</system:String>
+    <system:String x:Key="DepotCountDualChipAsChipPackTip" xml:space="preserve">チップセットの在庫を数える際、対応職業のデュアルチップを合成レシピの比率で換算して計上します(1 個につきチップセット 2 個分)。&#10;プラン概要は実数 (+換算分) の形式で表示され、達成判定と不足数の計算には換算後の数値が使われます。&#10;集計方法のみ変更し、自動的に合成は行いません。</system:String>
     <system:String x:Key="DepotPlanSkippedActivity">イベント開催中</system:String>
-    <system:String x:Key="DepotPlanSkippedResourceCollection">資源收集限時全日開放期間中</system:String>
+    <system:String x:Key="DepotPlanSkippedResourceCollection">資源収集の期間限定全日開放中</system:String>
     <system:String x:Key="DepotPlanUpdateDepotFailed">在庫データの更新に失敗しました。</system:String>
-    <system:String x:Key="DepotUseAutoSeries">AUTO 代理倍率</system:String>
+    <system:String x:Key="DepotPlanInventoryDataEmpty">#{0}：利用可能な在庫データがないため、周回をスキップしました。｢{key=UserDataUpdate}｣ タスクまたは ｢{key=Toolbox}-{key=DepotRecognition}｣ で在庫を更新してください。</system:String>
+    <system:String x:Key="DepotUseAutoSeries">AUTO 連戦回数</system:String>
     <system:String x:Key="DepotUseAutoSeriesTip" xml:space="preserve">未チェック時は 1 倍で代理；チェック後は現在の理性で可能な最大倍率で代理し、1回の周回で目標在庫上限を超える場合があります。</system:String>
-    <system:String x:Key="DepotEnableUseMedicine">「{key=UseSanityPotion}」チェックボックスを有効化</system:String>
-    <system:String x:Key="DepotEnableUseStone">「{key=UseOriginitePrime}」チェックボックスを有効化</system:String>
+    <system:String x:Key="DepotEnableUseMedicine">｢{key=UseSanityPotion}｣ チェックボックスを有効化</system:String>
+    <system:String x:Key="DepotEnableUseStone">｢{key=UseOriginitePrime}｣ チェックボックスを有効化</system:String>
     <system:String x:Key="DepotUseExpiringMedicine">48 時間以内に期限切れの理性剤を使用</system:String>
     <system:String x:Key="DepotPlanBudgetTip" xml:space="preserve">このステージの理性剤/源石の使用上限で、ステージごとに独立して計算されます。&#10;チェックして数値を設定すると、このステージは理性不足でスキップされず、理性が足りなくても出撃してこの数まで理性剤/源石を使用して戦闘を続けます。&#10;予算未設定のステージは、理性不足の場合に出撃せず直接スキップされます。</system:String>
     <system:String x:Key="DepotUseExpiringMedicineTip" xml:space="preserve">理性剤予算未設定のステージを含む全ステージに適用されます。&#10;有効にすると、予算未設定のステージも 48 時間以内に期限切れとなる理性剤の使用を試みます。&#10;予算未設定のステージが理性不足でスキップされるのは、このキューの実行中に既に理性不足で終了した戦闘タスクがあり、かつその期限間近の理性剤のウィンドウがこの設定以上である（＝このウィンドウ内の期限間近の理性剤を使い切った）場合のみです。</system:String>
@@ -1128,10 +1225,18 @@ C:\leidian\LDPlayer9
     <system:String x:Key="CATip">CA-5：アーツ学</system:String>
     <system:String x:Key="LSTip">LS-6：作戦記録</system:String>
     <system:String x:Key="SKTip">SK-5：炭素材</system:String>
-    <system:String x:Key="PR-ATip">PR-A-1/2：医療&amp;重装SoC</system:String>
-    <system:String x:Key="PR-BTip">PR-B：術師&amp;狙撃SoC</system:String>
-    <system:String x:Key="PR-CTip">PR-C-1/2：先鋒&amp;補助SoC</system:String>
-    <system:String x:Key="PR-DTip">PR-D-1/2：前衛&amp;特殊SoC</system:String>
+    <system:String x:Key="PR-ATip">PR-A-1/2：{0}&amp;{1}SoC</system:String>
+    <system:String x:Key="PR-BTip">PR-B：{0}&amp;{1}SoC</system:String>
+    <system:String x:Key="PR-CTip">PR-C-1/2：{0}&amp;{1}SoC</system:String>
+    <system:String x:Key="PR-DTip">PR-D-1/2：{0}&amp;{1}SoC</system:String>
+    <system:String x:Key="ChipShortVanguard">先鋒</system:String>
+    <system:String x:Key="ChipShortGuard">前衛</system:String>
+    <system:String x:Key="ChipShortDefender">重装</system:String>
+    <system:String x:Key="ChipShortSniper">狙撃</system:String>
+    <system:String x:Key="ChipShortCaster">術師</system:String>
+    <system:String x:Key="ChipShortMedic">医療</system:String>
+    <system:String x:Key="ChipShortSupporter">補助</system:String>
+    <system:String x:Key="ChipShortSpecialist">特殊</system:String>
     <system:String x:Key="Pormpt1">月曜です。殲滅作戦がリセットされています〜</system:String>
     <system:String x:Key="Pormpt2">日曜です。殲滅作戦は忘れてないですか〜</system:String>
     <!--  !戦闘設定  -->
@@ -1146,7 +1251,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="Running">動作中……</system:String>
     <system:String x:Key="TaskAppend.Skip">{0}: {1} タスクをスキップしました</system:String>
     <system:String x:Key="TaskSerialize.Error">{0}: {1} のシリアライズに失敗しました</system:String>
-    <system:String x:Key="AdbReplacementTips">タスクが応答なしになる場合は、 ｢{key=Settings} - {key=ConnectionSettings} - {key=ForcedReplaceAdb}｣ 、もしくは ADB Input タッチモード をチェックしてください（お勧めしない）。</system:String>
+    <system:String x:Key="AdbReplacementTips">タスクが応答なしになる場合は、｢{key=Settings} - {key=ConnectionSettings} - {key=ForcedReplaceAdb}｣、もしくは ADB Input タッチモード をチェックしてください（お勧めしない）。</system:String>
     <system:String x:Key="LDPlayerMaaTouchWarning">LDPlayer エミュレータと MaaTouch タッチモードの組み合わせを検出しました。この組み合わせではスワイプ操作が異常に遅くなることが知られています（実際のスワイプ時間が設定値を大幅に超過）。スワイプが終了する前に次の操作が実行され、各種異常が発生する可能性があります。他のタッチモードへの切り替えを推奨します。</system:String>
     <system:String x:Key="Waiting">ミッション終了を待っています……</system:String>
     <system:String x:Key="Stopping">動作停止中……</system:String>
@@ -1157,6 +1262,8 @@ C:\leidian\LDPlayer9
     <system:String x:Key="SetSuccessfully">設定に成功しました</system:String>
     <system:String x:Key="SetFailed">設定に失敗しました</system:String>
     <system:String x:Key="CloseArknightsFailed">ゲームの終了に失敗しました</system:String>
+    <system:String x:Key="LockScreenFailed">画面のロックに失敗しました</system:String>
+    <system:String x:Key="LockScreenTip">タスクが完了しました。まもなく画面をロックします</system:String>
     <system:String x:Key="ExitEmulatorFailed">エミュレータの終了に失敗しました</system:String>
     <system:String x:Key="AboutToShutdown">完了しました。シャットダウンしようとしています。キャンセルしますか？</system:String>
     <system:String x:Key="ShutdownPrompt">ヒント</system:String>
@@ -1190,6 +1297,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="Depot">{key=DepotRecognition}</system:String>
     <system:String x:Key="LastSyncTime">前回同期時間</system:String>
     <system:String x:Key="DepotRecognitionTip">この機能はまだテスト版です。エラーが発生/統計情報に問題があれば、debug/depotフォルダを圧縮し、issueを提出してください~</system:String>
+    <system:String x:Key="DepotTemplateLoadError">{key=DepotRecognition}用テンプレートの読み込みに失敗しました（{0}）。認識を中止しました。</system:String>
     <system:String x:Key="StartToDepotRecognition">認識開始</system:String>
     <system:String x:Key="ExportToArkplanner">Arkplanner</system:String>
     <system:String x:Key="ExportToLolicon">Arkntools</system:String>
@@ -1213,7 +1321,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="OperBoxExportHeaderName">オペレーター</system:String>
     <system:String x:Key="OperBoxExportHeaderId">ID</system:String>
     <system:String x:Key="OperBoxExportHeaderRarity">レア度</system:String>
-    <system:String x:Key="OperBoxExportHeaderElite">Elite</system:String>
+    <system:String x:Key="OperBoxExportHeaderElite">昇進段階</system:String>
     <system:String x:Key="OperBoxExportHeaderLevel">Lv</system:String>
     <system:String x:Key="OperBoxExportHeaderOwn">所有</system:String>
     <system:String x:Key="OperBoxExportHeaderPotential">潜在</system:String>
@@ -1224,7 +1332,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="VideoRecognition">映像</system:String>
     <system:String x:Key="StartToVideoRecognition">認識を始める</system:String>
     <system:String x:Key="OpenVideoRecognitionResult">ディレクトリを開く</system:String>
-    <system:String x:Key="VideoRecognitionTips" xml:space="preserve">映像認識のために、 ｢{key=Copilot}｣ ページを開き、映像をドラッグしてください。
+    <system:String x:Key="VideoRecognitionTips" xml:space="preserve">映像認識のために、｢{key=Copilot}｣ ページを開き、映像をドラッグしてください。
 映像の解像度は16: 9である必要があり、黒枠、エミュレータ枠、特殊な形状、画面効果などが無いことを確認してください。</system:String>
     <!--  VideoRecognition  -->
     <!--  Gacha Recognition  -->
@@ -1255,7 +1363,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="ShowDisclaimerNoMore">再度表示しない</system:String>
     <!--  !Gacha Recognition  -->
     <!--  Peep  -->
-    <system:String x:Key="Peep">Peep</system:String>
+    <system:String x:Key="Peep">パラスモニター</system:String>
     <system:String x:Key="PeepTip">パラスの目に映る世界を見てみませんか？</system:String>
     <system:String x:Key="PeepTargetFps">目標フレームレート</system:String>
     <system:String x:Key="PeepScreenshotTooLong">スクリーンショットに時間がかかりすぎています。目標フレームレートを {0} に下げてください</system:String>
@@ -1268,12 +1376,12 @@ C:\leidian\LDPlayer9
     <system:String x:Key="MiniGame@PV">PV-花火実行委員会</system:String>
     <system:String x:Key="MiniGame@PVTip">選択したステージから自動でクリアします。最初のステージを選んだ場合は、イベントページの最左側から開始してください。その他のステージを選んだ場合は、位置を校正するために前のステージに一度入ってから戻ってください。</system:String>
     <system:String x:Key="MiniGame@SPA">堅守協定：盟約</system:String>
-    <system:String x:Key="MiniGame@SPATip" xml:space="preserve">イベントメイン画面（ ｢単独演算｣ がある場所）からタスクを開始
+    <system:String x:Key="MiniGame@SPATip" xml:space="preserve">イベントメイン画面（｢単独演算｣ がある場所）からタスクを開始
 セーブデータがある場合は、まず手動で破棄する必要があります
  ｢逆境シミュレーション｣ までテスト済み
 より高い難易度をクリア済みで ｢逆境シミュレーション｣ または ｢標準シミュレーション｣ が表示されない場合、\n ｢逆境シミュレーション｣ 難易度を手動で一度選択してください
  ｢標準シミュレーション｣ を手動でクリアすると、より早くスコアを稼げます
-レベル報酬のみ取得可能。 ｢功績勲章｣ を入手するには全ての ｢主要目標｣ をクリアする必要があります</system:String>
+レベル報酬のみ取得可能。｢功績勲章｣ を入手するには全ての ｢主要目標｣ をクリアする必要があります</system:String>
     <system:String x:Key="MiniGame@OS">OS-カランド貿易 研究開発部</system:String>
     <system:String x:Key="MiniGame@OSTip">イベントメイン画面（右下に ｢再建開始｣ がある場所）でタスクを開始します。</system:String>
     <system:String x:Key="MiniGame@RM-TR-1">再建画策 RM-TR-1</system:String>
@@ -1353,7 +1461,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="MiniGame@AutoRaisePotential@PotentialFoundLog">オペレーター {0}/{1}：強化可能な潜在能力あり</system:String>
     <system:String x:Key="MiniGame@AutoRaisePotential@NoPotentialLog">オペレーター {0}/{1}：強化可能な潜在能力なし</system:String>
     <system:String x:Key="MiniGame@CursedRelic">ファントム ヴィクトリアのクラウン リロール</system:String>
-    <system:String x:Key="MiniGame@CursedRelicTip" xml:space="preserve">ファントムのメインメニューで「探索開始」ボタンが表示されている状態から開始してください。</system:String>
+    <system:String x:Key="MiniGame@CursedRelicTip" xml:space="preserve">ファントムのメインメニューで ｢探索開始｣ ボタンが表示されている状態から開始してください。</system:String>
 
     <system:String x:Key="MiniGameNameGreenTicketStore">緑チケット商店</system:String>
     <system:String x:Key="MiniGameNameGreenTicketStoreTip" xml:space="preserve">1階は全部購入。&#10;2階はスカウト券と求人票を購入のみ。</system:String>
@@ -1367,6 +1475,7 @@ C:\leidian\LDPlayer9
     <!--  Logs  -->
     <system:String x:Key="Identifying">認識中……</system:String>
     <system:String x:Key="IdentificationCompleted">認識完了</system:String>
+    <system:String x:Key="DepotRecognitionEmptyResult">認識結果が空のため、既存の在庫データを保持しました</system:String>
     <!--  !Logs  -->
     <!--  Copilot  -->
     <system:String x:Key="Operator">オペレーター</system:String>
@@ -1374,8 +1483,8 @@ C:\leidian\LDPlayer9
     <system:String x:Key="SSSCopilot">SSS {key=Copilot}</system:String>
     <system:String x:Key="ParadoxCopilot">{key=ParadoxSimulation}</system:String>
     <system:String x:Key="CopilotLocation">攻略ファイルパス/ミステリーコード</system:String>
-    <system:String x:Key="CopilotTaskName">ステージコード</system:String>
-    <system:String x:Key="CopilotTaskNameTip">ステージコード, 例えば 1-7</system:String>
+    <system:String x:Key="CopilotTaskName">ステージ</system:String>
+    <system:String x:Key="CopilotTaskNameTip">ステージ, 例えば 1-7</system:String>
     <system:String x:Key="SelectTheFile">ファイル選択</system:String>
     <system:String x:Key="SelectTheFileTip">攻略ファイルはマウスで直接ドラッグして取り込むことがきます(oﾟvﾟ)ノ</system:String>
     <system:String x:Key="PasteClipboardTip">クリップボードを読み取り、作業/作業セットを自動識別</system:String>
@@ -1395,6 +1504,10 @@ C:\leidian\LDPlayer9
     <system:String x:Key="Copilot.IgnoreRequirements.Tip" xml:space="preserve">一部の攻略は特定のモジュールなどを前提条件とします
 この項目を選択するとこれらのチェックをスキップしますが、タスクが正常に動作しなくなる可能性があります。
 オペレーターのエリートレベルはスキップできません。いずれかの条件をスキップした場合、戦闘後にオペレーションは自動的に評価されなくなります。</system:String>
+    <system:String x:Key="Copilot.UseOperBoxAssist">Yituliu のデータで編隊を支援</system:String>
+    <system:String x:Key="Copilot.UseOperBoxAssist.Tip" xml:space="preserve">自動編隊の前に、Yituliu のオペレーター育成データ（スキル・モジュール情報を含む）で編隊を事前マッチングします&#10;｢{key=Settings} - {key=ThirdPartyServiceSettings}｣ で Yituliu トークンを入力し、｢{key=EnableOperBoxYituliuApi}｣ を有効化してデータを取得してください</system:String>
+    <system:String x:Key="Copilot.SyncOperBoxData">同期</system:String>
+    <system:String x:Key="Copilot.SyncOperBoxSuccess">Yituliu のオペレーターデータ {0} 名分を同期しました</system:String>
     <system:String x:Key="AddUserAdditional">カスタム{key=Operator}追加</system:String>
     <system:String x:Key="AddUserAdditionalTip">横の設定ボタンをクリックして編集ウィンドウを開き、｢{key=UserAdditional.Add}｣ をクリックして1件ずつ追加し、各列に{key=Operator}名・スキル・操作を入力します</system:String>
     <system:String x:Key="UserAdditional.OperatorName">{key=Operator}名</system:String>
@@ -1415,10 +1528,11 @@ C:\leidian\LDPlayer9
     <system:String x:Key="CopilotTaskRaidStage">（強襲）</system:String>
     <system:String x:Key="CopilotAddTask" xml:space="preserve">左クリックで通常難易度を追加
 右クリックしてレイドの難易度を追加します</system:String>
-    <system:String x:Key="CopilotSelectTaskTip" xml:space="preserve">左クリック：ジョブ情報を表示
-右クリック：このジョブを選択してマルチジョブモードを終了</system:String>
     <system:String x:Key="CopilotClearTask" xml:space="preserve">左クリックですべてのタスクをクリア
 右クリックで非アクティブなタスクをクリア</system:String>
+    <system:String x:Key="CopilotSelectTaskTip" xml:space="preserve">左クリック：ジョブ情報を表示
+右クリック：このジョブを選択してマルチジョブモードを終了</system:String>
+    <system:String x:Key="WindowUpdateInfoTip">クリックで今すぐ更新</system:String>
     <system:String x:Key="Start">開始</system:String>
     <system:String x:Key="RunTaskOnce">1回実行</system:String>
     <system:String x:Key="RunTasksFromHere">ここから実行</system:String>
@@ -1453,9 +1567,9 @@ C:\leidian\LDPlayer9
         ヒント: \n\n
         1. この機能を使用前に、攻略ファイルと選択したステージタイプが一致していることを確認してください。\n\n
         2. {key=MainStage}、{key=StoryCollection}、{key=SideStory}: 右下の ｢行動開始｣ ボタン画面で開始してください。\n\n
-        3. {key=SSS}: resource/copilot フォルダー内に複数の課題があります。まず手動で編成を行い、右下の ｢配置開始｣ ボタン画面で開始してください。 ｢{key=LoopTimes}｣ と連携することもできます。\n\n
-        4. {key=ParadoxSimulation}: スキルを選択した後、スキル選択画面に ｢演算開始｣ ボタンが表示され、1/2 星{key=Operator}（スキルなし）が右下に ｢演算開始｣ ボタンを表示されて開始します。 ｢{key=UseCopilotList}｣ を使用する場合、{key=Operator}リストの｢レベル/レアリティ｣タブから開始してください。\n\n
-        5.  ｢戦術要員｣ 機能を有効にすると、 ｢{key=AutoSquad}｣ の{key=Operator}選択に影響を与える可能性があります。 ｢{key=AutoSquad}｣ を 使用する際は ｢戦術要員｣ をオフにするか、不足している{key=Operator}を手動で補充して編成を完成させることをお勧めします。\n\n
+        3. {key=SSS}: resource/copilot フォルダー内に複数の課題があります。まず手動で編成を行い、右下の ｢配置開始｣ ボタン画面で開始してください。｢{key=LoopTimes}｣ と連携することもできます。\n\n
+        4. {key=ParadoxSimulation}: スキルを選択した後、スキル選択画面に ｢演算開始｣ ボタンが表示され、1/2 星{key=Operator}（スキルなし）が右下に ｢演算開始｣ ボタンを表示されて開始します。｢{key=UseCopilotList}｣ を使用する場合、{key=Operator}リストの ｢レベル/レアリティ｣ タブから開始してください。\n\n
+        5.  ｢戦術要員｣ 機能を有効にすると、｢{key=AutoSquad}｣ の{key=Operator}選択に影響を与える可能性があります。｢{key=AutoSquad}｣ を 使用する際は ｢戦術要員｣ をオフにするか、不足している{key=Operator}を手動で補充して編成を完成させることをお勧めします。\n\n
         6. ZOOT 作業ステーションでは、入力欄の右側にある貼り付けボタンをクリックして、コードを貼り付けることができます。形式は自動的に識別されます：\n
         • prts://s = 割り当てセット prts:// = 個別の割り当て\n\n
         7. {key=UseCopilotList}:\n
@@ -1466,6 +1580,7 @@ C:\leidian\LDPlayer9
         • 理性不足の場合、戦闘が失敗した場合、または 3 つ星を解決できない場合、アクションは終了します。
     </system:String>
     <system:String x:Key="CopilotFileReadError">ファイルの読み取りに失敗しました！</system:String>
+    <system:String x:Key="CopilotStartFailed">攻略ファイルの起動に失敗しました</system:String>
     <system:String x:Key="CopilotNoFound">対応する攻略ファイルが見つかりません！</system:String>
     <system:String x:Key="NetworkServiceError">ネットワークサービスの要求中にエラーが発生しました！</system:String>
     <system:String x:Key="CopilotJsonError">攻略ファイルの解析中にエラーが発生しました！</system:String>
@@ -1523,6 +1638,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="ResourceIntegrityCheckDesc">{0} 個のインストールファイルが欠落していることが検出されました（{1}）。一部の機能が使用できない可能性があります。ファイルがセキュリティソフトによってブロックまたは削除されたか、手動で削除された可能性があります。セキュリティソフトが原因の場合は、その隔離領域を確認してファイルを復元し、{key=SecuritySoftwareWhitelistTips}\n\n以下の説明に従って手動で再インストールすることもできます：\n\n{key=FullPackageUpgradeTips}</system:String>
     <system:String x:Key="ResourceIntegrityRepairYes">自動修復（完全パッケージをダウンロードし、再起動後に復元）</system:String>
     <system:String x:Key="ResourceIntegrityRepairNo">後で行う</system:String>
+    <system:String x:Key="CoreLoadingTip">MAA のコアは読み込み中です。少し待ってから再度お試しください。</system:String>
     <system:String x:Key="ResourceBrokenTaskBlocked">リソースが破損しているためタスクを開始できません。起動時の案内に従ってリソースを修復するか、完全なパッケージを再ダウンロードして MAA を再起動してください。</system:String>
     <system:String x:Key="ResourceIntegrityRepairDownloading">インストールを修復するため、完全パッケージをダウンロードしています…</system:String>
     <system:String x:Key="ResourceIntegrityRepairFailed">自動修復に失敗しました。表示された手順に従って手動で処理してください。\n\n{key=FullPackageUpgradeTips}</system:String>
@@ -1546,7 +1662,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="TryToReconnect">エミュレータが切断、再接続を行います</system:String>
     <system:String x:Key="ReconnectSuccess">再接続に成功、タスクを続行します</system:String>
     <system:String x:Key="ReconnectFailed">再接続に失敗、切断されました！</system:String>
-    <system:String x:Key="TouchModeNotAvailable">タッチモードは利用できません。 ｢{key=Settings} - {key=ConnectionSettings}｣ に入って、他のタッチモードに変更してください。</system:String>
+    <system:String x:Key="TouchModeNotAvailable">タッチモードは利用できません。｢{key=Settings} - {key=ConnectionSettings}｣ に入って、他のタッチモードに変更してください。</system:String>
     <system:String x:Key="ScreencapFailed">スクリーンキャプチャに失敗しました。繰り返し発生する場合は、エミュレータの再起動または変更をお試しください！</system:String>
     <system:String x:Key="FastestWayToScreencap">スクリーンショット テストには: {0}ms ({1})</system:String>
     <system:String x:Key="FastestWayToScreencapInfoTip">スクリーンキャップに {0}ms かかっています。MuMuやLDPlayerを使用している場合は、｢{key=Settings} - {key=ConnectionSettings} - {key=ConnectionPreset}｣ で対応するエミュレータを選択し、下部に表示されるスクリーンショット強化を有効にすると短縮できます。</system:String>
@@ -1559,19 +1675,19 @@ C:\leidian\LDPlayer9
     <system:String x:Key="RecruitRefreshLimitReached">更新回数が上限に達しました</system:String>
     <system:String x:Key="TaskError" xml:space="preserve">タスクエラー: </system:String>
     <system:String x:Key="TaskErrorSummaryTitle">今回の実行で以下のエラーが発生しました：</system:String>
-    <system:String x:Key="TaskErrorSummaryItem">{0}</system:String>
     <system:String x:Key="OutOfMemoryError">メモリ不足により{0}タスクが停止しました。他のプログラムを閉じるか、MAA を再起動してもう一度お試しください</system:String>
     <system:String x:Key="CombatError">戦闘エラー</system:String>
     <system:String x:Key="StartTask" xml:space="preserve">タスク開始: </system:String>
     <system:String x:Key="CompleteTask" xml:space="preserve">タスク完了: </system:String>
+    <system:String x:Key="TaskTime">\n(所要時間: {0})</system:String>
     <system:String x:Key="StartCombat" xml:space="preserve">戦闘開始: </system:String>
     <system:String x:Key="CompleteCombat">戦闘完了</system:String>
-    <system:String x:Key="TaskCompletedWithErrors">すべてのタスクは完了しましたが、エラーが発生しました！\n({0} 後)</system:String>
+    <system:String x:Key="TaskCompletedWithErrors">タスクが終了しました。以下のタスクでエラーが発生しました！\n{0}\n({1} 後)</system:String>
     <system:String x:Key="AllTasksComplete">すべてのタスクが完了しました！\n({0} 後)</system:String>
     <system:String x:Key="SanityReport">({TimeDiff} 後)、{DateTime} に理性が完全回復します。</system:String>
     <system:String x:Key="AllTaskCompleteContent">({TimeDiff} 後) MAA は、{DateTime} の {Preset} 構成の下にあるすべてのプリセット タスクを完了しました。</system:String>
-    <system:String x:Key="BackgroundLinkStarted">Tasks started</system:String>
-    <system:String x:Key="BackgroundLinkStopped">Tasks stopped</system:String>
+    <system:String x:Key="BackgroundLinkStarted">タスクを開始しました</system:String>
+    <system:String x:Key="BackgroundLinkStopped">タスクを停止しました</system:String>
     <system:String x:Key="FailedToOpenClient">クライアントを開くのに失敗しました。構成ファイルを確認してください</system:String>
     <system:String x:Key="ErrorOccurred">エラー発生</system:String>
     <system:String x:Key="HasReturned">戻ります</system:String>
@@ -1582,9 +1698,9 @@ C:\leidian\LDPlayer9
     <system:String x:Key="PenguinUploadUnknownDropType">ドロップタイプを認識できませんでした</system:String>
     <system:String x:Key="PenguinUploadUnknownDrops">ドロップアイテムを認識できませんでした</system:String>
     <system:String x:Key="GiveUpUploadingPenguins">Penguin-Statsへのアップロードをあきらめました</system:String>
-    <system:String x:Key="ReportSkippedForPcClient">PC クライアントではカーソルがドロップ品や個数の認識を遮る場合があります。誤ったデータでデータプールを汚染しないよう、今回のレポートは自動的にスキップしました</system:String>
+    <system:String x:Key="ReportSkippedForPcClient">PC クライアントではカーソルがドロップ品や個数の認識を遮る場合があります。誤ったデータでデータプールを汚染しないよう、{0}への今回のレポートは自動的にスキップしました</system:String>
     <system:String x:Key="TheEx">ステージ報酬がないため停止します</system:String>
-    <system:String x:Key="MissingOperators">以下の{key=Operator}グループの{key=Operator}を所有していません（各グループ1体で足ります）または作業要件を満たしていません：\n{0}｢戦術要員｣ マークは{key=Operator}の認識に影響する可能性があります。実際に所有している場合は、マークを解除して再試行するか、｢{key=AutoSquad}｣ をオフにして手動で補充してください。実際に所有していない場合は、不足グループが1つなら ｢{key=SupportUnitUsage}｣ で補えますが、2つ以上の場合は他の作業ファイルを使用してください。</system:String>
+    <system:String x:Key="MissingOperators">以下の{key=Operator}グループの{key=Operator}を所有していません（各グループ1体で足ります）または作業要件を満たしていません：\n{0} ｢戦術要員｣ マークは{key=Operator}の認識に影響する可能性があります。実際に所有している場合は、マークを解除して再試行するか、｢{key=AutoSquad}｣ をオフにして手動で補充してください。実際に所有していない場合は、不足グループが1つなら ｢{key=SupportUnitUsage}｣ で補えますが、2つ以上の場合は他の作業ファイルを使用してください。</system:String>
     <system:String x:Key="RecruitSupportOperator">サポートユニットを追加：{0}</system:String>
     <system:String x:Key="StageQueue">ステージキュー:</system:String>
     <system:String x:Key="UnableToAgent">自動指揮利用不可</system:String>
@@ -1638,16 +1754,8 @@ C:\leidian\LDPlayer9
     <system:String x:Key="RoguelikeCoppersExchange">通宝交換: {0} → {1}</system:String>
     <system:String x:Key="RoguelikeCoppersRecognitionError">通宝認識失敗:  ｢{0}｣</system:String>
     <system:String x:Key="BlackFlowRoutingDecision">第 {0} 層｜行動力 {1}→{2}｜{3}で {4} へ｜安全余裕 {5}</system:String>
-    <system:String x:Key="BlackFlowRoutingReason">理由：{0}｜詳細：{1}</system:String>
     <system:String x:Key="BlackFlowMovementWalk">徒歩移動</system:String>
     <system:String x:Key="BlackFlowMovementProcessing">加工品移動</system:String>
-    <system:String x:Key="BlackFlowReasonMandatoryGoal">必須目標</system:String>
-    <system:String x:Key="BlackFlowReasonResourceReserve">資源温存</system:String>
-    <system:String x:Key="BlackFlowReasonPreferredGoal">優先目標</system:String>
-    <system:String x:Key="BlackFlowReasonDevelopment">育成</system:String>
-    <system:String x:Key="BlackFlowReasonRiskAvoidance">リスク回避</system:String>
-    <system:String x:Key="BlackFlowReasonSafetyFallback">安全経路</system:String>
-    <system:String x:Key="BlackFlowReasonTieBreak">同点比較</system:String>
     <system:String x:Key="BlackFlowWarningMapRebuildFailed">マップの再構築に失敗しました</system:String>
     <system:String x:Key="BlackFlowWarningPageRecoveryFailed">ノード画面からマップに戻れません</system:String>
     <system:String x:Key="BlackFlowWarningPreviewCostChanged">プレビューの行動力消費が変化したため再計画します</system:String>
@@ -1662,14 +1770,18 @@ C:\leidian\LDPlayer9
     <system:String x:Key="BlackFlowMilestoneChanged">段階目標 {0}: {1}</system:String>
     <system:String x:Key="BlackFlowStrategyResult">ローグライク戦略終了：{0}（{1}）</system:String>
     <system:String x:Key="BlackFlowStrategyStarted">ローグライク戦略を開始：{0}</system:String>
-    <system:String x:Key="BlackFlowInventoryCleanupStarted">零件箱超载，开始清理</system:String>
-    <system:String x:Key="BlackFlowInventoryCleanupDiscarded">已丢弃零件：{0}</system:String>
-    <system:String x:Key="BlackFlowInventoryCleanupCompleted">零件箱清理完成</system:String>
-    <system:String x:Key="BlackFlowInventoryCleanupFailed">零件箱清理失败</system:String>
+    <system:String x:Key="BlackFlowInventoryCleanupStarted">パーツボックスが超過したため整理を開始</system:String>
+    <system:String x:Key="BlackFlowInventoryCleanupDiscarded">パーツを破棄：{0}</system:String>
+    <system:String x:Key="BlackFlowInventoryCleanupCompleted">パーツボックスの整理が完了</system:String>
+    <system:String x:Key="BlackFlowInventoryCleanupFailed">パーツボックスの整理に失敗</system:String>
+    <system:String x:Key="BlackFlowScrapTradeAbortedMarketUnavailable">秘境行商のアイテムデータが利用できないため、取引せずに退店します</system:String>
+    <system:String x:Key="BlackFlowScrapTradeAbortedInventoryIncomplete">秘境行商で所持品の確認に失敗したため、取引を中止して退店します</system:String>
+    <system:String x:Key="BlackFlowScrapTradeAbortedPageSwitchFailed">秘境行商で購入・売却ページを切り替えられなかったため、取引を中止して退店します</system:String>
+    <system:String x:Key="BlackFlowScrapTradeAbortedSaleSearchFailed">秘境行商で売却リストを検索できなかったため、取引を中止して退店します</system:String>
+    <system:String x:Key="BlackFlowScrapTradeAbortedSellBackSearchFailed">秘境行商で買い戻し分の「{0}」が見つからないため、取引を中止して退店します</system:String>
+    <system:String x:Key="BlackFlowScrapTradeAbortedSaleFailed">秘境行商で「{0}」の売却が確認できなかったため、取引を中止して退店します</system:String>
+    <system:String x:Key="BlackFlowScrapTradeAbortedUnknown">秘境行商の取引で異常が発生したため、取引を中止して退店します</system:String>
     <system:String x:Key="BlackFlowStrategyUnknown">不明な戦略</system:String>
-    <system:String x:Key="BlackFlowDecisionProbeUnknownNode">経路上で最も近い未分類ノードを調査</system:String>
-    <system:String x:Key="BlackFlowDecisionPolicyOrder">戦略で設定された優先順位で選択</system:String>
-    <system:String x:Key="BlackFlowDecisionDetailUnknown">判断基準は不明</system:String>
     <system:String x:Key="BlackFlowMilestoneUnknown">不明な段階目標</system:String>
     <system:String x:Key="BlackFlowMilestoneStatusAvailable">実行可能</system:String>
     <system:String x:Key="BlackFlowMilestoneStatusSatisfied">完了済み</system:String>
@@ -1680,47 +1792,35 @@ C:\leidian\LDPlayer9
     <system:String x:Key="BlackFlowNodeEmpty">空ノード</system:String>
     <system:String x:Key="BlackFlowNodeCombat">通常作戦</system:String>
     <system:String x:Key="BlackFlowNodeEmergencyCombat">緊急作戦</system:String>
-    <system:String x:Key="BlackFlowNodeBoss">険路の悪敵</system:String>
-    <system:String x:Key="BlackFlowNodeBattleShop">通常商店</system:String>
+    <system:String x:Key="BlackFlowNodeBoss">悪路凶敵</system:String>
+    <system:String x:Key="BlackFlowNodeBattleShop">怪しい旅商人</system:String>
     <system:String x:Key="BlackFlowNodeScrapShop">秘境の行商人</system:String>
-    <system:String x:Key="BlackFlowNodeEncounter">不意の遭遇</system:String>
+    <system:String x:Key="BlackFlowNodeEncounter">思わぬ遭遇</system:String>
     <system:String x:Key="BlackFlowNodeMysteriousPresage">未知の怪奇</system:String>
     <system:String x:Key="BlackFlowNodeFerociousPresage">未知の凶悪</system:String>
     <system:String x:Key="BlackFlowNodeScout">一足先に</system:String>
     <system:String x:Key="BlackFlowNodeDuel">狭路の遭遇</system:String>
     <system:String x:Key="BlackFlowNodeEmergencyAid">応急支援</system:String>
-    <system:String x:Key="BlackFlowNodeRest">休息ノード</system:String>
+    <system:String x:Key="BlackFlowNodeRest">安全な片隅</system:String>
     <system:String x:Key="BlackFlowNodeFeatherPoint">羽瞰点</system:String>
     <system:String x:Key="BlackFlowNodeWindingPassage">曲折した隠し道</system:String>
     <system:String x:Key="BlackFlowNodeSacrifice">奉納ノード</system:String>
     <system:String x:Key="BlackFlowNodeWish">願いの成就</system:String>
     <system:String x:Key="BlackFlowNodeBoskyPassage">迷い込んだ奇境</system:String>
-    <system:String x:Key="BlackFlowNodeResidentStronghold">｢住民｣の拠点</system:String>
+    <system:String x:Key="BlackFlowNodeResidentStronghold">｢住民｣ の拠点</system:String>
     <system:String x:Key="BlackFlowNodeFinal">険路の果て</system:String>
     <system:String x:Key="BlackFlowNodeFate">運命の指す先</system:String>
     <system:String x:Key="BlackFlowNodeEvacuate">撤退ノード</system:String>
     <system:String x:Key="BlackFlowNodeTeleporter">転送ノード</system:String>
     <system:String x:Key="BlackFlowNodeOther">その他のノード</system:String>
-    <system:String x:Key="BlackFlowRuleAvoidEmptyScrapShop">源石錠・種子・売却可能なパーツがない時は秘境の行商人を避ける</system:String>
-    <system:String x:Key="BlackFlowRulePreserveWhiteModelBird">白模の鳥を温存し、加工品移動が必要な選択制の戦闘を避ける</system:String>
-    <system:String x:Key="BlackFlowRuleTriggerBossProcessingBonus">加工品を使ってボスノードに入り、戦闘ボーナスを発動する</system:String>
-    <system:String x:Key="BlackFlowRuleExitWhenRequired">育成が完了または安全余裕が不足したため出口へ向かう</system:String>
-    <system:String x:Key="BlackFlowRuleEnding1AvoidLateCombat">基本的な昇進編成が整ったため、不要な戦闘を避ける</system:String>
-    <system:String x:Key="BlackFlowRuleBabyUseProcessingItemForFloor1Shop">第1層では加工品を使って通常商店へ向かう</system:String>
-    <system:String x:Key="BlackFlowRuleBabyWalkAfterFloor1Shop">第1層は通常商店を確認した後、徒歩で探索し加工品を温存する</system:String>
-    <system:String x:Key="BlackFlowRuleBabyDelayExitBeforeFloor3">第3層前にまだ育成の余地があるため出口への移動を保留</system:String>
-    <system:String x:Key="BlackFlowRuleBabyExitBeforeFloor3WhenRequired">第3層前に育成が完了または安全余裕が不足したため出口へ向かう</system:String>
-    <system:String x:Key="BlackFlowRuleBabyAvoidCombat">他に安全な選択肢がある間は戦闘ノードを避ける</system:String>
-    <system:String x:Key="BlackFlowRuleLightRevealsThree">羽瞰点が少なくとも3つの未知の大型ノードを明らかにできそう</system:String>
-    <system:String x:Key="BlackFlowRuleInvestmentKeepShortWalk">商店まで2マス以内の場合は徒歩を維持</system:String>
-    <system:String x:Key="BlackFlowRuleInvestmentUseM11ForDirectShop">短距離の徒歩ルートがない場合、構造性原理で商店へ直行</system:String>
-    <system:String x:Key="BlackFlowRuleBurnRequireShopWhenFlightGuaranteed">昇進済みの機械師が確定する開局構成では第1層の経路を商店経由にする</system:String>
-    <system:String x:Key="BlackFlowRuleBurnRequireFlightOnFloor2">この開局構成では第2層を構造性原理で出口まで一直線に進む</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1Floor1Battles">第1層は通常作戦を優先</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1Floor1Hidden">第1層は未知の怪奇をできるだけ探索</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1Floor2Expedition">第2層は一足先にを優先</system:String>
+    <system:String x:Key="BlackFlowMilestoneEnding1Floor1ScrapShop">第1層は通りがかりに秘境行商で取引</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1Floor2ScrapShop">第2層は秘境の行商人を優先</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1Floor2Hidden">第2層は未知の怪奇をできるだけ探索</system:String>
+    <system:String x:Key="BlackFlowMilestoneEnding1Floor2Incident">第2層は思わぬ遭遇をできるだけ経由</system:String>
+    <system:String x:Key="BlackFlowMilestoneEnding1Informant">第2〜3層は情報屋マーク付きの思わぬ遭遇を優先</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1Floor2Employ">第2層は道中で応急支援に立ち寄る</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1Floor2Light">第2層は道中で羽瞰点に立ち寄る</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1Floor2Wish">第2層は道中で願いの成就に立ち寄る</system:String>
@@ -1729,7 +1829,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="BlackFlowMilestoneEnding1LateScrapShop">第3〜5層は秘境の行商人を優先</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1LateEmploy">第3〜5層は応急支援を優先</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1LateHidden">第3〜5層は未知の怪奇をできるだけ探索</system:String>
-    <system:String x:Key="BlackFlowMilestoneEnding1LateIncident">第3〜5層は不意の遭遇をできるだけ経由</system:String>
+    <system:String x:Key="BlackFlowMilestoneEnding1LateIncident">第3〜5層は思わぬ遭遇をできるだけ経由</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1LateCombat">第3〜5層は道中で通常作戦を通過</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1LateLight">第3〜5層は道中で羽瞰点に立ち寄る</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding1LateWish">第3〜5層は道中で願いの成就に立ち寄る</system:String>
@@ -1742,9 +1842,9 @@ C:\leidian\LDPlayer9
     <system:String x:Key="BlackFlowMilestoneBabyCultivateScrapShopTransit">第1〜2層で秘境の行商人に入り種子を育成してから層の出口へ</system:String>
     <system:String x:Key="BlackFlowMilestoneBabyCultivateScrapShopFinal">第3層で秘境の行商人に入り種子を育成</system:String>
     <system:String x:Key="BlackFlowMilestoneBabyExploreHidden">秘境の行商人が見つかるまで未知の怪奇をできるだけ開拓</system:String>
-    <system:String x:Key="BlackFlowMilestoneBabyVisitIncident">道中で不意の遭遇に入る</system:String>
-    <system:String x:Key="BlackFlowMilestoneBabyFloor2Shops">第2層は通常商店に立ち寄って種子を入手し続ける</system:String>
-    <system:String x:Key="BlackFlowMilestoneBabyFloor3Shops">第3層は通常商店で売却・品揃え更新を行い種子をできるだけ購入</system:String>
+    <system:String x:Key="BlackFlowMilestoneBabyVisitIncident">道中で思わぬ遭遇に入る</system:String>
+    <system:String x:Key="BlackFlowMilestoneBabyFloor2Shops">第2層は怪しい旅商人に立ち寄って種子を入手し続ける</system:String>
+    <system:String x:Key="BlackFlowMilestoneBabyFloor3Shops">第3層は怪しい旅商人に立ち寄って種子を入手し続ける</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding2SandtableA">砂盤Aを入手</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding2SandtableB">砂盤Bを入手</system:String>
     <system:String x:Key="BlackFlowMilestoneEnding2Fate">第5層で運命の指す先に入り第二エンディングを完了</system:String>
@@ -1811,6 +1911,9 @@ C:\leidian\LDPlayer9
     <system:String x:Key="RoguelikeEncounterOptions">{0} 件の選択肢を検出しました:</system:String>
     <system:String x:Key="RoguelikeEncounterEnabledOption">選択可能な選択肢: {0}</system:String>
     <system:String x:Key="RoguelikeEncounterDisabledOption">選択不可の選択肢: {0}</system:String>
+    <system:String x:Key="RoguelikeEventSelected">選択: {0}</system:String>
+    <system:String x:Key="RoguelikeEventSelectedWithReason">選択: {0}（{1}）</system:String>
+    <system:String x:Key="RoguelikeEventSelectedFallback">目標の選択肢が選べないため代わりに選択: {0}</system:String>
     <system:String x:Key="EncounterOcrError">イベント名認識失敗</system:String>
     <system:String x:Key="FoldartalGainOcrNextLevel">予見啓示板:</system:String>
     <system:String x:Key="RoguelikeInvestment">投資しました: {1}(+{0})、貯蓄: {2}</system:String>
@@ -1829,6 +1932,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="ThisFacility" xml:space="preserve">現在の施設: </system:String>
     <system:String x:Key="RoomGroupsMatch" xml:space="preserve">グループに合わせる: </system:String>
     <system:String x:Key="RoomGroupsMatchFailed" xml:space="preserve">{key=Operator} グループ、グループ リストの一致に失敗しました: </system:String>
+    <system:String x:Key="RoomGroupsMatchRecogFailed">グループ{key=Operator}の認識に失敗したため、部屋は変更されませんでした</system:String>
     <system:String x:Key="RoomOperators" xml:space="preserve">優先{key=Operator}: </system:String>
     <system:String x:Key="ProductIncorrect">製産物が構成と一致しません。</system:String>
     <system:String x:Key="ProductUnknown">認識不能な製産物</system:String>
@@ -1867,7 +1971,11 @@ C:\leidian\LDPlayer9
     <system:String x:Key="BattleFormationOperUnavailable.Level">レベル不足</system:String>
     <system:String x:Key="BattleFormationOperUnavailable.SkillLevel">スキルレベルが低すぎる</system:String>
     <system:String x:Key="BattleFormationOperUnavailable.Module">必要なモジュールが未解除</system:String>
+    <system:String x:Key="BattleFormationOperbox1Unmatched" xml:space="preserve">{key=Operator}（グループ） {0} に一致する{key=Operator}なし、サポートが必要です（事前マッチングでは{1}を想定、実際はサポート一覧から選択されます）</system:String>
+    <system:String x:Key="BattleFormationOperboxMatched">事前マッチした{key=Operator}（グループ）：</system:String>
     <system:String x:Key="CopilotUserAdditionalNameInvalid">追加のカスタム{key=Operator}名が無効です: {0}、スペルを確認してください</system:String>
+    <system:String x:Key="CopilotOperboxDataParseFailed">{key=OperBoxRecognition}データ解析失敗</system:String>
+    <system:String x:Key="CopilotOperboxAssistRequiresYituliuData">利用可能な Yituliu のオペレーターデータがないため、編隊を支援できません。先に Yituliu からオペレーターデータを取得するか、｢{key=Copilot.UseOperBoxAssist}｣ を無効にしてください。</system:String>
     <system:String x:Key="CurrentSteps">現在の手順: {0} {1}</system:String>
     <system:String x:Key="ElapsedTime">経過時間: {0}ms</system:String>
     <system:String x:Key="Deploy">配置</system:String>
@@ -1885,7 +1993,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="Click">クリック</system:String>
     <system:String x:Key="Swipe">スワイプ</system:String>
     <system:String x:Key="SetUnitLocation">ユニット座標を設定</system:String>
-    <system:String x:Key="UnsupportedLevel">サポートされていないステージです。ステージ名を確認するか、 ｢{key=Settings} - {key=UpdateSettings} - {key=ResourceUpdate}｣ に移動してリソースバージョンを更新してみてください！</system:String>
+    <system:String x:Key="UnsupportedLevel">サポートされていないステージです。ステージ名を確認するか、｢{key=Settings} - {key=UpdateSettings} - {key=ResourceUpdate}｣ に移動してリソースバージョンを更新してみてください！</system:String>
     <system:String x:Key="Copilot.UnsupportedSkill">{0} のスキル {1} はサポートされないので、スキルを選択されなくなります。</system:String>
     <system:String x:Key="Copilot.EliteEmpty">{0} エリートレベルの要件は設定されていませんでしたが、他の属性の要件はエリート{1}です。これは自動入力されました。</system:String>
     <system:String x:Key="Copilot.EliteAjust">{0} エリート{1}の要件が設定されていましたが、他の属性の要件はエリート{2}です。これは自動調整されました。</system:String>
@@ -1895,6 +2003,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="ConnectFailed">接続失敗</system:String>
     <system:String x:Key="TryToReconnectByAdb">再接続を試みています</system:String>
     <system:String x:Key="TryToStartEmulator">エミュレータを起動しようとしています</system:String>
+    <system:String x:Key="TryToStartPcClient">PC クライアントを起動しようとしています</system:String>
     <system:String x:Key="RestartAdb">ADBサーバーの再起動を試みています</system:String>
     <system:String x:Key="HardRestartAdb">ADBプロセスの再起動を試みています</system:String>
     <system:String x:Key="CheckSettings">｢接続設定を確認｣ → ｢エミュレーターとADBを再起動してみる｣ → ｢コンピュータを再起動｣ してください</system:String>
@@ -1902,6 +2011,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="AttachWindowMultipleFound">{0} 個の "{1}" ウィンドウが見つかりました。最初のものを使用します</system:String>
     <system:String x:Key="AttachWindowFound">ウィンドウ "{0}" が見つかりました</system:String>
     <system:String x:Key="Administrator">管理者</system:String>
+    <system:String x:Key="UiPreviewMode">UI プレビュー</system:String>
     <system:String x:Key="AttachWindowNeedAdmin">PC 接続には管理者権限が必要です。\n管理者として MAA を再起動しますか？</system:String>
     <system:String x:Key="RestartingAsAdmin">管理者として再起動しています…</system:String>
     <system:String x:Key="RestartAsAdminFailed">手動で管理者として MAA を実行してください。</system:String>
@@ -1938,12 +2048,13 @@ C:\leidian\LDPlayer9
     <system:String x:Key="AttachWindowInputPostWithCursor">PostMsg-CursorPos（半バックグラウンド、一時的にマウスを取得）</system:String>
     <system:String x:Key="AttachWindowInputSendWithWindowPosDisabled">SendMsg-WindowPos（遅延過大、無効）</system:String>
     <system:String x:Key="AttachWindowInputPostWithWindowPos">PostMsg-WindowPos（推奨、フルバックグラウンド、マウス不要、ウィンドウが動く可能性あり、PrintWindow のみ対応、最小化推奨）</system:String>
+    <system:String x:Key="AttachWindowInputAnchoredTouch">AnchoredTouch（フルバックグラウンド、マウス不要、合成タッチ注入、Win10 1809+ 必須、遮蔽時はウィンドウが一瞬点滅）</system:String>
     <system:String x:Key="AttachWindowInputSendMsg">SendMsg（安定）</system:String>
     <system:String x:Key="AttachWindowInputPostMsg">PostMsg（高効率）</system:String>
     <!--  !AsstProxy  -->
     <!--  TrayIcon  -->
     <system:String x:Key="ForceShow">MAAの強制表示</system:String>
-    <system:String x:Key="Restart">重启动</system:String>
+    <system:String x:Key="Restart">再起動</system:String>
     <system:String x:Key="Exit">終了</system:String>
     <!--  !TrayIcon  -->
     <!--  About  -->
@@ -1953,7 +2064,7 @@ C:\leidian\LDPlayer9
     <system:String x:Key="MapPrts">自動指揮マップの制作</system:String>
     <system:String x:Key="CustomInfrastGenerator">カスタム基地Json作成</system:String>
     <system:String x:Key="QqGroup">QQグループ</system:String>
-    <system:String x:Key="QqChannel">QQ channel</system:String>
+    <system:String x:Key="QqChannel">QQチャンネル</system:String>
     <system:String x:Key="Telegram">Telegram</system:String>
     <system:String x:Key="Discord">Discord</system:String>
     <!--  !About  -->
@@ -2005,9 +2116,9 @@ DEBUGディレクトリに保存される画像には数量制限があり、超
     <system:String x:Key="EasterEggsRules" xml:space="preserve">1. MAA の正式版にはデバッグモードはありません。実行中にデバッグオプションが表示された場合は、すぐにソフトウェアを閉じ、それをクリックせず、最寄りの MAA 開発者に連絡してください。\n
 2. インフラのシフト変更は自動です。{key=Operator}が 72 時間以上連続して働いている場合は、手動でシフトを調整し、システム時間が正しいか確認してください。\n
 3. 公開募集のタグは変更されません。カウントダウンが終了する前にタグが変更された場合は、募集を続けず、MAA を再起動してから操作してください。\n
-4. MAA はフレンドリクエストを送信しません。 ｢MAA_System｣ からフレンドリクエストを受け取った場合は、承認せず、そのアカウントを削除してください。\n
+4. MAA はフレンドリクエストを送信しません。｢MAA_System｣ からフレンドリクエストを受け取った場合は、承認せず、そのアカウントを削除してください。\n
 5. ローグライクの支援は提案のみを提供します。ゲームが存在しないオプションを自動的に選択した場合は、強制終了してクライアントを再起動してください。\n
-6. MAA のログファイルに文字化けが含まれているべきではありません。 ｢ERROR: データ解析に失敗しました｣ 以外のエラー情報がログに表示された場合は、ログを削除してソフトウェアを再インストールしてください。\n
+6. MAA のログファイルに文字化けが含まれているべきではありません。｢ERROR: データ解析に失敗しました｣ 以外のエラー情報がログに表示された場合は、ログを削除してソフトウェアを再インストールしてください。\n
 7. ナイトモードは安全です。ただし、MAA が午前 3 時 33 分に自動的に起動して ｢不明なタスク｣ を実行した場合は、電源を抜き、日の出まで待ってから使用してください。\n
 8. 最後のルールは存在しません。このルールを見た場合は、それを忘れて、通常どおり MAA を使用してください。\n
 9. MAA 内で炒...锟斤拷拷拷拷喜报拷拷拷饭 をクリックしないでください。\n
@@ -2076,8 +2187,7 @@ DEBUGディレクトリに保存される画像には数量制限があり、超
     <system:String x:Key="AnnouncementNotFinishedConfirm3">まだ押す</system:String>
     <!--  !Announcement  -->
     <!--  Reclamation  -->
-    <system:String x:Key="ReclamationTipRelaunchAnchorRA1" xml:space="preserve">
-報酬目安：1回あたり約159トークン＋統括ポイント、所要時間約2分10秒
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA1" xml:space="preserve">報酬目安：1回あたり約159トークン＋統括ポイント、所要時間約2分10秒
 
 オペレーター要件：なし
 
@@ -2085,12 +2195,10 @@ DEBUGディレクトリに保存される画像には数量制限があり、超
 
 マップでRA-1を開き、右下に ｢建設開始｣ が表示されたらタスクを開始すると自動でループします
 
-注意： ｢初期追加携帯アイテム｣ に関連するテクノロジーをアンロックしている場合、基地内で初期追加携帯アイテムの原因となる施設（食品供給所、飲料供給所、獣舎など）を解体してください
+注意：｢初期追加携帯アイテム｣ に関連するテクノロジーをアンロックしている場合、基地内で初期追加携帯アイテムの原因となる施設（食品供給所、飲料供給所、獣舎など）を解体してください
 
-タスクの流れ：精耕細作、建設、資源納入、決済を自動実行
-    </system:String>
-    <system:String x:Key="ReclamationTipRelaunchAnchorRA4" xml:space="preserve">
-報酬目安：1回あたり約417トークン＋統括ポイント、所要時間約1分40秒
+タスクの流れ：精耕細作、建設、資源納入、決済を自動実行</system:String>
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA4" xml:space="preserve">報酬目安：1回あたり約417トークン＋統括ポイント、所要時間約1分40秒
 
 オペレーター要件：ヴィシャデル（サポート借用可）
 
@@ -2102,12 +2210,10 @@ DEBUGディレクトリに保存される画像には数量制限があり、超
 
 マップでRA-4を開き、右下に ｢建設開始｣ が表示されたらタスクを開始すると自動でループします
 
-注意： ｢初期追加携帯アイテム｣ に関連するテクノロジーをアンロックしている場合、基地内で初期追加携帯アイテムの原因となる施設（食品供給所、飲料供給所、獣舎など）を解体してください
+注意：｢初期追加携帯アイテム｣ に関連するテクノロジーをアンロックしている場合、基地内で初期追加携帯アイテムの原因となる施設（食品供給所、飲料供給所、獣舎など）を解体してください
 
-タスクの流れ： ｢計画経営｣ で得た赤金を使ってエリアを解放し、ヴィシャデルでボス討伐を完了する
-    </system:String>
-    <system:String x:Key="ReclamationTipRelaunchAnchorRA15" xml:space="preserve">
-報酬目安：1回あたり約 500 トークン＋統括ポイント、所要時間約 3 分
+タスクの流れ：｢計画経営｣ で得た赤金を使ってエリアを解放し、ヴィシャデルでボス討伐を完了する</system:String>
+    <system:String x:Key="ReclamationTipRelaunchAnchorRA15" xml:space="preserve">報酬目安：1回あたり約 500 トークン＋統括ポイント、所要時間約 3 分
 
 オペレーター要件：聖聆初雪（サポート借用可）
 
@@ -2120,24 +2226,18 @@ DEBUGディレクトリに保存される画像には数量制限があり、超
 
 注意：  ｢初期追加携帯アイテム｣ に関連するテクノロジーをアンロックしている場合、基地内で初期追加携帯アイテムの原因となる施設（食品供給所、飲料供給所、獣舎など）を解体してください
 
-タスクの流れ： サポートオペレーターを使用して 60 キルミッションを自動実行
-    </system:String>
+タスクの流れ： サポートオペレーターを使用して 60 キルミッションを自動実行</system:String>
     <system:String x:Key="ReclamationTipFire">このイベントは終了しており、利用できません</system:String>
-    <system:String x:Key="ReclamationTipTales" xml:space="preserve">
-生息演算のサポートはまだ初期段階にありますので、ご利用の際は以下の点にご注意ください：
-
- 初期設定でポイントを稼ぐ：（既存のセーブデータが削除されることに注意してください）
+    <system:String x:Key="ReclamationTipTalesNoSave" xml:space="preserve">初期設定でポイントを稼ぐ：（既存のセーブデータが削除されることに注意してください）
   0.ポイントがいっぱいになると ｢タスク完了｣ が出力され、タスクは自動的に停止します
   1. 理論的には、タスクは、セーブデータの有無に関係なく、ポイント獲得のためのどの時点からでもタスクを開始できる。
   2. 生息演算の編成に{key=Operator}を入れることができるが、テストしていないのでお勧めしない。
-  3. ナビゲーションがまだ書かれていないので、生息演算の画面以外の場所からタスクを開始することはできない。
-  4. タスク中にエラーが出たり、ポイントが満杯なかたでタスクが完了した場合は、GitHubにissueを提出してください。
-
- セーブデータあり、支援道具組立でポイントを稼ぐ（高度な設定）：
+  3. メイン画面の右下に ｢演算開始｣ が表示されている画面からタスクを開始する必要があります。
+  4. タスク中にエラーが出たり、ポイントが満杯なかたでタスクが完了した場合は、GitHubにissueを提出してください。</system:String>
+    <system:String x:Key="ReclamationTipTalesInSave" xml:space="preserve">セーブデータあり、支援道具組立でポイントを稼ぐ：
   1. 条件は、決算後初日と、その後3日間、敵襲がないこと。
   2. 大地図のインターフェースに入った後に開始する必要があります（駐屯地を見ることができるページ）
-  3. 作れる数字がちょうど99の倍数の場合、スタックしてしまうので、セーブする前に少し使い切り、後で修正することができる。
-    </system:String>
+  3. 作れる数字がちょうど99の倍数の場合、スタックしてしまうので、セーブする前に少し使い切り、後で修正することができる。</system:String>
     <system:String x:Key="ReclamationBePatient">改善するのが待ちきれません！また急いでいます</system:String>
     <system:String x:Key="Reclamation2ExEnable">道具作りでポイントを得る</system:String>
     <system:String x:Key="ReclamationToolToCraftTip">支援道具名</system:String>
@@ -2153,7 +2253,7 @@ MAA を新しい独立したフォルダーに解凍するか、MAA に属さな
 • その他のシステム依存関係が不足している
 
 まず、アーカイブが完全に解凍されているかご確認ください。
- ｢{key=Confirm}｣ をクリックすると VC++ ランタイムのインストール/更新を試みて MAA を終了します（他の原因の場合は無効）。 ｢{key=Cancel}｣ をクリックすると直接終了します。
+ ｢{key=Confirm}｣ をクリックすると VC++ ランタイムのインストール/更新を試みて MAA を終了します（他の原因の場合は無効）。｢{key=Cancel}｣ をクリックすると直接終了します。
     </system:String>
     <system:String x:Key="MultiInstanceUnderSamePath" xml:space="preserve">同じパスの下で起動できるのは1つのインスタンスのみ！
 MAA を複数開くには、新しい MAA を他のフォルダにコピーし、異なる MAA、同じ adb、異なるシミュレータアドレスを使用して複数の操作を行うように設定します。
@@ -2173,7 +2273,7 @@ MAA を複数開くには、新しい MAA を他のフォルダにコピーし�
     <!-- <system:String x:Key="TaskTimeoutMinutes">タスクのタイムアウト時間（分）</system:String> -->
     <system:String x:Key="ReminderIntervalMinutes">リマインダー間隔時間（分）</system:String>
     <system:String x:Key="StallTimeoutMinutes">ログ出力停滞タイムアウト（分）</system:String>
-    <system:String x:Key="StallTimeoutEnabled">停滞検出を有効にする</system:String>
+    <system:String x:Key="StallTimeoutEnabled">ログ更新の停滞検出を有効にする</system:String>
     <system:String x:Key="TaskStallWarning">タスクログ出力が {0} 分間更新されていません（現在 {1} 分間停滞）。タスクが正常に実行中か確認してください。正常であればこの警告は無視できます。応答がない場合は、手動での操作が必要になる可能性があります。</system:String>
     <system:String x:Key="RunDurationLimitEnabled">1回の実行時間を制限する</system:String>
     <system:String x:Key="RunDurationLimitMinutes">実行時間の上限（分）</system:String>
@@ -2607,7 +2707,7 @@ MAA を複数開くには、新しい MAA を他のフォルダにコピーし�
 
     <system:String x:Key="Achievement.AllChannelBroadcast.Title">全チャンネル放送</system:String>
     <system:String x:Key="Achievement.AllChannelBroadcast.Description">これでもう誰も見逃せない。</system:String>
-    <system:String x:Key="Achievement.AllChannelBroadcast.Conditions">｢{key=ExternalNotificationSettings}｣ ですべてのプラットフォームを同時に有効にする</system:String>
+    <system:String x:Key="Achievement.AllChannelBroadcast.Conditions">｢{key=Settings} - {key=NotificationSettings} - {key=ExternalNotificationSettings}｣ ですべてのプラットフォームを同時に有効にする</system:String>
 
     <system:String x:Key="Achievement.BackstageExplorer.Title">バックヤード探検家</system:String>
     <system:String x:Key="Achievement.BackstageExplorer.Description">裏で何が記録されているか見てみよう。</system:String>
@@ -2652,9 +2752,9 @@ MAA を複数開くには、新しい MAA を他のフォルダにコピーし�
     <!--  BadModules  -->
     <system:String x:Key="BadModules.Warning.Heading">悲報</system:String>
     <system:String x:Key="BadModules.Warning.Prolog">以下のサードパーティ製ソフトウェアが MAA に DLL を注入しています。これにより WPF レンダリングと ONNX/DML 推論が破壊され、MAA のクラッシュ、インターフェースのレンダリング異常、または OCR 認識失敗が発生する可能性があります：</system:String>
-    <system:String x:Key="BadModules.Warning.Epilog" xml:space="preserve">Windows セキュリティからシステムレベルでインジェクションをブロックすることを推奨します：アプリとブラウザーのコントロール → Exploit Protection → Exploit Protection 設定 → プログラム設定 → MAA.exe を追加 →「拡張ポイントの無効化」を「システム設定の上書き - オン」に設定し、有効化してから MAA を再起動してください。&#x0a;&#x0a;また、関連ソフトウェアの除外リストに MAA を追加するか、関連ソフトウェアをアンインストールした後、問題がまだ存在するかどうかを確認することもできます。</system:String>
+    <system:String x:Key="BadModules.Warning.Epilog" xml:space="preserve">Windows セキュリティからシステムレベルでインジェクションをブロックすることを推奨します：アプリとブラウザーのコントロール → Exploit Protection → Exploit Protection 設定 → プログラム設定 → MAA.exe を追加 → ｢拡張ポイントの無効化｣ を ｢システム設定の上書き - オン｣ に設定し、有効化してから MAA を再起動してください。&#x0a;&#x0a;また、関連ソフトウェアの除外リストに MAA を追加するか、関連ソフトウェアをアンインストールした後、問題がまだ存在するかどうかを確認することもできます。</system:String>
     <system:String x:Key="BadModules.Warning.DoNotShowAgain">この警告を再表示しない</system:String>
-    <system:String x:Key="BadModules.Warning.Fallback">さらに、システムのダイアログコンポーネントが破損してクラッシュしており、MAA の後続のダイアログがすべて表示されないだけでなく、他のシステム機能にも影響が出る可能性があります。「はい」で次回から表示しない、「いいえ」で今回のみ閉じる。</system:String>
+    <system:String x:Key="BadModules.Warning.Fallback">さらに、システムのダイアログコンポーネントが破損してクラッシュしており、MAA の後続のダイアログがすべて表示されないだけでなく、他のシステム機能にも影響が出る可能性があります。｢はい｣ で次回から表示しない、｢いいえ｣ で今回のみ閉じる。</system:String>
     <system:String x:Key="BadModules.Confirmation.Heading">警告：パフォーマンスへの影響</system:String>
     <system:String x:Key="BadModules.Confirmation.Text" xml:space="preserve">警告を表示しないように選択すると、MAA はハードウェアレンダリングではなくソフトウェアレンダリングを使用します。これによりレンダリング関連の問題は緩和されますが、すべての問題（ダイアログのクラッシュなど）が解決されるわけではありません。また以下の結果も生じます：&#x0a;&#x0a;• パフォーマンスの低下&#x0a;• UI のラグ&#x0a;• CPU 使用率の増加&#x0a;&#x0a;警告を抑制し、これらの影響を受け入れることを確認しますか？</system:String>
     <system:String x:Key="BadModules.UseSoftwareRendering">ソフトウェアレンダリングを使用</system:String>
@@ -2675,4 +2775,39 @@ MAA を複数開くには、新しい MAA を他のフォルダにコピーし�
     <system:String x:Key="PleaseSelectItem">項目を選択してください</system:String>
     <system:String x:Key="EmulatorSelectionCancelled">エミュレータの選択がキャンセルされました</system:String>
     <!--  !ItemSelection  -->
+    <system:String x:Key="NotificationSettings">通知設定</system:String>
+    <system:String x:Key="NotificationSettingsTimeMinutes">ログ有効時間（分）</system:String>
+    <system:String x:Key="NotificationSettingsTimeMinutesTip" xml:space="preserve">有効時間を過ぎたログは通知への添付の対象外になります。&#10;0 の場合は、時間で絞り込みません。</system:String>
+    <system:String x:Key="NotificationSettingsInvalidFilterTip" xml:space="preserve">正規表現が無効です。フィルタールールを確認してください。</system:String>
+    <system:String x:Key="ExternalNotificationEnable">外部通知を有効にする</system:String>
+    <system:String x:Key="ExternalNotificationSendConditions">以下の条件で外部通知を送信</system:String>
+    <system:String x:Key="ExternalNotificationWhenComplete">タスク完了時</system:String>
+    <system:String x:Key="ExternalNotificationWhenError">タスクエラー発生時</system:String>
+    <system:String x:Key="ExternalNotificationWhenStalled">タスクのログ出力停止時</system:String>
+    <system:String x:Key="ExternalNotificationWhenStalledTip" xml:space="preserve">｢{key=NotificationSettings}｣ で ｢{key=StallTimeoutEnabled}｣ を有効にしてください。&#10;設定した時間内に新しいログが出力されない場合に送信します。</system:String>
+    <system:String x:Key="ExternalNotificationNewLogCount">新規ログ数</system:String>
+    <system:String x:Key="ExternalNotificationNewLogCountTip" xml:space="preserve">前回の外部通知が送信された後、新しいログ項目を数えます。&#10;指定した数に達すると送信します。&#10;タスク完了やエラーなど、他の条件で通知が送信された場合もカウントをリセットします。</system:String>
+    <system:String x:Key="ExternalNotificationContentMatches">ログに特定の内容を含む場合</system:String>
+    <system:String x:Key="ExternalNotificationWhitelist">ホワイトリスト（1行に1つの正規表現）</system:String>
+    <system:String x:Key="ExternalNotificationWhitelistTip" xml:space="preserve">各行に正規表現を入力します。&#10;現在のログがいずれかの行に一致すると通知を送信します。&#10;空のホワイトリストではこの条件は発動しません。</system:String>
+    <system:String x:Key="ExternalNotificationIncludePreviousLogs">過去のログを添付</system:String>
+    <system:String x:Key="ExternalNotificationIncludePreviousLogsTip" xml:space="preserve">現在のログに加えて過去のログを添付します。&#10;ログ数と有効時間で添付する範囲を指定します。</system:String>
+    <system:String x:Key="ExternalNotificationPreviousLogCount">添付ログ数</system:String>
+    <system:String x:Key="ExternalNotificationPreviousLogCountTip" xml:space="preserve">現在のログを除き、指定した件数までの過去のログを添付します。&#10;0の場合は現在のログのみを送信します。</system:String>
+    <system:String x:Key="ExternalNotificationFilterPreviousLogs">添付ログの内容をフィルタリング</system:String>
+    <system:String x:Key="ExternalNotificationFilterPreviousLogsTip" xml:space="preserve">ブラックリストに一致するログを除外し、残りから件数と有効時間の範囲内で最新のログを選びます。&#10;現在のログは必ず残します。</system:String>
+    <system:String x:Key="ExternalNotificationBlacklist">ブラックリスト（1行に1つの正規表現）</system:String>
+    <system:String x:Key="BlackFlowStartRunPreparing">準備用の探索を進行中</system:String>
+    <system:String x:Key="BlackFlowStartRunTargetRun">目標の探索を開始し、初期報酬の確認を待機中</system:String>
+    <system:String x:Key="BlackFlowStartRunRewardMissed">希望する初期報酬がないため、準備用の探索をやり直します</system:String>
+    <system:String x:Key="BlackFlowStartRunRewardPicked">初期報酬を選択しました。第1層が实托邦か確認します</system:String>
+    <system:String x:Key="BlackFlowStartRunCompleted">開始条件を満たしたため、この探索を保持したまま退出しました</system:String>
+    <system:String x:Key="BlackFlowStartRunRewardRecognitionFailed">初期報酬を認識できなかったため、タスクを停止しました</system:String>
+    <system:String x:Key="BlackFlowStartRunRewardPageMissing">初期報酬画面が見つからないため、タスクを停止しました</system:String>
+    <system:String x:Key="BlackFlowStartRunRewardUnrecognized">支援選択画面に認識できない報酬があるため、その画面に留まってタスクを停止しました</system:String>
+    <system:String x:Key="BlackFlowStartRunRewardsSeen">今回の支援画面：{0}</system:String>
+    <system:String x:Key="BlackFlowStartRunPrepared">探索の準備が完了しました</system:String>
+    <system:String x:Key="BlackFlowStartRunPreparedReason">第3層に到達しました。次の探索では指定の難易度と分隊を使用します</system:String>
+    <system:String x:Key="BlackFlowStartRunUtopiaMissed">第1層は实托邦ではありません</system:String>
+    <system:String x:Key="BlackFlowStartRunUtopiaMissedReason">この探索を放棄し、準備用探索をやり直します</system:String>
 </ResourceDictionary>

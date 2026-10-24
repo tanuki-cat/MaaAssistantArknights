@@ -1,6 +1,6 @@
 // <copyright file="ConfigConverter.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -18,9 +18,11 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
+using MaaWpfGui.Configuration.Converter.Specific;
 using MaaWpfGui.Configuration.Factory;
 using MaaWpfGui.Configuration.Global;
 using MaaWpfGui.Configuration.Single.MaaTask;
+using MaaWpfGui.Configuration.Single.Settings;
 using MaaWpfGui.Configuration.Single.Settings.ConnectionExtra;
 using MaaWpfGui.Constants;
 using MaaWpfGui.Constants.Enums;
@@ -140,7 +142,6 @@ public class ConfigConverter
                 var infrastTask = new InfrastTask();
                 var recruitTask = new RecruitTask(); // √
                 var roguelikeTask = new RoguelikeTask(); // √
-                var reclamationTask = new ReclamationTask(); // √
 
                 startUpTask.AccountName = ConfigurationHelper.GetValue(ConfigurationKeys.AccountName, string.Empty);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.AccountName);
@@ -188,8 +189,8 @@ public class ConfigConverter
                 fightTask.UseStoneAllowSave = ConfigurationHelper.GetValue(ConfigurationKeys.AllowUseStoneSave, false);
                 fightTask.HideSeries = ConfigurationHelper.GetValue(ConfigurationKeys.HideSeries, false);
                 fightTask.UseExpiringMedicine = ConfigurationHelper.GetValue(ConfigurationKeys.UseExpiringMedicine, false);
-                fightTask.AnnihilationStage = ConfigurationHelper.GetValue(ConfigurationKeys.AnnihilationStage, FightSettingsUserControlModel.AnnihilationName);
-                fightTask.UseCustomAnnihilation = ConfigurationHelper.GetValue(ConfigurationKeys.UseCustomAnnihilation, false) && fightTask.AnnihilationStage != FightSettingsUserControlModel.AnnihilationName;
+                fightTask.AnnihilationStage = ConfigurationHelper.GetValue(ConfigurationKeys.AnnihilationStage, FightTaskUserControlModel.AnnihilationName);
+                fightTask.UseCustomAnnihilation = ConfigurationHelper.GetValue(ConfigurationKeys.UseCustomAnnihilation, false) && fightTask.AnnihilationStage != FightTaskUserControlModel.AnnihilationName;
                 fightTask.HideUnavailableStage = ConfigurationHelper.GetValue(ConfigurationKeys.HideUnavailableStage, true);
                 fightTask.IsStageManually = ConfigurationHelper.GetValue(ConfigurationKeys.CustomStageCode, false);
                 fightTask.UseOptionalStage = ConfigurationHelper.GetValue(ConfigurationKeys.UseAlternateStage, false);
@@ -303,7 +304,7 @@ public class ConfigConverter
                 recruitTask.RefreshLevel3 = ConfigurationHelper.GetValue(ConfigurationKeys.RefreshLevel3, true);
                 recruitTask.ForceRefresh = ConfigurationHelper.GetValue(ConfigurationKeys.ForceRefresh, true);
                 recruitTask.PreserveTagEnabled = ConfigurationHelper.GetValue(ConfigurationKeys.NotChooseLevel1, true);
-                recruitTask.PreserveTagList = recruitTask.PreserveTagEnabled ? [RecruitSettingsUserControlModel.LegacyRobotTag] : [];
+                recruitTask.PreserveTagList = recruitTask.PreserveTagEnabled ? [RecruitTaskUserControlModel.LegacyRobotTag] : [];
                 recruitTask.MaxTimes = ConfigurationHelper.GetValue(ConfigurationKeys.RecruitMaxTimes, 4);
                 recruitTask.Level3Choose = ConfigurationHelper.GetValue(ConfigurationKeys.RecruitChooseLevel3, true);
                 recruitTask.Level3Time = ConfigurationHelper.GetValue(ConfigurationKeys.ChooseLevel3Time, 540);
@@ -441,12 +442,12 @@ public class ConfigConverter
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.RoguelikeDeepExplorationAutoIterate);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.RoguelikeStopAtMaxLevel);
 
-                reclamationTask.Theme = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationTheme, ReclamationTheme.Tales);
-                reclamationTask.Mode = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationMode, ReclamationMode.ProsperityInSave);
-                reclamationTask.ToolToCraft = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationToolToCraft, string.Empty).Replace('；', ';').Trim();
-                reclamationTask.IncrementMode = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationIncrementMode, 0);
-                reclamationTask.MaxCraftCountPerRound = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationMaxCraftCountPerRound, 16);
-                reclamationTask.ClearStore = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationClearStore, true);
+                ConfigFactory.CurrentConfig.Toolbox.MiniGame.Reclamation.Theme = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationTheme, ReclamationTheme.Tales);
+                ConfigFactory.CurrentConfig.Toolbox.MiniGame.Reclamation.Mode = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationMode, ReclamationMode.ProsperityInSave);
+                ConfigFactory.CurrentConfig.Toolbox.MiniGame.Reclamation.ToolToCraft = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationToolToCraft, string.Empty).Replace('；', ';').Trim();
+                ConfigFactory.CurrentConfig.Toolbox.MiniGame.Reclamation.IncrementMode = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationIncrementMode, 0);
+                ConfigFactory.CurrentConfig.Toolbox.MiniGame.Reclamation.MaxCraftCountPerRound = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationMaxCraftCountPerRound, 16);
+                ConfigFactory.CurrentConfig.Toolbox.MiniGame.Reclamation.ClearStore = ConfigurationHelper.GetValue(ConfigurationKeys.ReclamationClearStore, true);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ReclamationTheme);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ReclamationMode);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ReclamationToolToCraft);
@@ -458,10 +459,6 @@ public class ConfigConverter
 
                 // 任务导入排序
                 List<(string OldName, int Index, bool IsEnable)> taskList = [("WakeUp", 0, true), ("Recruiting", 1, true), ("Base", 2, true), ("Combat", 3, true), ("Mall", 4, true), ("Mission", 5, true), ("AutoRoguelike", 6, false)];
-                if (ConfigurationHelper.GetValue(ConfigurationKeys.ClientType, string.Empty) is not "txwy")
-                {
-                    taskList.Add(("Reclamation", 7, false));
-                }
 
                 for (int i = 0; i != taskList.Count; ++i)
                 {
@@ -492,9 +489,9 @@ public class ConfigConverter
                             fightTask2.Name = LocalizationHelper.GetString("RemainingSanityStage", local);
                             fightTask.IsEnable = task.IsEnable;
                             fightTask2.IsEnable = task.IsEnable && ConfigurationHelper.GetValue(ConfigurationKeys.UseRemainingSanityStage, true) && fightTask2.StagePlan.FirstOrDefault() != string.Empty;
-                            if (fightTask.UseOptionalStage && fightTask.StagePlan.FirstOrDefault() == FightSettingsUserControlModel.AnnihilationName)
+                            if (fightTask.UseOptionalStage && fightTask.StagePlan.FirstOrDefault() == FightTaskUserControlModel.AnnihilationName)
                             {
-                                ConfigFactory.CurrentConfig.TaskQueue.Add(new FightTask() { Name = LocalizationHelper.GetString("AnnihilationMode"), StagePlan = [FightSettingsUserControlModel.AnnihilationName] });
+                                ConfigFactory.CurrentConfig.TaskQueue.Add(new FightTask() { Name = LocalizationHelper.GetString("AnnihilationMode"), StagePlan = [FightTaskUserControlModel.AnnihilationName] });
                                 fightTask.StagePlan.RemoveAt(0);
                             }
                             ConfigFactory.CurrentConfig.TaskQueue.Add(fightTask);
@@ -526,11 +523,6 @@ public class ConfigConverter
                             roguelikeTask.IsEnable = task.IsEnable;
                             ConfigFactory.CurrentConfig.TaskQueue.Add(roguelikeTask);
                             break;
-                        case "Reclamation":
-                            // reclamationTask.Name = LocalizationHelper.GetString(task.OldName, local);
-                            reclamationTask.IsEnable = task.IsEnable;
-                            ConfigFactory.CurrentConfig.TaskQueue.Add(reclamationTask);
-                            break;
                     }
                 });
             }
@@ -560,12 +552,13 @@ public class ConfigConverter
                 throw new Exception($"Config migration failed, unable to switch to config: {configName}");
             }
 
-            // 性能设置
+            // 性能设置（仅读取当前档案，避免多档案循环互相覆盖全局值）
+            if (configName == currentConfigName)
             {
-                ConfigFactory.CurrentConfig.Gui.Performance.UseGpu = ConfigurationHelper.GetValue(ConfigurationKeys.PerformanceUseGpu, false);
-                ConfigFactory.CurrentConfig.Gui.Performance.GpuDescription = ConfigurationHelper.GetValue(ConfigurationKeys.PerformancePreferredGpuDescription, string.Empty);
-                ConfigFactory.CurrentConfig.Gui.Performance.GpuInstancePath = ConfigurationHelper.GetValue(ConfigurationKeys.PerformancePreferredGpuInstancePath, string.Empty);
-                ConfigFactory.CurrentConfig.Gui.Performance.AllowDeprecatedGpu = ConfigurationHelper.GetValue(ConfigurationKeys.PerformanceAllowDeprecatedGpu, false);
+                ConfigFactory.Root.Gui.Performance.UseGpu = ConfigurationHelper.GetValue(ConfigurationKeys.PerformanceUseGpu, false);
+                ConfigFactory.Root.Gui.Performance.GpuDescription = ConfigurationHelper.GetValue(ConfigurationKeys.PerformancePreferredGpuDescription, string.Empty);
+                ConfigFactory.Root.Gui.Performance.GpuInstancePath = ConfigurationHelper.GetValue(ConfigurationKeys.PerformancePreferredGpuInstancePath, string.Empty);
+                ConfigFactory.Root.Gui.Performance.AllowDeprecatedGpu = ConfigurationHelper.GetValue(ConfigurationKeys.PerformanceAllowDeprecatedGpu, false);
 
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.PerformanceUseGpu);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.PerformancePreferredGpuDescription);
@@ -710,10 +703,13 @@ public class ConfigConverter
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ExternalNotificationCustomWebhookBody);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ExternalNotificationCustomWebhookHeaders);
 
-                ConfigFactory.CurrentConfig.Gui.ExternalNotification.SendWhenComplete = ConfigurationHelper.GetValue(ConfigurationKeys.ExternalNotificationSendWhenComplete, true);
-                ConfigFactory.CurrentConfig.Gui.ExternalNotification.ShowWhenCompleteWithDetails = ConfigurationHelper.GetValue(ConfigurationKeys.ExternalNotificationEnableDetails, false);
-                ConfigFactory.CurrentConfig.Gui.ExternalNotification.SendWhenError = ConfigurationHelper.GetValue(ConfigurationKeys.ExternalNotificationSendWhenError, true);
-                ConfigFactory.CurrentConfig.Gui.ExternalNotification.SendWhenStalled = ConfigurationHelper.GetValue(ConfigurationKeys.ExternalNotificationSendWhenStalled, false);
+                ConfigFactory.CurrentConfig.Gui.ExternalNotification.Delivery.Enable = ConfigFactory.CurrentConfig.Gui.ExternalNotification.Configs.Count > 0;
+                NotificationSettingsMigrationConverter.MigrateExternal(ConfigFactory.CurrentConfig.Gui.ExternalNotification.Delivery,
+                    ConfigurationHelper.GetValue(ConfigurationKeys.ExternalNotificationSendWhenComplete, true),
+                    ConfigurationHelper.GetValue(ConfigurationKeys.ExternalNotificationSendWhenError, true),
+                    ConfigurationHelper.GetValue(ConfigurationKeys.ExternalNotificationSendWhenStalled, false),
+                    ConfigurationHelper.GetValue(ConfigurationKeys.ExternalNotificationEnableDetails, false));
+
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ExternalNotificationSendWhenError);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ExternalNotificationSendWhenComplete);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ExternalNotificationSendWhenStalled);
@@ -755,9 +751,9 @@ public class ConfigConverter
                 ConfigFactory.CurrentConfig.Gui.ThirdParty.ReportToPenguin = ConfigurationHelper.GetValue(ConfigurationKeys.EnablePenguin, true);
                 ConfigFactory.CurrentConfig.Gui.ThirdParty.ReportToYituliu = ConfigurationHelper.GetValue(ConfigurationKeys.EnableYituliu, true);
                 ConfigFactory.CurrentConfig.Gui.ThirdParty.PenguinId = ConfigurationHelper.GetValue(ConfigurationKeys.PenguinId, string.Empty);
-                ConfigFactory.CurrentConfig.Gui.RuntimeSettings.EnableStallTimeout = ConfigurationHelper.GetValue(ConfigurationKeys.StallTimeoutEnabled, true);
-                ConfigFactory.CurrentConfig.Gui.RuntimeSettings.StallTimeoutMinutes = ConfigurationHelper.GetValue(ConfigurationKeys.StallTimeoutMinutes, 25).Clamp(0, GameSettingsUserControlModel.TimeoutMaxMinutes);
-                ConfigFactory.CurrentConfig.Gui.RuntimeSettings.StallTimeoutReminderIntervalMinutes = ConfigurationHelper.GetValue(ConfigurationKeys.ReminderIntervalMinutes, 30).Clamp(1, GameSettingsUserControlModel.TimeoutMaxMinutes);
+                ConfigFactory.CurrentConfig.Gui.Notification.EnableStallTimeout = ConfigurationHelper.GetValue(ConfigurationKeys.StallTimeoutEnabled, true);
+                ConfigFactory.CurrentConfig.Gui.Notification.StallTimeoutMinutes = ConfigurationHelper.GetValue(ConfigurationKeys.StallTimeoutMinutes, 25).Clamp(0, GameSettingsUserControlModel.TimeoutMaxMinutes);
+                ConfigFactory.CurrentConfig.Gui.Notification.ReminderIntervalMinutes = ConfigurationHelper.GetValue(ConfigurationKeys.ReminderIntervalMinutes, 30).Clamp(1, GameSettingsUserControlModel.TimeoutMaxMinutes);
                 ConfigFactory.CurrentConfig.Gui.RuntimeSettings.StartGame = ConfigurationHelper.GetValue(ConfigurationKeys.StartGame, true);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.StartGame);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ClientType);
@@ -943,27 +939,27 @@ public class ConfigConverter
                     var saved = ConfigurationHelper.GetValue(ConfigurationKeys.OperBoxSelectedExportValue, "0");
                     if (int.TryParse(saved, out var val) && Enum.IsDefined(typeof(OperBoxExportFormat), val))
                     {
-                        ConfigFactory.CurrentConfig.Toolbox.OperBoxExportFormat = (OperBoxExportFormat)val;
+                        ConfigFactory.CurrentConfig.Toolbox.OperBox.OperBoxExportFormat = (OperBoxExportFormat)val;
                     }
                     else if (Enum.TryParse<OperBoxExportFormat>(saved, out var fmt))
                     {
-                        ConfigFactory.CurrentConfig.Toolbox.OperBoxExportFormat = fmt;
+                        ConfigFactory.CurrentConfig.Toolbox.OperBox.OperBoxExportFormat = fmt;
                     }
                 }
-                ConfigFactory.CurrentConfig.Toolbox.GachaShowDisclaimerNoMore = ConfigurationHelper.GetValue(ConfigurationKeys.GachaShowDisclaimerNoMore, false);
-                ConfigFactory.CurrentConfig.Toolbox.PeepTargetFps = ConfigurationHelper.GetValue(ConfigurationKeys.PeepTargetFps, 20);
+                ConfigFactory.CurrentConfig.Toolbox.Gacha.GachaShowDisclaimerNoMore = ConfigurationHelper.GetValue(ConfigurationKeys.GachaShowDisclaimerNoMore, false);
+                ConfigFactory.CurrentConfig.Toolbox.Peep.PeepTargetFps = ConfigurationHelper.GetValue(ConfigurationKeys.PeepTargetFps, 20);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.OperBoxSelectedExportValue);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.GachaShowDisclaimerNoMore);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.PeepTargetFps);
 
-                ConfigFactory.CurrentConfig.Toolbox.ChooseLevel3 = ConfigurationHelper.GetValue(ConfigurationKeys.ChooseLevel3, true);
-                ConfigFactory.CurrentConfig.Toolbox.ChooseLevel4 = ConfigurationHelper.GetValue(ConfigurationKeys.ChooseLevel4, true);
-                ConfigFactory.CurrentConfig.Toolbox.ChooseLevel5 = ConfigurationHelper.GetValue(ConfigurationKeys.ChooseLevel5, true);
-                ConfigFactory.CurrentConfig.Toolbox.ChooseLevel6 = ConfigurationHelper.GetValue(ConfigurationKeys.ChooseLevel6, true);
-                ConfigFactory.CurrentConfig.Toolbox.ChooseLevel3Time = ConfigurationHelper.GetValue(ConfigurationKeys.ToolBoxChooseLevel3Time, 540);
-                ConfigFactory.CurrentConfig.Toolbox.ChooseLevel4Time = ConfigurationHelper.GetValue(ConfigurationKeys.ToolBoxChooseLevel4Time, 540);
-                ConfigFactory.CurrentConfig.Toolbox.AutoSetTime = ConfigurationHelper.GetValue(ConfigurationKeys.AutoSetTime, true);
-                ConfigFactory.CurrentConfig.Toolbox.ShowPotential = ConfigurationHelper.GetValue(ConfigurationKeys.RecruitmentShowPotential, true);
+                ConfigFactory.CurrentConfig.Toolbox.Recruitment.ChooseLevel3 = ConfigurationHelper.GetValue(ConfigurationKeys.ChooseLevel3, true);
+                ConfigFactory.CurrentConfig.Toolbox.Recruitment.ChooseLevel4 = ConfigurationHelper.GetValue(ConfigurationKeys.ChooseLevel4, true);
+                ConfigFactory.CurrentConfig.Toolbox.Recruitment.ChooseLevel5 = ConfigurationHelper.GetValue(ConfigurationKeys.ChooseLevel5, true);
+                ConfigFactory.CurrentConfig.Toolbox.Recruitment.ChooseLevel6 = ConfigurationHelper.GetValue(ConfigurationKeys.ChooseLevel6, true);
+                ConfigFactory.CurrentConfig.Toolbox.Recruitment.ChooseLevel3Time = ConfigurationHelper.GetValue(ConfigurationKeys.ToolBoxChooseLevel3Time, 540);
+                ConfigFactory.CurrentConfig.Toolbox.Recruitment.ChooseLevel4Time = ConfigurationHelper.GetValue(ConfigurationKeys.ToolBoxChooseLevel4Time, 540);
+                ConfigFactory.CurrentConfig.Toolbox.Recruitment.AutoSetTime = ConfigurationHelper.GetValue(ConfigurationKeys.AutoSetTime, true);
+                ConfigFactory.CurrentConfig.Toolbox.Recruitment.ShowPotential = ConfigurationHelper.GetValue(ConfigurationKeys.RecruitmentShowPotential, true);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ChooseLevel3);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ChooseLevel4);
                 ConfigurationHelper.DeleteValue(ConfigurationKeys.ChooseLevel5);

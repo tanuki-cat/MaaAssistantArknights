@@ -1,6 +1,6 @@
 // <copyright file="GenericCombinedData.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -62,6 +62,20 @@ public class GenericCombinedData<TValueType>() : PropertyChangedBase
         set => SetAndNotify(ref _isEnabled, value);
     }
 
+#nullable enable
+    private string? _tip;
+
+    /// <summary>
+    /// Gets or sets the hover tip of the item.
+    /// 供下拉项悬浮提示绑定；null 时不显示。
+    /// </summary>
+    public string? Tip
+    {
+        get => _tip;
+        set => SetAndNotify(ref _tip, value);
+    }
+
+#nullable disable
     /// <inheritdoc/>
     public override string ToString() => Display;
 }

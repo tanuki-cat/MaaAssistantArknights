@@ -1,6 +1,6 @@
 // <copyright file="DemoShotService.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -113,6 +113,9 @@ public static class DemoShotService
         {
             _logger.Fatal(e, "Demo shot service failed");
             Log.CloseAndFlush();
+
+            // Environment.Exit 不经过 WPF 关闭流程，须显式释放单实例互斥量
+            Bootstrapper.ReleaseInstanceMutex();
             Environment.Exit(1);
         }
     }
@@ -250,7 +253,6 @@ public static class DemoShotService
             ["DepotMaintain"] = () => new DepotMaintainTask(),
             ["SwitchTheme"] = () => new SwitchThemeTask(),
             ["Roguelike"] = () => new RoguelikeTask(),
-            ["Reclamation"] = () => new ReclamationTask(),
         };
 
     /// <summary>
@@ -392,7 +394,7 @@ public static class DemoShotService
     private static void ReinjectLanguageData(DemoShotData data, string lang, string dataDir)
     {
         // 关卡活动数据按当组客户端类型重新本地解析（构造时解析用的是启动配置的客户端类型），
-        // 随后重算「今日关卡小提示」
+        // 随后重算 ｢今日关卡小提示｣
         Instances.StageManager.UpdateStageLocal();
         Instances.TaskQueueViewModel.UpdateDatePrompt();
 
@@ -413,7 +415,13 @@ public static class DemoShotService
         // 候选关卡全语言共享（关卡代号语言无关），每个语言组重注入一次
         if (data.TaskQueue.Stages.Count > 0)
         {
-            FightSettingsUserControlModel.Instance.InjectDemoStages(data.TaskQueue.Stages);
+            FightTaskUserControlModel.Instance.InjectDemoStages(data.TaskQueue.Stages);
+        }
+
+        // 指定材料下拉的显示名由 RefreshDropName 随各语言材料列表自动本地化，重注入只负责写入选中项，幂等
+        if (!string.IsNullOrEmpty(data.TaskQueue.SpecifiedDrops))
+        {
+            FightTaskUserControlModel.Instance.InjectDemoSpecifiedDrops(data.TaskQueue.SpecifiedDrops);
         }
 
         InjectTaskQueueLogs(data, lang, dataDir);
@@ -609,7 +617,7 @@ public static class DemoShotService
         await WaitUiSettledAsync();
         await CaptureAsync(Path.Combine(outDir, $"2-{themeSuffix}.png"));
 
-        // 页 3：小工具-干员识别，切到「已拥有」页。
+        // 页 3：小工具-干员识别，切到 ｢已拥有｣ 页。
         // Idle 切回空闲：小工具页的识别按钮呈可点观感（演示数据是识别完成的结果态），
         // 长草/自动战斗页则保持运行中（与日志的演示进度一致）
         States.RunningState.Instance.SetIdle(true);

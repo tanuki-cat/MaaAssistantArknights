@@ -22,8 +22,8 @@ AsstTaskId ASSTAPI AsstAppendTask(AsstHandle handle, const char* type, const cha
 #### 回傳值
 
 - `AsstTaskId`  
-   若新增成功，回傳該任務 ID，可用於後續設定任務參數；  
-   若新增失敗，回傳 0。
+  若新增成功，回傳該任務 ID，可用於後續設定任務參數；  
+  若新增失敗，回傳 0。
 
 #### 參數說明
 
@@ -100,7 +100,7 @@ B 服：`張三`，可輸入 `張三`、`張`、`三`
 </details>
 
 - `CloseDown`  
-   關閉遊戲
+  關閉遊戲
 
 :::: field-group  
 ::: field enable  
@@ -131,7 +131,7 @@ B 服：`張三`，可輸入 `張三`、`張`、`三`
 </details>
 
 - `Fight`  
-   理智作戰
+  理智作戰
 
 :::: field-group  
 ::: field enable  
@@ -159,113 +159,115 @@ B 服：`張三`，可輸入 `張三`、`張`、`三`
 - **別傳**：支援 `OF-1` / `OF-F3`。
 - **當期 SideStory 活動**：支援活動後三關。可查閱 [API](https://api.maa.plus/MaaAssistantArknights/api/gui/StageActivityV2.json) 獲取支援的關卡列表。需額外載入 [tasks.json](https://api.maa.plus/MaaAssistantArknights/api/resource/tasks.json) 中的活動關卡導航。
 - **復刻 SideStory 活動**：輸入 `SSReopen-<關卡前綴>` ，可一次性刷完 XX-1 ~ XX-9 關，如 `SSReopen-IC`。
-  :::  
-  ::: field medicine  
-  @type number
-  @default 0
-  @optional
-  理智藥最大使用量。  
-  :::  
-  ::: field medicine_expire_days  
-  @type number
-  @default 0
-  @optional
-  使用過期時間在指定天數內的理智藥，0 表示不使用過期理智藥。  
-  :::  
-  ::: field expiring_medicine  
-  @type number
-  @default 0
-  @optional
-  @deprecated
-  已棄用，自 v6.8.0 起請使用 `medicine_expire_days` 代替。  
-  :::  
-  ::: field stone  
-  @type number
-  @default 0
-  @optional
-  碎石最大數量。  
-  :::  
-  ::: field times  
-  @type number
-  @default 2147483647
-  @optional
-  戰鬥次數。  
-  :::  
-  ::: field series  
-  @type number
-  @default 1
-  @optional
-  代理倍率，`-1` ~ `10`。
-  <br>
-  `-1`：停用自動切換代理倍率。
-  <br>
-  `0`：自動切換為當前可用的最大代理倍率（若理智不足以進行最大倍率，則選擇最低可用倍率）。
-  <br>
-  `1` ~ `10`：指定固定的代理倍率。
-  <br>
-  ::: info 伺服器差異
-  輸入驗證取決於資源是否存在 `FightSeries-OldMethodFlag`：
-  <br>
-  - 新列表（國服 2026/8/1 後主資源，無該 flag）：接受 `-1~10`
-  - 舊列表（外服資源帶該 flag）：僅接受 `-1~6`，更大值會被拒絕
 
-  外服預計約半年後跟進，屆時上限隨資源變為 10。Windows GUI 的代理倍率下拉目前固定提供到 10；外服若手動選擇 7~10，任務下發時會被 Core 拒絕。
-  :::  
-  ::: field drops  
-  @type object
-  @optional
-  指定物品掉落數量，預設不指定。key 為 `item_id`，value 為數量。key 可參考 `resource/item_index.json` 檔案。  
-  <br>
-  例如：`{ "30011": 10, "30062": 5 }`  
-  <br>
-  上述所有條件（次數、掉落等）均為「或」的關係，任一條件達成即停止任務。  
-  :::  
-  ::: field report_to_penguin  
-  @type boolean
-  @default false
-  @optional
-  是否回報企鵝物流  
-  :::  
-  ::: field penguin_id  
-  @type string
-  @optional
-  企鵝物流回報 ID，預設為空。僅在 `report_to_penguin` 為 `true` 時有效。  
-  :::  
-  ::: field report_to_yituliu  
-  @type boolean
-  @default false
-  @optional
-  是否回報一圖流。  
-  :::  
-  ::: field yituliu_id  
-  @type string
-  @optional
-  一圖流回報 ID，預設為空。僅在 `report_to_yituliu` 為 `true` 時有效。  
-  :::  
-  ::: field server  
-  @type string
-  @default CN
-  @optional
-  遊戲伺服器，會影響掉落物辨識及數據上傳。  
-  <br>
-  選項：`CN` | `US` | `JP` | `KR`  
-  :::  
-  ::: field client_type  
-  @type string
-  @optional
-  用戶端版本，預設為空。用於遊戲崩潰後自動重啟並接續任務；若為空則不啟用自動重啟功能。
-  <br>
-  選項：`Official` | `Bilibili` | `txwy` | `YoStarEN` | `YoStarJP` | `YoStarKR`  
-  :::  
-  ::: field DrGrandet  
-  @type boolean
-  @default false
-  @optional
-  博朗台模式（節省理智碎石模式），僅在產生碎石需求時才起作用。
-  <br>
-  在碎石確認介面等待，直到目前理智自動恢復 1 點後，再立刻執行碎石回復，以避免浪費自然恢復。  
-  :::  
-  ::::
+:::  
+::: field medicine  
+@type number
+@default 0
+@optional
+理智藥最大使用量。  
+:::  
+::: field medicine_expire_days  
+@type number
+@default 0
+@optional
+使用過期時間在指定天數內的理智藥，0 表示不使用過期理智藥。  
+:::  
+::: field expiring_medicine  
+@type number
+@default 0
+@optional
+@deprecated
+已棄用，自 v6.8.0 起請使用 `medicine_expire_days` 代替。  
+:::  
+::: field stone  
+@type number
+@default 0
+@optional
+碎石最大數量。  
+:::  
+::: field times  
+@type number
+@default 2147483647
+@optional
+戰鬥次數。  
+:::  
+::: field series  
+@type number
+@default 1
+@optional
+代理倍率，`-1` ~ `10`。
+<br>
+`-1`：停用自動切換代理倍率。
+<br>
+`0`：自動切換為當前可用的最大代理倍率（若理智不足以進行最大倍率，則選擇最低可用倍率）。
+<br>
+`1` ~ `10`：指定固定的代理倍率。
+<br>
+::: info 伺服器差異
+輸入驗證取決於資源是否存在 `FightSeries-OldMethodFlag`：
+<br>
+
+- 新列表（國服 2026/8/1 後主資源，無該 flag）：接受 `-1~10`
+- 舊列表（外服資源帶該 flag）：僅接受 `-1~6`，更大值會被拒絕
+
+外服預計約半年後跟進，屆時上限隨資源變為 10。Windows GUI 的代理倍率下拉目前固定提供到 10；外服若手動選擇 7~10，任務下發時會被 Core 拒絕。
+:::  
+::: field drops  
+@type object
+@optional
+指定物品掉落數量，預設不指定。key 為 `item_id`，value 為數量。key 可參考 `resource/item_index.json` 檔案。  
+<br>
+例如：`{ "30011": 10, "30062": 5 }`  
+<br>
+上述所有條件（次數、掉落等）均為 ｢或｣ 的關係，任一條件達成即停止任務。  
+:::  
+::: field report_to_penguin  
+@type boolean
+@default false
+@optional
+是否回報企鵝物流  
+:::  
+::: field penguin_id  
+@type string
+@optional
+企鵝物流回報 ID，預設為空。僅在 `report_to_penguin` 為 `true` 時有效。  
+:::  
+::: field report_to_yituliu  
+@type boolean
+@default false
+@optional
+是否回報一圖流。  
+:::  
+::: field yituliu_id  
+@type string
+@optional
+一圖流回報 ID，預設為空。僅在 `report_to_yituliu` 為 `true` 時有效。  
+:::  
+::: field server  
+@type string
+@default CN
+@optional
+遊戲伺服器，會影響掉落物辨識及數據上傳。  
+<br>
+選項：`CN` | `US` | `JP` | `KR`  
+:::  
+::: field client_type  
+@type string
+@optional
+用戶端版本，預設為空。用於遊戲崩潰後自動重啟並接續任務；若為空則不啟用自動重啟功能。
+<br>
+選項：`Official` | `Bilibili` | `txwy` | `YoStarEN` | `YoStarJP` | `YoStarKR`  
+:::  
+::: field DrGrandet  
+@type boolean
+@default false
+@optional
+博朗台模式（節省理智碎石模式），僅在產生碎石需求時才起作用。
+<br>
+在碎石確認介面等待，直到目前理智自動恢復 1 點後，再立刻執行碎石回復，以避免浪費自然恢復。  
+:::  
+::::
 
 <details>
 <summary>Example</summary>
@@ -454,7 +456,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `Infrast`  
-   基建換班
+  基建換班
 
 :::: field-group  
 ::: field enable  
@@ -473,7 +475,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 <br>
 `10000` - `Custom`：自訂換班模式，讀取使用者配置，可參閱 [基建排班協定](./base-scheduling-schema.md)。
 <br>
-`20000` - `Rotation`：一鍵輪換模式，會跳過控制中樞、發電站、宿舍以及辦公室；其餘設施不進行換班，但保留基本操作（如使用無人機、會客室邏輯）。  
+`20000` - `Rotation`：一鍵輪換模式，會跳過控制中樞、發電站、宿舍、辦公室以及回收站；其餘設施不進行換班，但保留基本操作（如使用無人機、會客室邏輯）。  
 :::  
 ::: field facility  
 @type array<string>
@@ -482,7 +484,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 <br>
 `mode = 0` 時該陣列為啟用集合，順序與重複項不參與調度（換班順序由演算法統一安排）；`mode = 10000` / `20000` 時按陣列順序執行。
 <br>
-設施名稱：`Mfg` | `Trade` | `Power` | `Control` | `Reception` | `Office` | `Dorm` | `Processing` | `Training` | `AssistantChange`  
+設施名稱：`Mfg` | `Trade` | `Power` | `Control` | `Reception` | `Office` | `Recycle` | `Dorm` | `Processing` | `Training` | `AssistantChange`  
 :::  
 ::: field drones  
 @type string
@@ -506,13 +508,13 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 @type boolean
 @default false
 @optional
-貿易站「源石碎片」是否自動補貨。  
+貿易站 ｢源石碎片｣ 是否自動補貨。  
 :::  
 ::: field dorm_notstationed_enabled  
 @type boolean
 @default false
 @optional
-是否啟用宿舍「未進駐」選項。  
+是否啟用宿舍 ｢未進駐｣ 選項。  
 :::  
 ::: field dorm_trust_enabled  
 @type boolean
@@ -622,8 +624,8 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `Mall`  
-   領取信用點數及商店購物。  
-   會先依據 `buy_first` 清單依序購買；接著由左至右掃描商店，避開 `blacklist` 進行第二輪購買；若信用點數溢出，則會無視黑名單再次由左至右購買，直到信用點數不再溢出為止。
+  領取信用點數及商店購物。  
+  會先依據 `buy_first` 清單依序購買；接著由左至右掃描商店，避開 `blacklist` 進行第二輪購買；若信用點數溢出，則會無視黑名單再次由左至右購買，直到信用點數不再溢出為止。
 
 :::: field-group  
 ::: field enable  
@@ -711,7 +713,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `Award`  
-   領取各種獎勵
+  領取各種獎勵
 
 :::: field-group  
 ::: field enable  
@@ -736,19 +738,19 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 @type boolean
 @default false
 @optional
-領取「限時尋訪」每日贈送的免費單抽。  
+領取 ｢限時尋訪｣ 每日贈送的免費單抽。  
 :::  
 ::: field orundum  
 @type boolean
 @default false
 @optional
-領取「幸運牆」的合成玉獎勵。  
+領取 ｢幸運牆｣ 的合成玉獎勵。  
 :::  
 ::: field mining  
 @type boolean
 @default false
 @optional
-領取「限時開採許可」的合成玉獎勵。  
+領取 ｢限時開採許可｣ 的合成玉獎勵。  
 :::  
 ::: field specialaccess  
 @type boolean
@@ -780,7 +782,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `SwitchTheme`  
-   更換遊戲主介面主題
+  更換遊戲主介面主題
 
 :::: field-group  
 ::: field enable  
@@ -809,7 +811,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `Roguelike`  
-   無限刷肉鴿
+  無限刷肉鴿
 
 :::: field-group  
 ::: field enable  
@@ -850,7 +852,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 <br>
 `3` - <Badge type="danger" text="未開放" /> 傳入會被拒絕。
 <br>
-`4` - 凹開局：先在難度 0 下到達第三層後重啟，再到指定難度下凹開局獎勵。若未獲得「熱水壺」或「希望」則回到難度 0 重新開始。在 Phantom 主題下則不切換難度，僅在目前難度下嘗試到達第三層、重開、凹開局。
+`4` - 凹開局：先在難度 0 下到達第三層後重啟，再到指定難度下凹開局獎勵。若未獲得 ｢熱水壺｣ 或 ｢希望｣ 則回到難度 0 重新開始。在 Phantom 主題下則不切換難度，僅在目前難度下嘗試到達第三層、重開、凹開局。
 <br>
 `5` - 刷坍縮範式：僅適用於 Sami 主題；透過戰鬥漏怪等方式加快累積坍縮值。若遇到的首個坍縮範式存在於 `expected_collapsal_paradigms` 清單中則停止任務，否則重啟。
 <br>
@@ -862,7 +864,9 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 <br>
 `20001` - 刷常樂節點，第一層進洞，找不到需要的節點就重開；僅適用於 JieGarden 主題，需配合 `find_playTime_target`。
 <br>
-`30001` - 刷襁褓動物；僅適用於 BlackFlow 主題。  
+`30001` - 刷襁褓動物；僅適用於 BlackFlow 主題。
+<br>
+`30003` - 刷開局，先打準備局，再開目標局。準備局取得 `blackflow_start_animals` 要求的襁褓動物並進入第三層後放棄；目標局在選擇支援頁命中 `blackflow_start_rewards` 中任意一項時不做選擇，退出到主題頁並保留該局，任務結束。準備局使用 `collectible_mode_squad`，`difficulty` 不為 `-1` 時在 0 難度下進行；目標局使用 `squad` 與 `difficulty`，到選擇支援頁即結束；`roles` 與開局幹員用於準備局，提供 `collectible_mode_roles`、`collectible_mode_core_char_list` 時準備局改用這兩項。開啟 `blackflow_start_utopia` 時目標局選取獎勵後進入第一層，見該欄位。僅適用於 BlackFlow 主題，需配合 `blackflow_start_animals` 與 `blackflow_start_rewards`。
 :::  
 ::: field squad  
 @type string
@@ -914,7 +918,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 @type boolean
 @default false
 @optional
-是否在第 5 層「險路惡敵」節點前停止任務。僅適用於 **Phantom 以外**的主題。  
+是否在第 5 層 ｢險路惡敵｣ 節點前停止任務。僅適用於 **Phantom 以外**的主題。  
 :::  
 ::: field stop_at_max_level  
 @type boolean
@@ -967,7 +971,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 ::: field first_floor_foldartal  
 @type string
 @optional
-希望在第一層「遠見」階段獲得的密文板。僅適用於 Sami 主題（不限模式）；若成功凹到則停止任務。  
+希望在第一層 ｢遠見｣ 階段獲得的密文板。僅適用於 Sami 主題（不限模式）；若成功凹到則停止任務。  
 :::  
 ::: field start_foldartal_list  
 @type array<string>
@@ -977,7 +981,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 <br>
 開局獎勵階段，需擁有清單中所有的密文板才算凹開局成功。
 <br>
-請注意，此參數須與「生活至上分隊」同時使用，其他分隊在開局獎勵階段不會獲得密文板。  
+請注意，此參數須與 ｢生活至上分隊｣ 同時使用，其他分隊在開局獎勵階段不會獲得密文板。  
 :::  
 ::: field collectible_mode_start_list  
 @type object
@@ -1043,19 +1047,21 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 @type boolean
 @default false
 @optional
-「燒水」時是否啟用購物。  
+｢燒水｣ 時是否啟用購物。  
 :::  
 ::: field collectible_mode_squad  
 @type string
 @optional
-燒水時使用的分隊。預設與 `squad` 同步；若 `squad` 為空且未指定 `collectible_mode_squad` 時，則預設為「指揮分隊」。  
+燒水時使用的分隊。預設與 `squad` 同步；若 `squad` 為空且未指定 `collectible_mode_squad` 時，則預設為 ｢指揮分隊｣ 。  
+<br>
+黑流樹海模式 30003 中為準備局使用的分隊。  
 :::  
 ::: field start_with_seed  
 @type string
 @optional
 使用種子刷錢時填入固定種子，留空則不啟用。
 <br>
-僅在 Sarkaz 主題中的 Investment 模式，且為「點刺成錠分隊」或「後勤分隊」時生效。  
+僅在 Sarkaz 主題中的 Investment 模式，且為 ｢點刺成錠分隊｣ 或 ｢後勤分隊｣ 時生效。  
 :::  
 ::: field blackflow_strategy  
 @type string
@@ -1069,12 +1075,57 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 `burn_with_investment` - 第一層完成投資後盡快抵達第三層，到達即重開
 <br>
 `burn` - 盡快抵達第三層，到達即重開  
+<br>
+`ending1` - 以第一結局為目標推進刷等級
+<br>
+`ending2` - 以第二結局為目標推進刷等級
+<br>
+`ending3` - 以第三結局為目標推進刷等級
+<br>
+以上取值僅適用於刷等級模式（mode 0），對應結局是否開放以遊戲內為準；指定結局後，開局照常招募幹員。
+<br>
+模式 30003 不讀取此項。有動物要求時，準備局按 `baby_animal` 的路線培育；沒有動物要求時，準備局盡快抵達第三層，`investment_enabled` 為 true 時先在第一層投資。準備局的開局幹員為機械師、`collectible_mode_squad` 為特勤分隊或堡壘戰術分隊、準備局的職業組為穩紮穩打或堅不可摧時，視為滿天賦機械師開局，自帶結構性原理：準備局招到機械師後放棄其餘開局招募，路線按需用結構性原理移動；沒有動物要求時，第二層直接用它飛向出口。  
 :::  
 ::: field blackflow_cultivation_target  
 @type string
 @default swaddled_cat
 @optional
 刷襁褓動物模式的目標。可選值：`swaddled_cat` | `swaddled_feathered_serpent` | `swaddled_dog` | `swaddled_cerberus`；僅在 `blackflow_strategy` 為 `baby_animal` 時使用。  
+:::  
+::: field blackflow_start_animals  
+@type array<string>
+@optional
+模式 30003 準備局要培育的襁褓動物，0 至 2 項，可重複，羽蛇最多一項。可選值：`swaddled_cat` | `swaddled_dog` | `swaddled_cerberus` | `swaddled_feathered_serpent`。各項按數量同時滿足，例如兩項 `swaddled_cat` 要求至少兩隻貓，多出的其他動物不影響；培育結束仍未湊齊時放棄該局，重新進行準備局。為空陣列時準備局只需進入第三層。模式 30003 下必填。  
+:::  
+::: field blackflow_start_rewards  
+@type number
+@optional
+模式 30003 目標局期望的開局獎勵，位元遮罩，範圍 0 至 4095。模式 30003 下必填。  
+<br>
+`1` 未編號物；`2` 調查預付款；`4` 空間租賃；`8` 退行補償；`16` 林間代步；`32` 巢寄生；`64` 襁褓天馬；`128` 襁褓駿鷹；`256` 襁褓巨龍；`512` 襁褓九頭蛇；`1024` 襁褓白澤；`2048` 襁褓金烏。後六項是羽蛇帶來的藍色獎勵，只在 `blackflow_start_animals` 含羽蛇時生效，否則忽略。  
+<br>
+目標局在選擇支援頁先辨識出頁面上的全部獎勵再判斷：命中任意一項時完成；辨識出了獎勵但沒有期望的，放棄該局，重新進行準備局；一項都沒辨識出，或要求了羽蛇獎勵卻讀不出藍色獎勵時，停在選擇支援頁並停止任務，截圖儲存到 `debug/roguelike`。為 0 且未開啟 `blackflow_start_utopia` 時，進入選擇支援頁即完成。進度透過 `SubTaskExtraInfo` 的 `BlackFlowStartRun` 回呼，見 [回呼訊息協定](./callback-schema.md)。  
+:::  
+::: field collectible_mode_roles  
+@type string
+@optional
+模式 30003 準備局的職業組，不提供時準備局用 `roles`。  
+:::  
+::: field collectible_mode_core_char_list  
+@type array<object>
+@optional
+模式 30003 準備局的開局幹員順位，格式同 `core_char_list`，不提供時準備局用 `core_char_list`。  
+:::  
+::: field blackflow_start_utopia  
+@type boolean
+@default false
+@optional
+模式 30003 目標局凹第一層實托邦。為 true 時，目標局在選擇支援頁命中 `blackflow_start_rewards`（為 0 時不要求）後，依 `blackflow_start_reward_priority` 選取獎勵，帶襁褓三頭犬可選兩次時再選一張；之後用 `roles` 與開局幹員開局並進入第一層，第一層是實托邦時退出到主題頁並保留該局，任務結束，否則放棄該局，重新進行準備局。實托邦依第一層層名的位置判斷，難度 6 以上才會出現，`difficulty` 由呼叫方選擇。  
+:::  
+::: field blackflow_start_reward_priority  
+@type array<string>
+@optional
+模式 30003 凹第一層實托邦時目標局選取獎勵的先後順序，`blackflow_start_utopia` 為 true 時必填，不可為空，不可重複。可選值：`unnumbered_item` 未編號物；`survey_advance` 調查預付款；`space_lease` 空間租賃；`regression_compensation` 退行補償；`forest_ride` 林間代步；`nest_parasitism` 巢寄生；`pegasus` 襁褓天馬；`hippogriff` 襁褓駿鷹；`dragon` 襁褓巨龍；`hydra` 襁褓九頭蛇；`bai_ze` 襁褓白澤；`golden_crow` 襁褓金烏。不凹實托邦時，目標局命中後停在選擇支援頁保留該局，不選取獎勵，不讀取此項。凹實托邦時，目標局要進入第一層，必須在選擇支援頁選卡：命中 `blackflow_start_rewards` 後，選取優先順序列表中排在最前且頁面上存在的一張，帶襁褓三頭犬可選兩次時再選一張。此時後六項羽蛇獎勵照樣參與排序，與 `blackflow_start_animals` 是否含羽蛇無關：準備局沒有要求羽蛇也可能帶上，目標局照樣會出藍色獎勵。這和 `blackflow_start_rewards` 不同，那裡的後六項是命中條件，只在要求了羽蛇時生效。列出的獎勵都不在頁面上時，依策略的預設順序選一張普通獎勵。  
 :::  
 ::: field find_playTime_target  
 @type number
@@ -1140,7 +1191,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 刷坍縮範式功能，具體請參閱 [肉鴿輔助協定](./integrated-strategy-schema.md#薩米肉鴿——坍縮範式)
 
 - `Copilot`  
-   自動抄作業
+  自動抄作業
 
 :::: field-group  
 ::: field enable  
@@ -1165,77 +1216,80 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 - `nav_name_override`：導航用關卡名稱，可選；未提供或為 `null` 時會自動從作業檔案推導
   <br>
 - `is_raid`：是否切換為突襲模式，選填，預設為 `false`。
-  :::  
-  ::: field loop_times  
-  @type number
-  @default 1
-  @optional
-  循環次數。僅在指定 `filename` 的單一作業模式下有效；此參數起作用時，僅可執行 `set_params` 一次。  
-  :::  
-  ::: field use_sanity_potion  
-  @type boolean
-  @default false
-  @optional
-  是否允許在理智不足時自動使用理智藥。  
-  :::  
-  ::: field formation  
-  @type boolean
-  @default false
-  @optional
-  是否執行自動編隊。  
-  :::  
-  ::: field formation_index  
-  @type number
-  @default 0
-  @optional
-  自動編隊所使用的編隊欄位編號。僅在 `formation` 為 `true` 時才有效。
-  <br>
-  範圍為 0–4 的整數，其中 0 表示選擇目前編隊，1-4 分別代表第一、二、三、四編隊。  
-  :::  
-  ::: field user_additional  
-  @type array`<object>`
-  @default []
-  @optional
-  自訂追加幹員清單。僅在 `formation` 為 `true` 時有效。
-  <br>
-  每個物件包含：
-  <br>
+
+:::  
+::: field loop_times  
+@type number
+@default 1
+@optional
+循環次數。僅在指定 `filename` 的單一作業模式下有效；此參數起作用時，僅可執行 `set_params` 一次。  
+:::  
+::: field use_sanity_potion  
+@type boolean
+@default false
+@optional
+是否允許在理智不足時自動使用理智藥。  
+:::  
+::: field formation  
+@type boolean
+@default false
+@optional
+是否執行自動編隊。  
+:::  
+::: field formation_index  
+@type number
+@default 0
+@optional
+自動編隊所使用的編隊欄位編號。僅在 `formation` 為 `true` 時才有效。
+<br>
+範圍為 0–4 的整數，其中 0 表示選擇目前編隊，1-4 分別代表第一、二、三、四編隊。  
+:::  
+::: field user_additional  
+@type array`<object>`
+@default []
+@optional
+自訂追加幹員清單。僅在 `formation` 為 `true` 時有效。
+<br>
+每個物件包含：
+<br>
+
 - `name`：幹員名稱，選填，預設為空字串，若留空則忽略此幹員。
   <br>
-- `skill`：指定攜帶技能，選填，預設為 0，即遵從遊戲內的預設技能選擇。範圍為 1–3 的整數，若超出範圍也遵照遊戲內的預設技能。  
-  :::  
-  ::: field add_trust  
-  @type boolean
-  @default false
-  @optional
-  是否在自動編隊時，以信賴值升序自動填充剩餘空位。僅在 `formation` 為 `true` 時有效。  
-  :::  
-  ::: field ignore_requirements  
-  @type boolean
-  @default false
-  @optional
-  是否在自動編隊時忽略幹員屬性要求。僅在 `formation` 為 `true` 時有效。  
-  :::  
-  ::: field support_unit_usage  
-  @type number
-  @default 0
-  @optional
-  助戰幹員使用模式。範圍為 0–3 的整數，僅在 `formation` 為 `true` 時有效。
-  <br>
-  `0`：不使用助戰幹員。
-  <br>
-  `1`：若恰好缺少一名幹員，則嘗試尋找助戰幹員補齊；若無缺失則不使用助戰幹員。
-  <br>
-  `2`：若恰好缺少一名幹員，則嘗試尋找助戰幹員補齊；若無缺失則使用指定助戰幹員。
-  <br>
-  `3`：若恰好缺少一名幹員，則嘗試尋找助戰幹員補齊；若無缺失則使用隨機助戰幹員。  
-  :::  
-  ::: field support_unit_name  
-  @type string
-  @optional
-  指定助戰幹員名稱。僅在 `support_unit_usage` 為 2 時有效。  
-  :::  
-  ::::
+- `skill`：指定攜帶技能，選填，預設為 0，即遵從遊戲內的預設技能選擇。範圍為 1–3 的整數，若超出範圍也遵照遊戲內的預設技能。
+
+:::  
+::: field add_trust  
+@type boolean
+@default false
+@optional
+是否在自動編隊時，以信賴值升序自動填充剩餘空位。僅在 `formation` 為 `true` 時有效。  
+:::  
+::: field ignore_requirements  
+@type boolean
+@default false
+@optional
+是否在自動編隊時忽略幹員屬性要求。僅在 `formation` 為 `true` 時有效。  
+:::  
+::: field support_unit_usage  
+@type number
+@default 0
+@optional
+助戰幹員使用模式。範圍為 0–3 的整數，僅在 `formation` 為 `true` 時有效。
+<br>
+`0`：不使用助戰幹員。
+<br>
+`1`：若恰好缺少一名幹員，則嘗試尋找助戰幹員補齊；若無缺失則不使用助戰幹員。
+<br>
+`2`：若恰好缺少一名幹員，則嘗試尋找助戰幹員補齊；若無缺失則使用指定助戰幹員。
+<br>
+`3`：若恰好缺少一名幹員，則嘗試尋找助戰幹員補齊；若無缺失則使用隨機助戰幹員。  
+:::  
+::: field support_unit_name  
+@type string
+@optional
+指定助戰幹員名稱。僅在 `support_unit_usage` 為 2 時有效。  
+:::  
+::::
 
 作業 json 請參閱 [戰鬥流程協定](./copilot-schema.md)
 
@@ -1266,7 +1320,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `SSSCopilot`  
-   自動抄保全派駐作業
+  自動抄保全派駐作業
 
 :::: field-group  
 ::: field enable  
@@ -1339,7 +1393,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `Depot`  
-   倉庫辨識
+  倉庫辨識
 
 :::: field-group  
 ::: field enable  
@@ -1362,7 +1416,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `OperBox`  
-   幹員 box 辨識
+  幹員 box 辨識
 
 :::: field-group  
 ::: field enable  
@@ -1385,7 +1439,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `Reclamation`  
-   生息演算
+  生息演算
 
 :::: field-group  
 ::: field enable  
@@ -1473,7 +1527,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `Custom`  
-   自訂任務
+  自訂任務
 
 :::: field-group  
 ::: field enable  
@@ -1491,12 +1545,13 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 ::: field params  
 @type object
 @optional
-任務附加參數。目前像素畫任務（`MiniGame@PixelPaint@Begin`）與自動提升潛能任務（`MiniGame@AutoRaisePotential@Begin`）使用：
+任務附加參數。目前像素畫任務（`MiniGame@PixelPaint@Begin`）、自動提升潛能任務（`MiniGame@AutoRaisePotential@Begin`）與活動商店兌換任務（`SS@Store@Begin`）使用：
 
-- `params.pixel_paint.groups`：按色分組點列。`color` 為色板序號（0~39，與遊戲右側色板順序一致），`points` 為 `[x, y]` 格子座標陣列（0~23，左上為原點）。
+- `params.pixel_paint.groups`：按色分組點列。`color` 為色板序號（0~~39，與遊戲右側色板順序一致），`points` 為 `[x, y]` 格子座標陣列（0~~23，左上為原點）。
 - `params.pixel_paint.swipe`（bool，可選，預設 true）：同色同行的連續格用拖動一次畫完，更快但部分觸控模式可能異常。
 - `params.pixel_paint.grid_delay`（int，可選，預設 0）：每格額外等待（ms）。點擊後 sleep，拖動時長按格累加。各觸控方式內建基礎間隔，一般無需調整。相容舊鍵 `grid_click_delay`。
 - `params.auto_raise_potential.use_normal_token`（bool，可選，預設 false）：中堅信物不足時確認彈窗預設點 × 放棄提升；設為 true 時改點 √，消耗普通信物繼續提升。
+- `params.event_shop.blacklist`（string 陣列，可選）：活動商店兌換任務（`SS@Store@Begin`）購買時的商品名黑名單。辨識出的商品名包含任一條目即跳過該商品，滑動翻頁繼續購買其餘商品；為空時不生效。
 
 :::  
 ::::
@@ -1528,7 +1583,7 @@ Tag 等級（大於等於 3）對應的期望招募時限（單位：分鐘）�
 </details>
 
 - `SingleStep`  
-   單步任務（目前僅支援戰鬥）
+  單步任務（目前僅支援戰鬥）
 
 :::: field-group  
 ::: field enable  
@@ -1621,7 +1676,7 @@ AsstBool ASSTAPI AsstSetTaskParams(AsstHandle handle, AsstTaskId id, const char*
 #### 回傳值
 
 - `AsstBool`  
-   回傳是否設定成功。
+  回傳是否設定成功。
 
 #### 參數說明
 
@@ -1640,7 +1695,7 @@ AsstBool ASSTAPI AsstSetTaskParams(AsstHandle handle, AsstTaskId id, const char*
 @type const char\*
 @required
 任務參數，json 字串，格式與 `AsstAppendTask` 介面相同。  
-未標註「不支援在執行中更改設定」的欄位皆支援即時修改；若該欄位不支援且目前任務正在執行，將忽略該欄位的變更。  
+未標註 ｢不支援在執行中更改設定｣ 的欄位皆支援即時修改；若該欄位不支援且目前任務正在執行，將忽略該欄位的變更。  
 :::  
 ::::
 
@@ -1659,7 +1714,7 @@ AsstBool ASSTAPI AsstSetStaticOption(AsstStaticOptionKey key, const char* value)
 #### 回傳值
 
 - `AsstBool`  
-   回傳是否設定成功。
+  回傳是否設定成功。
 
 #### 參數說明
 
@@ -1712,7 +1767,7 @@ AsstBool ASSTAPI AsstSetInstanceOption(AsstHandle handle, AsstInstanceOptionKey 
 #### 回傳值
 
 - `AsstBool`  
-   回傳是否設定成功。
+  回傳是否設定成功。
 
 #### 參數說明
 

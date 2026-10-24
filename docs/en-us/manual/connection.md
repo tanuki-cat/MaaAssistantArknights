@@ -163,6 +163,10 @@ For `C:\ProgramData\BlueStacks_nxt\bluestacks.conf`:
 
 :::
 
+#### Return to MAA and Test
+
+You can use the `Screenshot Test` function in `Settings` - `Connection Settings` to check that the connected emulator core is the expected one.
+
 ## Connection Configuration
 
 Select the configuration matching your emulator. If not listed, choose General Mode. If that doesn't work, try any other available configuration.
@@ -170,6 +174,10 @@ Select the configuration matching your emulator. If not listed, choose General M
 For specific differences, see the [source code](https://github.com/MaaAssistantArknights/MaaAssistantArknights/blob/dev-v2/resource/config.json#L57).
 
 ### MuMu Screenshot Enhanced Mode
+
+::: tip
+The screenshot and touch enhancements described here apply to MuMu for Windows x64.
+:::
 
 **Version Requirement**: Official/Arknights-specific MuMu V4.1.26 or above, or Global MuMu V5.21.3 or above. <!-- Official V3.8.13 supports initial enhanced screenshots -->
 

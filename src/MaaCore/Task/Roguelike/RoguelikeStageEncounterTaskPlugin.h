@@ -65,6 +65,8 @@ private:
     std::optional<std::string> select_blackflow_option(const Config::RoguelikeEvent& event, size_t choose_option);
     std::optional<SelectedOption> select_event_option(const SelectionPlan& plan, std::string_view event_name);
     bool select_analyzed_option(size_t index);
+    bool click_analyzed_option(size_t index);
+    cv::Mat get_event_image();
     void report_selected_option(
         const Config::RoguelikeEvent& event,
         const SelectedOption& selected,
@@ -72,14 +74,22 @@ private:
     void set_blackflow_result(std::string_view base_task);
     void reset_option_list_and_view_data();
     void report_analyzed_options();
-    void update_view(const cv::Mat& image = cv::Mat());
+
+    // 黑流各选项条带相似，以得分最高的一项为锚点推算其余位置；界园仍逐项独立匹配。
+    [[nodiscard]] static bool anchored_view_enabled(std::string_view theme) noexcept
+    {
+        return theme == RoguelikeTheme::BlackFlow;
+    }
+
+    bool update_view(const cv::Mat& image = cv::Mat());
+    void update_anchored_view(const cv::Mat& image);
     void reset_view();
-    void move_to_analyzed_option(size_t index);
-    void move_to_option_list_head();
-    void move_forward();
-    void move_backward();
+    bool move_to_option_list_head();
+    bool move_forward();
+    bool move_backward();
 
     std::optional<std::string> next_event(const Config::RoguelikeEvent& event);
+    std::optional<std::string> next_jiegarden_event(const Config::RoguelikeEvent& event);
     std::optional<std::string> continue_blackflow_event(const Config::RoguelikeEvent& event);
 
     static bool save_img(const cv::Mat& image, std::string_view description = "image");

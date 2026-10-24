@@ -1,6 +1,6 @@
 // <copyright file="ErrorDialogView.xaml.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -23,6 +23,7 @@ using System.Windows.Documents;
 using MaaWpfGui.Configuration.Factory;
 using MaaWpfGui.Constants;
 using MaaWpfGui.Helper;
+using MaaWpfGui.Main;
 
 namespace MaaWpfGui.Views.Dialogs;
 
@@ -167,7 +168,9 @@ public partial class ErrorDialogView : INotifyPropertyChanged
     {
         if (ShouldExit)
         {
-            Environment.Exit(0);
+            // Environment.Exit 不经过 WPF 关闭流程，须显式释放单实例互斥量
+            Bootstrapper.ReleaseInstanceMutex();
+            Environment.Exit(1);
         }
 
         base.OnClosed(e);

@@ -1,5 +1,9 @@
 {
-    "schema_version": 14,
+    "schema_version": 15,
+    "last_reward_orders": {
+        "default": ["空间租赁", "林间代步", "未编号物", "退行补偿", "调查预付款", "巢寄生"],
+        "survey_advance_first": ["调查预付款", "空间租赁", "林间代步", "未编号物", "退行补偿", "巢寄生"]
+    },
     "inventory_cleanup_policy": {
         "discard_max_rank": 17,
         "extra_discards_after_clear": 1,
@@ -382,46 +386,20 @@
         {
             "id": "common_navigation",
             "description": "公共安全、出口时机、商店回避和加工品触发规则",
-            "rules": [
+            "shopping_rules": [
                 {
-                    "id": "avoid_empty_scrap_shop",
-                    "kind": "forbid",
-                    "tier": "legality",
-                    "rank": 0,
+                    "id": "floor5_shop_purchase",
+                    "description": "第五层诡意行商有什么买什么",
+                    "rank": 1,
                     "when": {
-                        "all": [
-                            {
-                                "fact": "ingots",
-                                "op": "le",
-                                "value": 0
-                            },
-                            {
-                                "fact": "seeds",
-                                "op": "le",
-                                "value": 0
-                            },
-                            {
-                                "fact": "sellable_scraps",
-                                "op": "le",
-                                "value": 0
-                            }
-                        ]
+                        "fact": "current_floor",
+                        "op": "eq",
+                        "value": 5
                     },
-                    "candidate_if": {
-                        "all": [
-                            {
-                                "fact": "candidate.node_type",
-                                "op": "eq",
-                                "value": "scrap_shop"
-                            },
-                            {
-                                "fact": "candidate.strategy_end",
-                                "op": "eq",
-                                "value": false
-                            }
-                        ]
-                    }
-                },
+                    "buy_table": "final_relics"
+                }
+            ],
+            "rules": [
                 {
                     "id": "light_reveals_three",
                     "kind": "prefer",
@@ -506,6 +484,19 @@
         },
         {
             "id": "ending_development",
+            "shopping_rules": [
+                {
+                    "id": "floor3_shop_purchase",
+                    "description": "第三层诡意行商购买藏品，二结局先买沙盘",
+                    "rank": 1,
+                    "when": {
+                        "fact": "current_floor",
+                        "op": "eq",
+                        "value": 3
+                    },
+                    "buy_table": "final_relics"
+                }
+            ],
             "reserves": [
                 {
                     "id": "keep_processing_move_for_boss",
@@ -646,18 +637,6 @@
                     }
                 },
                 {
-                    "id": "ending1_floor2_scrap_shop",
-                    "description": "第二层优先经过秘境行商",
-                    "kind": "preferred",
-                    "floor_window": [2, 2],
-                    "rank": 0,
-                    "count": 1,
-                    "weight": 6,
-                    "selector": {
-                        "node_types": ["scrap_shop"]
-                    }
-                },
-                {
                     "id": "ending1_floor2_hidden",
                     "description": "第二层在核心节点之外尽量探索未知事件",
                     "kind": "preferred",
@@ -667,6 +646,31 @@
                     "weight": 3,
                     "selector": {
                         "node_types": ["hide_invisible"]
+                    }
+                },
+                {
+                    "id": "ending1_floor2_incident",
+                    "description": "第二层尽量经过不期而遇",
+                    "kind": "preferred",
+                    "floor_window": [2, 2],
+                    "rank": 0,
+                    "count": 99,
+                    "weight": 3,
+                    "selector": {
+                        "node_types": ["incident"]
+                    }
+                },
+                {
+                    "id": "ending1_informant",
+                    "description": "第二、三层的不期而遇带线人角标时额外加分，与不期而遇的权重叠加",
+                    "kind": "preferred",
+                    "floor_window": [2, 3],
+                    "rank": 0,
+                    "count": 99,
+                    "weight": 1,
+                    "selector": {
+                        "node_types": ["incident"],
+                        "marker_types": ["informant"]
                     }
                 },
                 {
@@ -707,18 +711,6 @@
                     }
                 },
                 {
-                    "id": "ending1_late_duel",
-                    "description": "第三至第五层优先经过狭路相逢",
-                    "kind": "preferred",
-                    "floor_window": [3, 5],
-                    "rank": 0,
-                    "count": 99,
-                    "weight": 4,
-                    "selector": {
-                        "node_types": ["duel"]
-                    }
-                },
-                {
                     "id": "ending1_late_expedition",
                     "description": "第三至第五层优先经过先行一步",
                     "kind": "preferred",
@@ -728,18 +720,6 @@
                     "weight": 6,
                     "selector": {
                         "node_types": ["expedition"]
-                    }
-                },
-                {
-                    "id": "ending1_late_scrap_shop",
-                    "description": "第三至第五层优先经过秘境行商",
-                    "kind": "preferred",
-                    "floor_window": [3, 5],
-                    "rank": 0,
-                    "count": 99,
-                    "weight": 6,
-                    "selector": {
-                        "node_types": ["scrap_shop"]
                     }
                 },
                 {
@@ -817,6 +797,96 @@
                 }
             ],
             "description": "各结局共享的一至五层发育偏好"
+        },
+        {
+            "id": "ending_scrap_trade",
+            "description": "各结局在秘境行商卖出闲置自然物，持有板藤或多生苔藓时买入卖回让它们增值，第五层兑现自然物",
+            "shopping_rules": [
+                {
+                    "id": "scrap_trade_floor1",
+                    "description": "第一层只培育和补货，不卖出自然物，不补重弹簧",
+                    "page_intent": "scrap_shop.trade",
+                    "when": {
+                        "fact": "current_floor",
+                        "op": "eq",
+                        "value": 1
+                    },
+                    "buy_table": "scrap_floor1"
+                },
+                {
+                    "id": "scrap_trade_accumulate",
+                    "description": "第二至四层卖出闲置自然物，优先补喷气背包、玉米和雾滚草，保留可继续增值的自然物",
+                    "page_intent": "scrap_shop.trade",
+                    "when": {
+                        "all": [
+                            {
+                                "fact": "current_floor",
+                                "op": "ge",
+                                "value": 2
+                            },
+                            {
+                                "fact": "current_floor",
+                                "op": "lt",
+                                "value": 5
+                            }
+                        ]
+                    },
+                    "buy_table": "scrap_accumulate",
+                    "sell_table": "idle_naturals"
+                },
+                {
+                    "id": "scrap_trade_liquidate",
+                    "page_intent": "scrap_shop.trade",
+                    "when": {
+                        "fact": "current_floor",
+                        "op": "eq",
+                        "value": 5
+                    },
+                    "buy_table": "scrap_movement",
+                    "sell_table": "floor5_liquidation"
+                }
+            ],
+            "milestones": [
+                {
+                    "id": "ending1_floor1_scrap_shop",
+                    "description": "第一层顺路经过秘境行商时进店交易",
+                    "kind": "opportunistic",
+                    "floor_window": [1, 1],
+                    "rank": 0,
+                    "count": 99,
+                    "weight": 1,
+                    "selector": {
+                        "node_types": ["scrap_shop"]
+                    },
+                    "page_intent": "scrap_shop.trade"
+                },
+                {
+                    "id": "ending1_floor2_scrap_shop",
+                    "description": "第二层优先经过秘境行商",
+                    "kind": "preferred",
+                    "floor_window": [2, 2],
+                    "rank": 0,
+                    "count": 1,
+                    "weight": 6,
+                    "selector": {
+                        "node_types": ["scrap_shop"]
+                    },
+                    "page_intent": "scrap_shop.trade"
+                },
+                {
+                    "id": "ending1_late_scrap_shop",
+                    "description": "第三至第五层优先经过秘境行商",
+                    "kind": "preferred",
+                    "floor_window": [3, 5],
+                    "rank": 0,
+                    "count": 99,
+                    "weight": 6,
+                    "selector": {
+                        "node_types": ["scrap_shop"]
+                    },
+                    "page_intent": "scrap_shop.trade"
+                }
+            ]
         },
         {
             "id": "ending1_exit",
@@ -937,49 +1007,6 @@
         {
             "id": "burn_investment_shop",
             "description": "刷等级时先去一层商店：拿得到结构性原理就硬性要求，拿不到则按权重择优",
-            "granted_scraps": [
-                {
-                    "movement": "rogue_6_scrap_M_11",
-                    "description": "精二机械师的开局配置必定持有结构性原理，无需观测背包",
-                    "when": {
-                        "all": [
-                            {
-                                "fact": "start_core_char",
-                                "op": "eq",
-                                "value": "机械师"
-                            },
-                            {
-                                "any": [
-                                    {
-                                        "fact": "start_squad",
-                                        "op": "eq",
-                                        "value": "特勤分队"
-                                    },
-                                    {
-                                        "fact": "start_squad",
-                                        "op": "eq",
-                                        "value": "堡垒战术分队"
-                                    }
-                                ]
-                            },
-                            {
-                                "any": [
-                                    {
-                                        "fact": "start_roles",
-                                        "op": "eq",
-                                        "value": "稳扎稳打"
-                                    },
-                                    {
-                                        "fact": "start_roles",
-                                        "op": "eq",
-                                        "value": "坚不可摧"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ],
             "rules": [
                 {
                     "id": "burn_require_shop_when_flight_guaranteed",
@@ -1039,7 +1066,76 @@
                         "op": "contains",
                         "value": "shop"
                     }
-                },
+                }
+            ],
+            "milestones": [
+                {
+                    "id": "burn_floor1_shop",
+                    "description": "权重按「值得为商店多绕两步」定价，够不到商店时这一维不参与排序",
+                    "kind": "preferred",
+                    "floor_window": [1, 1],
+                    "rank": 0,
+                    "weight": 5,
+                    "complete_if": {
+                        "fact": "burn_shop_done",
+                        "op": "eq",
+                        "value": true
+                    },
+                    "selector": {
+                        "node_types": ["shop"]
+                    },
+                    "page_intent": "shop.invest_continue",
+                    "completion": "condition"
+                }
+            ]
+        },
+        {
+            "id": "mechanic_flight",
+            "description": "满天赋机械师的开局配置自带结构性原理，第二层用它飞向层出口",
+            "granted_scraps": [
+                {
+                    "movement": "rogue_6_scrap_M_11",
+                    "description": "精二机械师的开局配置必定持有结构性原理，无需观测背包",
+                    "when": {
+                        "all": [
+                            {
+                                "fact": "start_core_char",
+                                "op": "eq",
+                                "value": "机械师"
+                            },
+                            {
+                                "any": [
+                                    {
+                                        "fact": "start_squad",
+                                        "op": "eq",
+                                        "value": "特勤分队"
+                                    },
+                                    {
+                                        "fact": "start_squad",
+                                        "op": "eq",
+                                        "value": "堡垒战术分队"
+                                    }
+                                ]
+                            },
+                            {
+                                "any": [
+                                    {
+                                        "fact": "start_roles",
+                                        "op": "eq",
+                                        "value": "稳扎稳打"
+                                    },
+                                    {
+                                        "fact": "start_roles",
+                                        "op": "eq",
+                                        "value": "坚不可摧"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ],
+            "rules": [
                 {
                     "id": "burn_require_flight_on_floor2",
                     "description": "同样的开局配置下，二层直接用结构性原理飞向层出口",
@@ -1103,26 +1199,6 @@
                         ]
                     }
                 }
-            ],
-            "milestones": [
-                {
-                    "id": "burn_floor1_shop",
-                    "description": "权重按「值得为商店多绕两步」定价，够不到商店时这一维不参与排序",
-                    "kind": "preferred",
-                    "floor_window": [1, 1],
-                    "rank": 0,
-                    "weight": 5,
-                    "complete_if": {
-                        "fact": "burn_shop_done",
-                        "op": "eq",
-                        "value": true
-                    },
-                    "selector": {
-                        "node_types": ["shop"]
-                    },
-                    "page_intent": "shop.invest_continue",
-                    "completion": "condition"
-                }
             ]
         },
         {
@@ -1149,8 +1225,81 @@
             ]
         },
         {
+            "id": "start_run_seedpod_shop",
+            "shopping_rules": [
+                {
+                    "id": "start_run_seedpod_floor1",
+                    "page_intent": "shop.seed_priority",
+                    "when": {
+                        "fact": "current_floor",
+                        "op": "eq",
+                        "value": 1
+                    },
+                    "buy_table": "start_run_floor1"
+                }
+            ]
+        },
+        {
             "id": "baby_animal_route",
+            "shopping_rules": [
+                {
+                    "id": "seed_shop_floor2",
+                    "description": "第二层诡意行商只买种子",
+                    "page_intent": "shop.seed_priority",
+                    "when": {
+                        "fact": "current_floor",
+                        "op": "eq",
+                        "value": 2
+                    },
+                    "buy_table": "seed"
+                },
+                {
+                    "id": "seed_shop_floor3",
+                    "description": "第三层诡意行商只买种子",
+                    "page_intent": "shop.seed_priority_floor3",
+                    "buy_table": "seed"
+                }
+            ],
             "rules": [
+                {
+                    "id": "avoid_empty_scrap_shop",
+                    "kind": "forbid",
+                    "tier": "legality",
+                    "rank": 0,
+                    "when": {
+                        "all": [
+                            {
+                                "fact": "ingots",
+                                "op": "le",
+                                "value": 0
+                            },
+                            {
+                                "fact": "seeds",
+                                "op": "le",
+                                "value": 0
+                            },
+                            {
+                                "fact": "sellable_scraps",
+                                "op": "le",
+                                "value": 0
+                            }
+                        ]
+                    },
+                    "candidate_if": {
+                        "all": [
+                            {
+                                "fact": "candidate.node_type",
+                                "op": "eq",
+                                "value": "scrap_shop"
+                            },
+                            {
+                                "fact": "candidate.strategy_end",
+                                "op": "eq",
+                                "value": false
+                            }
+                        ]
+                    }
+                },
                 {
                     "id": "baby_use_processing_item_for_floor1_shop",
                     "description": "第一层优先使用当前背包中的可用加工品抵达普通商店",
@@ -1459,7 +1608,7 @@
                 },
                 {
                     "id": "baby_floor3_shops",
-                    "description": "第三层经过普通商店时卖货、刷新并尽量购买种子",
+                    "description": "第三层经过普通商店时继续优先获取种子",
                     "kind": "preferred",
                     "floor_window": [3, 3],
                     "rank": 0,
@@ -1480,6 +1629,30 @@
         {
             "id": "baby_cultivate_gated",
             "description": "培育出目标之后仍须进入第三层的秘境行商目标，用于猫、狗、羽蛇和三头犬",
+            "shopping_rules": [
+                {
+                    "id": "cultivation_keep_movement",
+                    "description": "第三层前保留加工品，到达第三层秘境行商仍要靠它们移动",
+                    "page_intent": "scrap_shop.cultivate",
+                    "when": {
+                        "fact": "current_floor",
+                        "op": "lt",
+                        "value": 3
+                    },
+                    "sell_table": "cultivation_keep_movement"
+                },
+                {
+                    "id": "cultivation_final",
+                    "description": "第三层培育后结束，加工品卖出换种子",
+                    "page_intent": "scrap_shop.cultivate",
+                    "when": {
+                        "fact": "current_floor",
+                        "op": "eq",
+                        "value": 3
+                    },
+                    "sell_table": "cultivation_final"
+                }
+            ],
             "milestones": [
                 {
                     "id": "baby_cultivate_scrap_shop_transit",
@@ -1530,6 +1703,29 @@
         },
         {
             "id": "ending2_route",
+            "shopping_rules": [
+                {
+                    "id": "ending2_sandtable_shop",
+                    "page_intent": "shop.ending2_sandtable_b",
+                    "when": {
+                        "not": {
+                            "all": [
+                                {
+                                    "fact": "current_floor",
+                                    "op": "eq",
+                                    "value": 3
+                                },
+                                {
+                                    "fact": "sandtable_b",
+                                    "op": "eq",
+                                    "value": true
+                                }
+                            ]
+                        }
+                    },
+                    "buy_table": "ending2_sandtable"
+                }
+            ],
             "encounter_rules": [
                 {
                     "id": "ending2_informant",
@@ -1538,6 +1734,48 @@
                     "rank": 0,
                     "option_text": ["我受雇于梅兰德"],
                     "on_selected": { "sandtable_a": true }
+                }
+            ],
+            "reserves": [
+                {
+                    "id": "ending2_single_sandtable_ingots",
+                    "description": "只有一张沙盘时，命运所指要付 50 源石锭，秘境行商交易不动这部分余额",
+                    "resource": "ingots",
+                    "minimum": 50,
+                    "active_if": {
+                        "all": [
+                            {
+                                "any": [
+                                    {
+                                        "fact": "sandtable_a",
+                                        "op": "eq",
+                                        "value": true
+                                    },
+                                    {
+                                        "fact": "sandtable_b",
+                                        "op": "eq",
+                                        "value": true
+                                    }
+                                ]
+                            },
+                            {
+                                "not": {
+                                    "all": [
+                                        {
+                                            "fact": "sandtable_a",
+                                            "op": "eq",
+                                            "value": true
+                                        },
+                                        {
+                                            "fact": "sandtable_b",
+                                            "op": "eq",
+                                            "value": true
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
                 }
             ],
             "milestones": [
@@ -1704,9 +1942,130 @@
     ],
     "profiles": [
         {
+            "id": "start_run_animals",
+            "description": "准备指定动物组合，进入第三层后开启目标局",
+            "modules": ["common_navigation", "start_run_seedpod_shop", "baby_animal_route", "baby_cultivate_gated"],
+            "terminal_rules": [
+                {
+                    "id": "start_run_prepared",
+                    "when": {
+                        "all": [
+                            {
+                                "fact": "cultivation_target_obtained",
+                                "op": "eq",
+                                "value": true
+                            },
+                            {
+                                "fact": "current_floor",
+                                "op": "ge",
+                                "value": 3
+                            }
+                        ]
+                    },
+                    "outcome": "start_run_prepared",
+                    "reason": "start_run_prepared",
+                    "succeeded": true,
+                    "next_action": "restart_current_run"
+                },
+                {
+                    "id": "start_run_animals_missed",
+                    "when": {
+                        "all": [
+                            {
+                                "fact": "cultivation_completed",
+                                "op": "eq",
+                                "value": true
+                            },
+                            {
+                                "fact": "cultivation_target_obtained",
+                                "op": "eq",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "outcome": "baby_cultivation_target_missed",
+                    "reason": "cultivation_target_not_obtained",
+                    "succeeded": false,
+                    "next_action": "restart_current_run"
+                },
+                {
+                    "id": "baby_third_floor_action_points_exhausted",
+                    "when": {
+                        "all": [
+                            {
+                                "fact": "current_floor",
+                                "op": "eq",
+                                "value": 3
+                            },
+                            {
+                                "fact": "action_points",
+                                "op": "le",
+                                "value": 0
+                            },
+                            {
+                                "fact": "cultivation_completed",
+                                "op": "eq",
+                                "value": false
+                            }
+                        ]
+                    },
+                    "outcome": "baby_cultivation_unfinished",
+                    "reason": "third_floor_action_points_exhausted",
+                    "succeeded": false
+                }
+            ],
+            "failure_action": "restart_current_run",
+            "last_reward_order": "survey_advance_first",
+            "no_AP_is_terminal": {
+                "floors": [3]
+            }
+        },
+        {
+            "id": "start_run_rewards",
+            "description": "尽快走到险路尽头取得开局奖励资格，然后开启目标局；开局是满天赋机械师组合时第二层飞",
+            "modules": ["common_navigation", "mechanic_flight", "burn_route"],
+            "terminal_rules": [
+                {
+                    "id": "start_run_prepared",
+                    "when": {
+                        "fact": "current_floor",
+                        "op": "ge",
+                        "value": 3
+                    },
+                    "outcome": "start_run_prepared",
+                    "reason": "start_run_prepared",
+                    "succeeded": true,
+                    "next_action": "restart_current_run"
+                }
+            ],
+            "failure_action": "restart_current_run",
+            "last_reward_order": "survey_advance_first"
+        },
+        {
+            "id": "start_run_rewards_with_investment",
+            "description": "第一层完成投资后尽快走到险路尽头，然后开启目标局；开局是满天赋机械师组合时第二层飞",
+            "modules": ["common_navigation", "burn_investment_shop", "mechanic_flight", "burn_route"],
+            "terminal_rules": [
+                {
+                    "id": "start_run_prepared",
+                    "when": {
+                        "fact": "current_floor",
+                        "op": "ge",
+                        "value": 3
+                    },
+                    "outcome": "start_run_prepared",
+                    "reason": "start_run_prepared",
+                    "succeeded": true,
+                    "next_action": "restart_current_run"
+                }
+            ],
+            "failure_action": "restart_current_run",
+            "last_reward_order": "survey_advance_first"
+        },
+        {
             "id": "ending1",
             "description": "一结局保底",
-            "modules": ["common_navigation", "ending_development", "ending1_exit"],
+            "modules": ["common_navigation", "ending_development", "ending_scrap_trade", "ending1_exit"],
             "failure_action": "restart_current_run"
         },
         {
@@ -1748,7 +2107,8 @@
                     "next_action": "restart_current_run"
                 }
             ],
-            "failure_action": "restart_current_run"
+            "failure_action": "restart_current_run",
+            "last_reward_order": "survey_advance_first"
         },
         {
             "id": "burn",
@@ -1768,12 +2128,13 @@
                     "next_action": "restart_current_run"
                 }
             ],
-            "failure_action": "restart_current_run"
+            "failure_action": "restart_current_run",
+            "last_reward_order": "survey_advance_first"
         },
         {
             "id": "burn_with_investment",
             "description": "第一层完成投资后尽快抵达第三层，到达即重开",
-            "modules": ["common_navigation", "burn_investment_shop", "burn_route"],
+            "modules": ["common_navigation", "burn_investment_shop", "mechanic_flight", "burn_route"],
             "terminal_rules": [
                 {
                     "id": "burn_third_floor_reached",
@@ -1788,7 +2149,8 @@
                     "next_action": "restart_current_run"
                 }
             ],
-            "failure_action": "restart_current_run"
+            "failure_action": "restart_current_run",
+            "last_reward_order": "survey_advance_first"
         },
         {
             "id": "baby_animal",
@@ -1945,7 +2307,7 @@
         {
             "id": "ending2",
             "description": "沙盘发育并在第五层进入命运所指",
-            "modules": ["common_navigation", "ending_development", "ending2_route"],
+            "modules": ["common_navigation", "ending_development", "ending_scrap_trade", "ending2_route"],
             "terminal_rules": [
                 {
                     "id": "ending2_completed",
@@ -2022,7 +2384,7 @@
         {
             "id": "ending3",
             "description": "先行一步第二选项、减难藏品、第五层首领和第六层结局",
-            "modules": ["common_navigation", "ending_development", "ending3_route"],
+            "modules": ["common_navigation", "ending_development", "ending_scrap_trade", "ending3_route"],
             "terminal_rules": [
                 {
                     "id": "ending3_completed",

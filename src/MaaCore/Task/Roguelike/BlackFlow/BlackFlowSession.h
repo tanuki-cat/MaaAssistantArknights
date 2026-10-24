@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <optional>
 #include <string>
@@ -13,6 +14,7 @@
 
 #include "BlackFlowTaskPort.h"
 
+// 这部分实现类和相关类型统一放入 asst::blackflow，保持模块内组织一致。
 namespace asst::blackflow
 {
 enum class FailureDisposition
@@ -193,6 +195,16 @@ public:
 
     void set_cultivated_animal_types(std::vector<CultivatedAnimalType> types);
 
+    void set_cultivation_targets(std::vector<CultivatedAnimalType> targets)
+    {
+        m_cultivation_targets = std::move(targets);
+    }
+
+    [[nodiscard]] std::optional<std::reference_wrapper<const ShoppingRule>> shopping_rule() const;
+    // 当前生效的资源预留底线，多条预留取最大值。路线在无路可走时放弃预留只对那一步有效，这里不计。
+    [[nodiscard]] int reserved_amount(std::string_view resource) const;
+    bool apply_shopping_purchase(std::string_view name, std::string* error = nullptr);
+
     bool mark_page_running(std::string* error = nullptr);
     bool apply_node_task_result(
         const NodeTaskResult& result,
@@ -210,6 +222,8 @@ public:
         std::string* error = nullptr);
 
     void fail(std::string outcome, std::string reason, FailureDisposition disposition = FailureDisposition::StopTask);
+    // 本局按计划结束并重开，不经过策略终局规则，例如刷开局目标局第一层没有实托邦
+    void conclude_and_restart(std::string outcome, std::string reason);
 
     [[nodiscard]] const std::optional<BlackFlowStrategyResult>& result() const noexcept { return m_result; }
 
@@ -217,11 +231,11 @@ public:
 
     bool claim_result_report() noexcept;
 
-    [[nodiscard]] const ViewportObservation& viewport() const noexcept { return m_viewport; }
+    [[nodiscard]] const ViewportObservation& viewport() const noexcept { return m_map_version.coordinates; }
 
     [[nodiscard]] const RunState& run() const noexcept { return m_run; }
 
-    [[nodiscard]] const NormalizedMap& map() const noexcept { return m_map; }
+    [[nodiscard]] const NormalizedMap& map() const noexcept { return m_map_version.map; }
 
     [[nodiscard]] FactStore facts() const { return m_facts.merged(); }
 
@@ -263,11 +277,13 @@ private:
         std::string* error);
     bool reconcile_committed_move(const BlackFlowPerceptionSnapshot& snapshot, std::string* error);
     void finalize_entered_node(const PageExecutionContext& context, bool page_completed);
-    void queue_map_summary(const PerceptionSummary& summary);
+    void queue_map_summary(std::optional<NodeId> corrected_node = std::nullopt);
+    bool synchronize_map_facts(std::string* error);
+    PreviewDisposition accept_preview_in_place(MovePreview preview, std::string* error);
     void queue_warning(std::string code, std::string message, DiagnosticTrigger trigger);
     void queue_decision();
     void queue_node_resolution(const PageExecutionContext& context);
-    void request_diagnostics(DiagnosticTrigger trigger, json::object snapshot = {});
+    void request_diagnostics(DiagnosticTrigger trigger, json::object snapshot = {}, bool allow_images = true);
     bool apply_observed_facts(const FactStore& facts, std::string* error);
     bool set_fact(std::string_view name, FactValue value, std::string* error);
     bool apply_node_signal(
@@ -282,12 +298,22 @@ private:
     std::string m_start_roles;
     CultivatedAnimalType m_cultivation_target = CultivatedAnimalType::Cat;
     std::vector<CultivatedAnimalType> m_cultivated_animal_types;
+    std::vector<CultivatedAnimalType> m_cultivation_targets;
     std::optional<ResolvedPolicy> m_policy;
     FactContext m_facts;
     MissionState m_mission;
     BlackFlowObservationAdapter m_observation_adapter;
-    NormalizedMap m_map;
-    ViewportObservation m_viewport;
+
+    struct MapVersion
+    {
+        NormalizedMap map;
+        ViewportObservation coordinates;
+        // 本层沿用首次匹配得到的险路尽头位置；首领层为空。
+        std::vector<GridPosition> final_exits;
+        PerceptionSummary observation;
+    };
+
+    MapVersion m_map_version;
     RunState m_run;
     std::optional<int> m_current_floor;
     ResourceRegistry m_resources;

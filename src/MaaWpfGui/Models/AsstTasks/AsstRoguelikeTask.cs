@@ -1,6 +1,6 @@
 // <copyright file="AsstRoguelikeTask.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -25,6 +25,11 @@ namespace MaaWpfGui.Models.AsstTasks;
 /// </summary>
 public class AsstRoguelikeTask : AsstBaseTask
 {
+    // 满天赋机械师自带结构性原理的开局组合，与黑流策略 mechanic_flight 模块的条件一致
+    public const string BlackFlowFlightSquad = "特勤分队";
+    public const string BlackFlowFlightRoles = "稳扎稳打";
+    public const string BlackFlowFlightCoreChar = "机械师";
+
     public override AsstTaskType TaskType => AsstTaskType.Roguelike;
 
     /// <summary>
@@ -186,6 +191,43 @@ public class AsstRoguelikeTask : AsstBaseTask
     public RoguelikeBlackFlowCultivationTarget BlackFlowCultivationTarget { get; set; } = RoguelikeBlackFlowCultivationTarget.Cat;
 
     /// <summary>
+    /// Gets or sets 刷等级的目标结局
+    /// </summary>
+    public RoguelikeBlackFlowEnding BlackFlowEnding { get; set; } = RoguelikeBlackFlowEnding.Ending1;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether 刷等级时用机械师快速飞三层
+    /// </summary>
+    public bool BlackFlowFastFlight { get; set; }
+
+    /// <summary>
+    /// Gets or sets 刷开局要求的两只襁褓动物
+    /// </summary>
+    public RoguelikeBlackFlowStartAnimal BlackFlowStartAnimal1 { get; set; } = RoguelikeBlackFlowStartAnimal.None;
+
+    public RoguelikeBlackFlowStartAnimal BlackFlowStartAnimal2 { get; set; } = RoguelikeBlackFlowStartAnimal.None;
+
+    /// <summary>
+    /// Gets or sets 刷开局的期望奖励
+    /// </summary>
+    public RoguelikeBlackFlowStartReward BlackFlowStartRewards { get; set; } = RoguelikeBlackFlowStartReward.None;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether 刷开局的准备局固定用满天赋机械师开局快速飞三层
+    /// </summary>
+    public bool BlackFlowStartRunFastFlight { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether 刷开局的目标局凹第一层实托邦
+    /// </summary>
+    public bool BlackFlowStartUtopia { get; set; }
+
+    /// <summary>
+    /// Gets or sets 凹第一层实托邦时目标局的支援选取顺序
+    /// </summary>
+    public List<RoguelikeBlackFlowStartReward> BlackFlowStartRewardPriority { get; set; } = [];
+
+    /// <summary>
     /// Gets or sets a value indicating whether 是否在五层BOSS前停下来
     /// </summary>
     public bool StopAtFinalBoss { get; set; }
@@ -211,17 +253,69 @@ public class AsstRoguelikeTask : AsstBaseTask
             ["investment_enabled"] = InvestmentEnabled,
         };
 
-        if (Theme == RoguelikeTheme.BlackFlow && Mode == RoguelikeMode.BlackFlowBabyAnimal)
+        // 快速飞三层：分队、职业组和开局干员换成满天赋机械师的固定开局，沿用 Core 刷等级的默认策略。
+        // 不勾选就按目标结局打，开局配置即使是这套组合也不飞。
+        var expFlight = Theme == RoguelikeTheme.BlackFlow && Mode == RoguelikeMode.Exp && BlackFlowFastFlight;
+        if (Theme == RoguelikeTheme.BlackFlow && Mode == RoguelikeMode.Exp && !BlackFlowFastFlight)
         {
-            taskParams["blackflow_strategy"] = "baby_animal";
-            taskParams["blackflow_cultivation_target"] = BlackFlowCultivationTarget switch
+            taskParams["blackflow_strategy"] = BlackFlowEnding switch
             {
-                RoguelikeBlackFlowCultivationTarget.Cat => "swaddled_cat",
-                RoguelikeBlackFlowCultivationTarget.FeatheredSerpent => "swaddled_feathered_serpent",
-                RoguelikeBlackFlowCultivationTarget.Dog => "swaddled_dog",
-                RoguelikeBlackFlowCultivationTarget.Cerberus => "swaddled_cerberus",
-                _ => "swaddled_cat",
+                RoguelikeBlackFlowEnding.Ending2 => "ending2",
+                RoguelikeBlackFlowEnding.Ending3 => "ending3",
+                _ => "ending1",
             };
+        }
+
+        // 准备局快速飞三层：准备局的分队、职业组和开局干员换成满天赋机械师的固定开局，只招机械师，其余开局招募由 Core 放弃。
+        // 凹第一层实托邦的目标局要开局进第一层，用常规设置的职业组和开局干员，所以准备局的另外传。
+        var startRunFlight = Theme == RoguelikeTheme.BlackFlow && Mode == RoguelikeMode.BlackFlowStartRun && BlackFlowStartRunFastFlight;
+        if (Theme == RoguelikeTheme.BlackFlow && Mode == RoguelikeMode.BlackFlowStartRun)
+        {
+            var animals = new[] { BlackFlowStartAnimal1, BlackFlowStartAnimal2 }
+                .Where(animal => animal != RoguelikeBlackFlowStartAnimal.None).ToArray();
+            var hasSerpent = animals.Contains(RoguelikeBlackFlowStartAnimal.FeatheredSerpent);
+            var rewards = hasSerpent ? BlackFlowStartRewards : BlackFlowStartRewards & ~RoguelikeBlackFlowStartReward.SerpentRewards;
+            taskParams["blackflow_start_animals"] = new JArray(animals.Select(animal => animal switch
+            {
+                RoguelikeBlackFlowStartAnimal.Cat => "swaddled_cat",
+                RoguelikeBlackFlowStartAnimal.Dog => "swaddled_dog",
+                RoguelikeBlackFlowStartAnimal.Cerberus => "swaddled_cerberus",
+                RoguelikeBlackFlowStartAnimal.FeatheredSerpent => "swaddled_feathered_serpent",
+                _ => throw new System.ArgumentOutOfRangeException(nameof(animal)),
+            }));
+            taskParams["blackflow_start_rewards"] = (int)rewards;
+            taskParams["collectible_mode_squad"] = startRunFlight ? BlackFlowFlightSquad : CollectibleModeSquad;
+            if (startRunFlight)
+            {
+                taskParams["collectible_mode_roles"] = BlackFlowFlightRoles;
+                taskParams["collectible_mode_core_char_list"] = new JArray(new JObject
+                {
+                    ["name"] = BlackFlowFlightCoreChar,
+                    ["use_support"] = false,
+                });
+            }
+
+            if (BlackFlowStartUtopia)
+            {
+                taskParams["blackflow_start_utopia"] = true;
+                taskParams["blackflow_start_reward_priority"] = new JArray(BlackFlowStartRewardPriority
+                    .Select(reward => reward switch
+                    {
+                        RoguelikeBlackFlowStartReward.UnnumberedItem => "unnumbered_item",
+                        RoguelikeBlackFlowStartReward.SurveyAdvance => "survey_advance",
+                        RoguelikeBlackFlowStartReward.SpaceLease => "space_lease",
+                        RoguelikeBlackFlowStartReward.RegressionCompensation => "regression_compensation",
+                        RoguelikeBlackFlowStartReward.ForestRide => "forest_ride",
+                        RoguelikeBlackFlowStartReward.NestParasitism => "nest_parasitism",
+                        RoguelikeBlackFlowStartReward.Pegasus => "pegasus",
+                        RoguelikeBlackFlowStartReward.Hippogriff => "hippogriff",
+                        RoguelikeBlackFlowStartReward.Dragon => "dragon",
+                        RoguelikeBlackFlowStartReward.Hydra => "hydra",
+                        RoguelikeBlackFlowStartReward.BaiZe => "bai_ze",
+                        RoguelikeBlackFlowStartReward.GoldenCrow => "golden_crow",
+                        _ => throw new System.ArgumentOutOfRangeException(nameof(reward)),
+                    }));
+            }
         }
 
         if (InvestmentEnabled)
@@ -231,19 +325,30 @@ public class AsstRoguelikeTask : AsstBaseTask
             taskParams["stop_when_investment_full"] = InvestmentStopWhenFull;
         }
 
-        if (Squad.Length > 0)
+        if (expFlight)
+        {
+            taskParams["squad"] = BlackFlowFlightSquad;
+        }
+        else if (Squad.Length > 0)
         {
             taskParams["squad"] = Squad;
         }
 
-        if (Roles.Length > 0)
+        if (expFlight)
+        {
+            taskParams["roles"] = BlackFlowFlightRoles;
+        }
+        else if (Roles.Length > 0)
         {
             taskParams["roles"] = Roles;
         }
 
-        if (CoreCharList.Count > 0)
+        List<AsstRoguelikeCoreChar> coreCharList = expFlight
+            ? [new() { Name = BlackFlowFlightCoreChar, UseSupport = false }]
+            : CoreCharList;
+        if (coreCharList.Count > 0)
         {
-            taskParams["core_char_list"] = new JArray(CoreCharList.Select(i => new JObject
+            taskParams["core_char_list"] = new JArray(coreCharList.Select(i => new JObject
             {
                 ["name"] = i.Name,
                 ["use_support"] = i.UseSupport,

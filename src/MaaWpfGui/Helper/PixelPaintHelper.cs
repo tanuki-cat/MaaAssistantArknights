@@ -1,6 +1,6 @@
 // <copyright file="PixelPaintHelper.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -111,7 +111,7 @@ public static class PixelPaintHelper
         public double SaturationPercent { get; init; } = 100;
 
         /// <summary>
-        /// 取景区：相对「去边后内容图」的归一化矩形（0~1）。
+        /// 取景区：相对 ｢去边后内容图｣ 的归一化矩形（0~1）。
         /// null 表示用完整去边结果再按 Fit 适配。
         /// </summary>
         public Rect? ContentViewNormalized { get; init; }

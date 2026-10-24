@@ -650,88 +650,8 @@
         "roi": [472, 0, 793, 502]
     },
     "CharsNameOcrReplace": {
-        "algorithm": "OcrDetect",
-        "text": [],
-        "Doc": "该任务的 ocrReplace 被所有涉及干员名的识别任务复用",
-        "fullMatch": true,
-        "ocrReplace": [
-            ["^(?:[<4~]|《|。ぐ)+", ""],
-            ["^c(?!ast)", ""],
-            ["^\\^一", ""],
-            ["^[_<>]*(?=.)", ""],
-            ["[_<>]*$", ""],
-            [".*弦惊.*", "“弦惊”"],
-            [".*亚梅塔", "菲亚梅塔"],
-            [".*逍遥.*", "“逍遥”"],
-            [".*清平.*", "“清平”"],
-            [".*打字机.*", "“打字机”"],
-            [".*耀阳.*", "“耀阳”"],
-            ["玛恩.*", "玛恩纳"],
-            [".*默德克萨.*", "缄默德克萨斯"],
-            [".*芜拉普兰.*", "荒芜拉普兰德"],
-            ["^持克诺$", "特克诺"],
-            ["^重岳.+", "重岳"],
-            ["(麒.+夜刀|.*麟.*夜刀)$", "麒麟R夜刀"],
-            [".*龙.*黑角$", "火龙S黑角"],
-            ["[Uu]-[O0o]f{1,2}icial", "U-Official"],
-            [".*威龙陈", "假日威龙陈"],
-            ["青积", "青枳"],
-            [".*烬艾雅法.*", "纯烬艾雅法拉"],
-            ["^[委泰黍]$", "黍"],
-            ["^[H夕]$", "夕"],
-            ["12E", "12F"],
-            ["归.*幽灵鲨", "归溟幽灵鲨"],
-            ["(临六$|^临光.*)", "临光"],
-            [".*甜蜜狂搅.*", "“甜蜜狂搅”"],
-            ["^尖端研究成果共享.*", "尖端研究成果共享终端"],
-            ["^w$", "W"],
-            ["维获", "维荻"],
-            [".*ancet-2", "Lancet-2"],
-            ["[CcOo0]ast.*le-3", "Castle-3"],
-            ["phonoR-0", "PhonoR-0"],
-            [".*HRM-EX$", "THRM-EX"],
-            ["[EF]riston-3", "Friston-3"],
-            [".*心斯卡蒂$", "浊心斯卡蒂"],
-            ["^预备干员-近.*", "预备干员-近战"],
-            ["^预备干员-术.*", "预备干员-术师"],
-            ["^预备干员-后.*", "预备干员-后勤"],
-            ["^预备干员-狙.*", "预备干员-狙击"],
-            ["^预备干员-重.*", "预备干员-重装"],
-            ["^折光.*", "折光"],
-            ["^红集$", "红隼"],
-            ["小.?满", "小满"],
-            [".*夹子.*", "“夹子”"],
-            ["应泡普卡", "泡普卡"],
-            ["特米米.+", "特米米"],
-            ["崖心.+", "崖心"],
-            [".*芙利特$", "伊芙利特"],
-            ["^提非$", "提丰"],
-            ["^华琳$", "华法琳"],
-            ["^宝箱的肉.*", "宝箱的肉？"],
-            [".*维多利亚$", "维娜·维多利亚"],
-            ["^盥心$", "塑心"],
-            ["^(钳|钥)铅$", "钼铅"],
-            ["^墨键$", "黑键"],
-            ["^灰亳$", "灰毫"],
-            ["^野鬘$", "野鬃"],
-            [".*NFESS-47$", "CONFESS-47"],
-            ["^焰影苇.*", "焰影苇草"],
-            ["Miss[.\\-][Cc]hristine", "Miss.Christine"],
-            ["^野.{0,2}$", "野鬃"],
-            ["^(“|”|\\\\|\")?斩(“|”|\\\\|\")?$", "“斩”"],
-            ["八.*海铃", "八幡海铃"],
-            [".*英调香师", "撷英调香师"],
-            ["矿石.*杀手.*", "矿石“杀手”"],
-            [".*涤火杰西卡", "涤火杰西卡"],
-            ["GALLU.*", "GALLUS²"],
-            ["凯尔希.*思衡托", "凯尔希·思衡托"],
-            [".*反壳龟$", "御龙：反壳龟"],
-            [".*影丝蛛$", "御龙：影丝蛛"],
-            [".*岩甲兽$", "御龙：岩甲兽"],
-            [".*雷狼龙$", "御龙：雷狼龙"],
-            ["^折娅$", "折桠"],
-            ["^埃[癸类奖突]?斯$", "埃癸斯"]
-        ]
+        "Doc": "该任务的 ocrReplace 被所有涉及干员名的识别任务复用；数据体在 tasks/hotfix/ocr_replace.json（CharsNameOcrReplaceHotfix），随资源更新分发",
+        "baseTask": "CharsNameOcrReplaceHotfix"
     },
     "SwitchAccount@StartUpBegin": {
         "next": [
@@ -751,11 +671,23 @@
         "action": "ClickSelf",
         "roi": [20, 15, 55, 50],
         "maxTimes": 1,
-        "next": ["UserCenter", "ExitOld"]
+        "next": ["AccountLogout", "UserCenter", "ExitOld"]
+    },
+    "AccountLogout": {
+        "Doc": "设置页左栏 ｢账号登出｣",
+        "action": "ClickSelf",
+        "roi": [40, 610, 66, 75],
+        "next": ["AccountLogoutConfirm", "AccountLogout"]
+    },
+    "AccountLogoutConfirm": {
+        "Doc": "｢即将返回登录界面，是否继续？｣ 确认",
+        "baseTask": "LogoutConfirm",
+        "template": "PopupConfirm.png",
+        "roi": [630, 445, 650, 95]
     },
     "UserCenter": {
         "action": "ClickSelf",
-        "roi": [50, 470, 50, 75],
+        "roi": [42, 522, 63, 75],
         "next": ["Logout", "LogoutOCR"]
     },
     "Logout": {
@@ -801,7 +733,7 @@
     },
     "AccountManager": {
         "action": "ClickSelf",
-        "roi": [855, 660, 150, 40],
+        "roi": [693, 655, 310, 54],
         "next": ["LoginOther"]
     },
     "LoginOther": {
@@ -1035,7 +967,7 @@
     },
     "LoadingText": {
         "algorithm": "OcrDetect",
-        "text": ["正在提交", "反馈至神经"],
+        "text": ["在提交", "至神经"],
         "roi": [700, 600, 300, 120],
         "next": ["LoadingText", "LoadingTextPostDelay"]
     },
@@ -1203,7 +1135,8 @@
             "(Fight@GoLastBattle)@QuickSwitch@ToTerminal#next",
             "Fight@ReturnButtons#next",
             "Fight",
-            "Fight@CloseAnnos#next"
+            "Fight@CloseAnnos#next",
+            "Fight@OfflineConfirm"
         ]
     },
     "FightBegin": {
@@ -1214,7 +1147,8 @@
             "Fight@UsePrts",
             "Fight@UsePrts-StageSN",
             "Fight@StartButton1",
-            "Fight@PRTS#next"
+            "Fight@PRTS#next",
+            "Fight@OfflineConfirm"
         ]
     },
     "LastOrCurBattleBegin": {
@@ -1228,7 +1162,8 @@
             "Fight@ReturnButtons#next",
             "Fight",
             "Fight@CloseAnnos#next",
-            "Fight@PRTS#next"
+            "Fight@PRTS#next",
+            "Fight@OfflineConfirm"
         ]
     },
     "UsePrts": {
@@ -1486,7 +1421,7 @@
         "doc": "跳过可能出现的等级提升界面。另外还有个金圈升级动画的界面，可能还需要一次点击。很难验证，先把这个页面点了",
         "action": "ClickSelf",
         "roi": [1000, 250, 270, 200],
-        "next": ["AnnihilationPrtsRecordConfirm", "EndOfActionAnnihilation", "EndOfAction"]
+        "next": ["AnnihilationPrtsRecordConfirm", "EndOfActionAnnihilation", "EndOfAction", "ClickCornerAfterPRTS"]
     },
     "ClickCornerAfterPRTS": {
         "algorithm": "JustReturn",
@@ -1848,7 +1783,8 @@
             "MiningActivitiesReturnHome",
             "MiningActivitiesReturnHome@QuickSwitch@ToHome#next",
             "MiningActivitiesReturnHome@ReturnButtons#next",
-            "MiningActivities"
+            "MiningActivities",
+            "MiningActivities@OfflineConfirm"
         ]
     },
     "MiningActivitiesReturnHome": {
@@ -1871,10 +1807,9 @@
         "postDelay": 6000
     },
     "MiningActivitiesEarnRewards": {
-        "algorithm": "JustReturn",
-        "action": "ClickRect",
-        "specificRect": [600, 600, 70, 70],
-        "next": ["MiningActivitiesReturn"]
+        "baseTask": "CreditShop-Bought",
+        "template": "CreditShop-Bought.png",
+        "next": ["#self", "MiningActivitiesReturn"]
     },
     "MiningActivitiesReturn": {
         "baseTask": "CloseAnno",
@@ -1888,7 +1823,8 @@
             "OrundumActivitiesReturnHome",
             "OrundumActivitiesReturnHome@QuickSwitch@ToHome#next",
             "OrundumActivitiesReturnHome@ReturnButtons#next",
-            "OrundumActivities"
+            "OrundumActivities",
+            "OrundumActivities@OfflineConfirm"
         ]
     },
     "OrundumActivitiesReturnHome": {
@@ -1943,10 +1879,8 @@
         "next": ["OrundumActivitiesEarnRewards"]
     },
     "OrundumActivitiesEarnRewards": {
-        "action": "ClickRect",
-        "roi": [590, 40, 130, 100],
-        "postDelay": 1500,
-        "specificRect": [600, 600, 70, 70],
+        "baseTask": "CreditShop-Bought",
+        "template": "CreditShop-Bought.png",
         "next": ["#self", "OrundumActivitiesReturn"]
     },
     "OrundumActivitiesReturn": {
@@ -1961,7 +1895,8 @@
             "RecruitingActivitiesReturnHome",
             "RecruitingActivitiesReturnHome@QuickSwitch@ToHome#next",
             "RecruitingActivitiesReturnHome@ReturnButtons#next",
-            "RecruitingActivities"
+            "RecruitingActivities",
+            "RecruitingActivities@OfflineConfirm"
         ]
     },
     "RecruitingActivitiesReturnHome": {
@@ -2056,7 +1991,8 @@
             "SpecialAccessActivitiesReturnHome",
             "SpecialAccessActivitiesReturnHome@QuickSwitch@ToHome#next",
             "SpecialAccessActivitiesReturnHome@ReturnButtons#next",
-            "SpecialAccessActivities"
+            "SpecialAccessActivities",
+            "SpecialAccessActivities@OfflineConfirm"
         ]
     },
     "SpecialAccessActivitiesReturnHome": {
@@ -2083,11 +2019,9 @@
         "next": ["SpecialAccessActivitiesEarnRewards"]
     },
     "SpecialAccessActivitiesEarnRewards": {
-        "algorithm": "JustReturn",
-        "action": "ClickRect",
-        "specificRect": [606, 609, 68, 63],
-        "postDelay": 500,
-        "next": ["SpecialAccessActivitiesReturn"]
+        "baseTask": "CreditShop-Bought",
+        "template": "CreditShop-Bought.png",
+        "next": ["#self", "SpecialAccessActivitiesReturn"]
     },
     "SpecialAccessActivitiesReturn": {
         "baseTask": "CloseAnnoSpecialAccess",
@@ -2104,7 +2038,8 @@
             "SignInEventReturnHome@QuickSwitch@ToHome#next",
             "SignInEventReturnHome@ReturnButtons#next",
             "SignInEventEnter",
-            "SignInEventEnterByIcon"
+            "SignInEventEnterByIcon",
+            "OfflineConfirm"
         ]
     },
     "SignInEventReturnHome": {
@@ -2209,7 +2144,8 @@
             "Award",
             "AwardBegin@QuickSwitch@ToHome#next",
             "Award@ReturnButtons#next",
-            "Award@CloseAnnos#next"
+            "Award@CloseAnnos#next",
+            "Award@OfflineConfirm"
         ]
     },
     "Award": {
@@ -2263,7 +2199,8 @@
             "MailReturnToHome",
             "MailReturnToHome@QuickSwitch@ToHome#next",
             "MailReturnToHome@ReturnButtons#next",
-            "ReceiveMail"
+            "ReceiveMail",
+            "Mail@OfflineConfirm"
         ]
     },
     "MailReturnToHome": {
@@ -2312,7 +2249,8 @@
             "VisitNextBlack",
             "VisitBegin@QuickSwitch@ToHome#next",
             "Visit@ReturnButtons#next",
-            "Visit@CloseAnnos#next"
+            "Visit@CloseAnnos#next",
+            "Visit@OfflineConfirm"
         ]
     },
     "Visit": {
@@ -2381,7 +2319,8 @@
             "Mall#next",
             "MallBegin@QuickSwitch@ToMall#next",
             "Mall@ReturnButtons#next",
-            "Mall@CloseAnnos#next"
+            "Mall@CloseAnnos#next",
+            "Mall@OfflineConfirm"
         ]
     },
     "Mall": {
@@ -2924,6 +2863,21 @@
         "roi": [74, 11, 5, 12],
         "roi_Doc": "最小视图训练室第3级标记区域（相对于设施匹配区域）"
     },
+    "InfrastInfoMiniRecycleLevel1": {
+        "algorithm": "JustReturn",
+        "roi": [63, 11, 5, 12],
+        "roi_Doc": "最小视图回收站第1级标记区域（相对于设施匹配区域，与训练室布局一致）"
+    },
+    "InfrastInfoMiniRecycleLevel2": {
+        "algorithm": "JustReturn",
+        "roi": [68, 11, 5, 12],
+        "roi_Doc": "最小视图回收站第2级标记区域（相对于设施匹配区域）"
+    },
+    "InfrastInfoMiniRecycleLevel3": {
+        "algorithm": "JustReturn",
+        "roi": [74, 11, 5, 12],
+        "roi_Doc": "最小视图回收站第3级标记区域（相对于设施匹配区域）"
+    },
     "InfrastInfoZoomOutPointer0": {
         "algorithm": "JustReturn",
         "action": "Swipe",
@@ -2974,7 +2928,7 @@
     },
     "InfrastReward": {
         "algorithm": "OcrDetect",
-        "text": ["可收获", "订单交付", "员信赖"],
+        "text": ["可收获", "订单交付", "员信赖", "材料产出"],
         "action": "ClickSelf",
         "roi": [0, 600, 800, 118],
         "postDelay": 1000,
@@ -3071,7 +3025,15 @@
         "action": "ClickSelf",
         "roi": [882, 128, 165, 149],
         "postDelay": 1000,
-        "next": ["ReplenishToMaxConfirm", "Stop"]
+        "next": ["ReplenishToMaxConfirm", "ReplenishToMaxConfirmWait"]
+    },
+    "ReplenishToMaxConfirmWait": {
+        "Doc": "｢执行更改?｣ 确认按钮有弹出动画，没等到就直接 Stop 会留下未执行的制造计划，切换设施时被 ｢尚未执行新的制造计划｣ 弹窗卡住；已是最多份数时不会弹出确认，等满次数后 Stop",
+        "algorithm": "JustReturn",
+        "postDelay": 500,
+        "maxTimes": 2,
+        "next": ["ReplenishToMaxConfirm", "ReplenishToMaxConfirmWait"],
+        "exceededNext": ["Stop"]
     },
     "ReplenishToMaxConfirm": {
         "action": "ClickSelf",
@@ -3161,6 +3123,10 @@
             [
                 [225, 174, 0],
                 [255, 234, 30]
+            ],
+            [
+                [225, 174, 40],
+                [255, 234, 100]
             ]
         ],
         "templThreshold": 0.95,
@@ -3176,6 +3142,10 @@
             [
                 [225, 174, 0],
                 [255, 234, 30]
+            ],
+            [
+                [225, 174, 40],
+                [255, 234, 100]
             ]
         ],
         "templThreshold": 0.95,
@@ -3190,6 +3160,10 @@
             [
                 [21, 174, 225],
                 [81, 234, 255]
+            ],
+            [
+                [50, 150, 225],
+                [150, 234, 255]
             ]
         ],
         "templThreshold": 0.95,
@@ -3204,6 +3178,10 @@
             [
                 [21, 174, 225],
                 [81, 234, 255]
+            ],
+            [
+                [50, 150, 225],
+                [150, 234, 255]
             ]
         ],
         "templThreshold": 0.95,
@@ -3253,7 +3231,7 @@
     "InfrastOffice": {
         "template": "Office.png",
         "maskRange": [1, 255],
-        "roi": [378, 94, 900, 529],
+        "roi": [378, 94, 900, 586],
         "templThreshold": 0.95
     },
     "InfrastOfficeMini": {
@@ -3264,7 +3242,7 @@
     },
     "InfrastProcessing": {
         "maskRange": [1, 255],
-        "roi": [378, 94, 900, 529],
+        "roi": [378, 94, 900, 586],
         "templThreshold": 0.95
     },
     "InfrastProcessingMini": {
@@ -3282,7 +3260,7 @@
     "InfrastReception": {
         "template": "Reception.png",
         "maskRange": [1, 255],
-        "roi": [378, 94, 900, 529],
+        "roi": [378, 94, 900, 586],
         "templThreshold": 0.95
     },
     "InfrastReceptionMini": {
@@ -3361,11 +3339,23 @@
     "InfrastTraining": {
         "template": "Training.png",
         "maskRange": [1, 255],
-        "roi": [378, 94, 900, 529],
+        "roi": [378, 94, 900, 586],
         "templThreshold": 0.95
     },
     "InfrastTrainingMini": {
         "template": "TrainingMini.png",
+        "maskRange": [1, 255],
+        "roi": [627, 160, 653, 404],
+        "templThreshold": 0.95
+    },
+    "InfrastRecycle": {
+        "template": "Recycle.png",
+        "maskRange": [1, 255],
+        "roi": [378, 94, 900, 586],
+        "templThreshold": 0.95
+    },
+    "InfrastRecycleMini": {
+        "template": "RecycleMini.png",
         "maskRange": [1, 255],
         "roi": [627, 160, 653, 404],
         "templThreshold": 0.95
@@ -3562,7 +3552,7 @@
     "InfrastFilterMenuAllButtonGone": {
         "baseTask": "InfrastFilterMenuAllButton",
         "action": "DoNothing",
-        "Doc": "点击“全部”后，通过检测“全部”是否仍可见判断菜单是否还打开；仍可见则补点，消失则认为取消完成。",
+        "Doc": "点击 ｢全部｣ 后，通过检测 ｢全部｣ 是否仍可见判断菜单是否还打开；仍可见则补点，消失则认为取消完成。",
         "postDelay": 300,
         "next": ["InfrastFilterMenuAllButton"],
         "onErrorNext": ["Stop"]
@@ -3628,6 +3618,15 @@
     "InfrastEnterFacility": {
         "algorithm": "JustReturn",
         "postDelay": 2000
+    },
+    "InfrastUnexecutedPlanLeaveConfirm": {
+        "Doc": "上一个设施留有未执行的制造计划时，切换设施会弹出 ｢尚未执行新的制造计划，是否确认离开设施｣ ，点右侧 ✔ 确认离开（放弃未执行的修改）",
+        "algorithm": "OcrDetect",
+        "text": ["尚未执行", "确认离开设施"],
+        "roi": [340, 290, 600, 70],
+        "action": "ClickRect",
+        "specificRect": [760, 465, 160, 55],
+        "postDelay": 1000
     },
     "InfrastFacilityListTabMfg": {
         "template": "FacilityListTabMfg.png",
@@ -3963,7 +3962,7 @@
     "EndOfClueExchangeBegin": {
         "algorithm": "JustReturn",
         "postDelay": 1000,
-        "next": ["EndOfClueExchange", "ReceptionFlag"]
+        "next": ["EndOfClueExchange", "ReceptionFlag", "EndOfClueExchange@OfflineConfirm"]
     },
     "EndOfClueExchange": {
         "templThreshold": 0.7,
@@ -4116,6 +4115,33 @@
         "specificRect": [145, 148, 142, 122],
         "postDelay": 800
     },
+    "InfrastTrainingAssistantConfirm": {
+        "baseTask": "InfrastDormConfirmButton",
+        "next": [
+            "InfrastTrainingAssistantConfirmWait",
+            "InfrastTrainingAssistantDoubleConfirm",
+            "InfrastTrainingMasteryPage"
+        ],
+        "doc": "训练室协助者确认：复用宿舍确认按钮，确认后沿等待/冲突确认链回到专精页"
+    },
+    "InfrastTrainingAssistantConfirmWait": {
+        "baseTask": "LoadingText",
+        "postDelay": 500,
+        "next": [
+            "InfrastTrainingAssistantConfirmWait",
+            "InfrastTrainingAssistantDoubleConfirm",
+            "InfrastTrainingMasteryPage"
+        ]
+    },
+    "InfrastTrainingAssistantDoubleConfirm": {
+        "baseTask": "InfrastDormDoubleConfirmButton",
+        "template": "InfrastOperConflictConfirm.png",
+        "next": [
+            "InfrastTrainingAssistantConfirmWait",
+            "InfrastTrainingAssistantDoubleConfirm",
+            "InfrastTrainingMasteryPage"
+        ]
+    },
     "InfrastTrainingProcessing": {
         "baseTask": "InfrastTrainingIdle",
         "text": ["进度"]
@@ -4129,7 +4155,7 @@
     },
     "InfrastTrainingCompleted2": {
         "action": "ClickSelf",
-        "roi": [1087, 779, 226, 174],
+        "roi": [725, 510, 155, 149],
         "postDelay": 600,
         "next": ["InfrastTrainingMasteryPage", "InfrastTrainingCompleted2"]
     },
@@ -4229,19 +4255,8 @@
         "postDelay": 500
     },
     "BattleStageName": {
-        "algorithm": "OcrDetect",
-        "text": [],
-        "roi": [250, 435, 800, 100],
-        "ocrReplace": [
-            [".*前顾后", "瞻前顾后"],
-            [".*命运的宠儿.*", "“命运的宠儿”"],
-            [".*骑士对决.*", "“骑士对决”"],
-            ["巍峨银.*", "巍峨银凇"],
-            ["猩红.*道", "猩红甬道"],
-            [".*之以利", "啖之以利"],
-            ["((睁)|(峰))蝶战功", "峥嵘战功"],
-            ["夕娅忆", "夕娥忆"]
-        ]
+        "Doc": "结算界面关卡名识别；ocrReplace 与 roi 数据体在 tasks/hotfix/ocr_replace.json（BattleStageNameHotfix），随资源更新分发",
+        "baseTask": "BattleStageNameHotfix"
     },
     "BattleSelectFormation1": {
         "algorithm": "JustReturn",
@@ -4292,7 +4307,27 @@
     "BattleQuickFormationExpandRole": {
         "action": "ClickSelf",
         "roi": [1152, 0, 128, 138],
-        "next": ["Stop"]
+        "next": ["BattleQuickFormationRoleExpanded"]
+    },
+    "BattleQuickFormationExpandRoleFiltering": {
+        "doc": "筛选职业的情况下, 展开职业筛选",
+        "baseTask": "BattleQuickFormationRoleFiltering",
+        "template": "BattleQuickFormationRoleFiltering.png",
+        "action": "ClickSelf",
+        "next": ["BattleQuickFormationRoleExpanded"]
+    },
+    "BattleQuickFormationRoleExpanded": {
+        "doc": "职业筛选已展开",
+        "baseTask": "BattleQuickFormationRoleFiltering",
+        "template": "BattleQuickFormationCollapseRole.png",
+        "action": "DoNothing",
+        "next": []
+    },
+    "BattleQuickFormationCollapseRole": {
+        "doc": "收起职业筛选",
+        "action": "ClickSelf",
+        "roi": [1152, 0, 128, 138],
+        "next": ["BattleQuickFormationRoleFiltering"]
     },
     "BattleQuickFormationRole": {
         "Doc": "base_task",
@@ -4304,6 +4339,10 @@
         "colorScales": [[90, 150]],
         "colorWithClose": false,
         "next": ["Stop"]
+    },
+    "BattleQuickFormationRoleFiltering": {
+        "doc": "筛选了任意职业/子职业",
+        "roi": [1152, 0, 128, 138]
     },
     "BattleQuickFormationFilter": {
         "action": "ClickSelf",
@@ -4355,7 +4394,8 @@
     "BattleQuickFormationRole-All-OCR": {
         "baseTask": "BattleQuickFormationRole-All",
         "algorithm": "OcrDetect",
-        "text": ["ALL"]
+        "text": ["ALL"],
+        "ocrReplace": [["^A[LlI1\\[]{2}$", "ALL"]]
     },
     "BattleQuickFormationRole-Pioneer": {
         "baseTask": "BattleQuickFormationRole"
@@ -4964,24 +5004,8 @@
         "template": "items/act24side_melding_6.png"
     },
     "NumberOcrReplace": {
-        "algorithm": "OcrDetect",
-        "isAscii": true,
-        "text": [],
-        "ocrReplace": [
-            ["[Oo]", "0"],
-            ["[Ii]", "1"],
-            ["[Ll]", "1"],
-            ["[\\{\\}\\[\\]]", "1"],
-            ["B", "8"],
-            ["台", "8"],
-            ["十", "+"],
-            ["萬", "万"],
-            ["만", "万"],
-            ["億", "亿"],
-            ["억", "亿"],
-            ["^\\.", ""],
-            [" ", ""]
-        ]
+        "Doc": "数字识别纠错，被所有涉及数字的识别任务复用；数据体在 tasks/hotfix/ocr_replace.json（NumberOcrReplaceHotfix），随资源更新分发",
+        "baseTask": "NumberOcrReplaceHotfix"
     },
     "StageDrops-Difficulty-Tough": {
         "templThreshold": 0.6,
@@ -5025,7 +5049,8 @@
             "DepotAllTab",
             "DepotMaterialTabClicked",
             "DepotBegin@QuickSwitch@ToHome#next",
-            "Depot@ReturnButtons#next"
+            "Depot@ReturnButtons#next",
+            "Depot@OfflineConfirm"
         ]
     },
     "Depot": {
@@ -5107,8 +5132,10 @@
             "OperBoxRoleTabSelect",
             "OperBoxSortTabSelect",
             "OperBoxRoleTab",
+            "OperBoxRoleTabCollapsed",
             "OperBoxBegin@QuickSwitch@ToOperBox#next",
-            "OperBox@ReturnButtons#next"
+            "OperBox@ReturnButtons#next",
+            "OperBox@OfflineConfirm"
         ]
     },
     "OperBox": {
@@ -5118,10 +5145,16 @@
         "sub": ["OperBox-Entry"],
         "next": ["OperBoxRoleTabSelect", "OperBoxSortTabSelect", "OperBoxRoleTab"]
     },
+    "OperBoxRoleTabCollapsed": {
+        "action": "ClickSelf",
+        "baseTask": "BattleQuickFormationRoleFiltering",
+        "template": "BattleQuickFormationRoleFiltering.png",
+        "next": ["OperBoxRoleTabSelect"]
+    },
     "OperBoxRoleTabSelect": {
         "action": "ClickSelf",
+        "baseTask": "BattleQuickFormationRoleExpanded",
         "template": "BattleQuickFormationCollapseRole.png",
-        "roi": [1152, 0, 128, 138],
         "next": ["OperBoxSortTabSelect", "OperBoxRoleTab"]
     },
     "OperBoxSortTabSelect": {
@@ -5197,7 +5230,7 @@
     },
     "OperParadoxBegin": {
         "algorithm": "JustReturn",
-        "next": ["OperOpenInformationMenu"],
+        "next": ["OperOpenInformationMenu", "OfflineConfirm"],
         "preDelay": 500,
         "postDelay": 500
     },
@@ -6218,7 +6251,7 @@
         "algorithm": "JustReturn",
         "action": "Swipe",
         "postDelay": 1500,
-        "specificRect": [957, 355, 20, 20],
+        "specificRect": [1057, 355, 20, 20],
         "rectMove": [286, 355, 20, 20],
         "specialParams": [400, 1, 2, 0],
         "maxTimes": 20
@@ -6348,7 +6381,7 @@
         "baseTask": "RecruitSkip",
         "template": ["RecruitSkip.png"],
         "reduceOtherTimes": ["OperProgress@EliteUpRecruitSkipWithoutButton*10"],
-        "next": ["OperProgress@EliteUpRecruitSkip", "RecruitSkipWithoutButton"]
+        "next": ["OperProgress@EliteUpRecruitSkip", "OperProgress@EliteUpRecruitSkipWithoutButton"]
     },
     "OperProgress@EliteUpRecruitSkipWithoutButton": {
         "baseTask": "RecruitSkipWithoutButton",
@@ -6448,6 +6481,7 @@
     "OperProgress@DualchipBadgeCount": {
         "baseTask": "NumberOcrReplace",
         "doc": "晋升页面芯片icon下方 x/y 的 x 段",
+        "binThreshold": [120, 255],
         "roi": [356, 658, 17, 26]
     },
     "OperProgress@MfgCatalystCount": {
@@ -6459,13 +6493,23 @@
         "roi": [485, 425, 84, 20]
     },
     "OperProgress@MfgCatalystMissing": {
-        "baseTask": "OperProgress@EliteUpMaterialMissing",
-        "template": "MaterialMissing.png"
+        "algorithm": "MatchTemplate",
+        "method": "HSVCount",
+        "template": "MfgCatalystMissing.png",
+        "pureColor": true,
+        "roi": [534, 89, 19, 151],
+        "colorScales": [
+            [
+                [0, 160, 100],
+                [3, 190, 135]
+            ]
+        ],
+        "doc": "制造站芯片列表首行芯片助剂不足时的深红色背景"
     },
     "OperProgress@ReturnToMfgPage": {
         "baseTask": "Return",
         "template": "Return.png",
-        "next": ["OperProgress@MfgPage", "OperProgress@ReturnToMfgPage"]
+        "next": ["ChooseChipTabSelected", "OperProgress@MfgPage", "OperProgress@ReturnToMfgPage"]
     },
     "OperProgress@SkillUpPage": {
         "baseTask": "OperProgress@SkillUpConfirm",
@@ -6532,20 +6576,10 @@
         "doc": "干员列表页职业栏收起且有筛选残留：右上角为职业名▼",
         "next": []
     },
-    "OperProgress@OperBoxRoleFilteredOpen": {
-        "algorithm": "OcrDetect",
-        "text": ["先锋", "近卫", "重装", "狙击", "术师", "医疗", "辅助", "特种"],
-        "roi": [1152, 0, 128, 138],
-        "action": "ClickSelf",
-        "postDelay": 500,
-        "doc": "点击筛选残留的职业名▼展开职业栏",
-        "next": []
-    },
     "OperProgress@OperBoxRoleBarOpened": {
-        "template": "BattleQuickFormationCollapseRole.png",
-        "roi": [1152, 0, 128, 138],
-        "action": "DoNothing",
         "doc": "干员列表页职业栏已展开：右上角为收起>",
+        "baseTask": "BattleQuickFormationRoleExpanded",
+        "template": "BattleQuickFormationCollapseRole.png",
         "next": []
     },
     "OperProgress@OperBoxSortTabs": {
@@ -6562,8 +6596,8 @@
         "roi": [570, 327, 519, 313],
         "rectMove": [314, 4, 84, 23],
         "postDelay": 1000,
-        "doc": "干员精英化第一个材料跳转加工站按钮，可能存在材料兑换券导致需要滑动后点击",
-        "next": ["MiniGame@MaterialSynthesis@Workshop", "OperProgress@EliteUpMaterial1JumpProcessingSwipe"]
+        "doc": "干员精英化第一个材料跳转加工站按钮",
+        "next": ["MiniGame@MaterialSynthesis@Workshop"]
     },
     "OperProgress@EliteUpMaterial1JumpProcessingSwipe": {
         "algorithm": "JustReturn",
@@ -6584,8 +6618,8 @@
         "baseTask": "OperProgress@EliteUpMaterial1JumpProcessing",
         "template": "QuickJumpProcessing.png",
         "roi": [76, 328, 519, 313],
-        "doc": "干员精英化第二个材料跳转加工站按钮，可能存在材料兑换券导致需要滑动后点击",
-        "next": ["MiniGame@MaterialSynthesis@Workshop", "OperProgress@EliteUpMaterial2JumpProcessingSwipe"]
+        "doc": "干员精英化第二个材料跳转加工站按钮",
+        "next": ["MiniGame@MaterialSynthesis@Workshop"]
     },
     "OperProgress@EliteUpMaterial2JumpProcessingSwipe": {
         "algorithm": "JustReturn",
@@ -6619,11 +6653,6 @@
         "roi": [1150, 349, 87, 91],
         "postDelay": 800
     },
-    "OperProgress@SkillMaterialMissing": {
-        "baseTask": "OperProgress@EliteUpMaterialMissing",
-        "template": "MaterialMissing.png",
-        "roi": [101, 1001, 713, 26]
-    },
     "OperProgress@SkillUpSkillSummaryRequired": {
         "baseTask": "OperProgress@EliteUpMaterialMissing",
         "template": "MaterialMissing.png",
@@ -6644,25 +6673,25 @@
     },
     "OperProgress@SkillUpMaterial0": {
         "baseTask": "OperProgress@Dualchip",
-        "specificRect": [319, 865, 75, 70],
+        "specificRect": [213, 577, 50, 47],
         "doc": "干员技能升级的技能书位置,用于开启和关闭跳转弹窗"
     },
     "OperProgress@SkillUpMaterial1": {
         "baseTask": "OperProgress@Dualchip",
-        "specificRect": [520, 862, 75, 70],
+        "specificRect": [347, 575, 50, 47],
         "doc": "干员技能升级的第一个材料位置,用于开启和关闭跳转弹窗"
     },
     "OperProgress@SkillUpMaterial2": {
         "baseTask": "OperProgress@Dualchip",
-        "specificRect": [721, 862, 75, 70],
+        "specificRect": [481, 575, 50, 47],
         "doc": "干员技能升级的第二个材料位置,用于开启和关闭跳转弹窗"
     },
     "OperProgress@SkillUpMaterial0JumpProcessing": {
         "baseTask": "OperProgress@EliteUpMaterial1JumpProcessing",
         "template": "QuickJumpProcessing.png",
         "roi": [279, 376, 539, 271],
-        "doc": "干员技能升级的技能书跳转加工站按钮，可能存在材料兑换券导致需要滑动后点击",
-        "next": ["MiniGame@MaterialSynthesis@Workshop", "OperProgress@SkillUpMaterial0JumpProcessingSwipe"]
+        "doc": "干员技能升级的技能书跳转加工站按钮",
+        "next": ["MiniGame@MaterialSynthesis@Workshop"]
     },
     "OperProgress@SkillUpMaterial0JumpProcessingSwipe": {
         "algorithm": "JustReturn",
@@ -6683,8 +6712,8 @@
         "baseTask": "OperProgress@EliteUpMaterial1JumpProcessing",
         "template": "QuickJumpProcessing.png",
         "roi": [417, 331, 539, 300],
-        "doc": "干员技能升级第一个材料跳转加工站按钮，可能存在材料兑换券导致需要滑动后点击",
-        "next": ["MiniGame@MaterialSynthesis@Workshop", "OperProgress@SkillUpMaterial1JumpProcessingSwipe"]
+        "doc": "干员技能升级第一个材料跳转加工站按钮",
+        "next": ["MiniGame@MaterialSynthesis@Workshop"]
     },
     "OperProgress@SkillUpMaterial1JumpProcessingSwipe": {
         "algorithm": "JustReturn",
@@ -6705,8 +6734,8 @@
         "baseTask": "OperProgress@EliteUpMaterial1JumpProcessing",
         "template": "QuickJumpProcessing.png",
         "roi": [555, 324, 539, 317],
-        "doc": "干员技能升级第二个材料跳转加工站按钮，可能存在材料兑换券导致需要滑动后点击",
-        "next": ["MiniGame@MaterialSynthesis@Workshop", "OperProgress@SkillUpMaterial2JumpProcessingSwipe"]
+        "doc": "干员技能升级第二个材料跳转加工站按钮",
+        "next": ["MiniGame@MaterialSynthesis@Workshop"]
     },
     "OperProgress@SkillUpMaterial2JumpProcessingSwipe": {
         "algorithm": "JustReturn",
@@ -6779,8 +6808,8 @@
         "baseTask": "OperProgress@EliteUpMaterial1JumpProcessing",
         "template": "QuickJumpProcessing.png",
         "roi": [415, 381, 539, 264],
-        "doc": "干员技能专精的技能书跳转加工站按钮，可能存在材料兑换券导致需要滑动后点击",
-        "next": ["MiniGame@MaterialSynthesis@Workshop", "OperProgress@MasteryMaterial0JumpProcessingSwipe"]
+        "doc": "干员技能专精的技能书跳转加工站按钮",
+        "next": ["MiniGame@MaterialSynthesis@Workshop"]
     },
     "OperProgress@MasteryMaterial0JumpProcessingSwipe": {
         "algorithm": "JustReturn",
@@ -6801,8 +6830,8 @@
         "baseTask": "OperProgress@EliteUpMaterial1JumpProcessing",
         "template": "QuickJumpProcessing.png",
         "roi": [559, 326, 539, 312],
-        "doc": "干员技能专精第一个材料跳转加工站按钮，可能存在材料兑换券导致需要滑动后点击",
-        "next": ["MiniGame@MaterialSynthesis@Workshop", "OperProgress@MasteryMaterial1JumpProcessingSwipe"]
+        "doc": "干员技能专精第一个材料跳转加工站按钮",
+        "next": ["MiniGame@MaterialSynthesis@Workshop"]
     },
     "OperProgress@MasteryMaterial1JumpProcessingSwipe": {
         "algorithm": "JustReturn",
@@ -6823,8 +6852,8 @@
         "baseTask": "OperProgress@EliteUpMaterial1JumpProcessing",
         "template": "QuickJumpProcessing.png",
         "roi": [68, 325, 539, 312],
-        "doc": "干员技能专精第二个材料跳转加工站按钮，可能存在材料兑换券导致需要滑动后点击",
-        "next": ["MiniGame@MaterialSynthesis@Workshop", "OperProgress@MasteryMaterial2JumpProcessingSwipe"]
+        "doc": "干员技能专精第二个材料跳转加工站按钮",
+        "next": ["MiniGame@MaterialSynthesis@Workshop"]
     },
     "OperProgress@MasteryMaterial2JumpProcessingSwipe": {
         "algorithm": "JustReturn",
@@ -6855,6 +6884,47 @@
         "baseTask": "InfrastTrainingContinue3",
         "template": "InfrastTrainingContinue.png",
         "next": ["OperProgress@MasteryPage"]
+    },
+    "OperProgress@MasterySelectSkillMaxAlready1": {
+        "baseTask": "InfrastTrainingContinue1",
+        "template": "InfrastTrainingMaxAlready.png",
+        "next": []
+    },
+    "OperProgress@MasterySelectSkillMaxAlready2": {
+        "baseTask": "InfrastTrainingContinue2",
+        "template": "InfrastTrainingMaxAlready.png",
+        "next": []
+    },
+    "OperProgress@MasterySelectSkillMaxAlready3": {
+        "baseTask": "InfrastTrainingContinue3",
+        "template": "InfrastTrainingMaxAlready.png",
+        "next": []
+    },
+    "OperProgress@TrainingSkill1MasterLevel": {
+        "algorithm": "MatchTemplate",
+        "template": ["TrainingCurrentLevel1.png", "TrainingCurrentLevel2.png", "TrainingCurrentLevel3.png"],
+        "method": "HSVCount",
+        "colorScales": [[240, 255]],
+        "roi": [373, 108, 72, 52],
+        "templThreshold": 0.8,
+        "roi_Doc": "训练室专精页技能1的专精等级三角标区域",
+        "doc": "三角标未点亮区会被背景立绘透光干扰，colorScales 只取 250+ 纯白点亮菱形；模板仅 1-3 级，三个均未命中即 0 级，C++ 取最优模板即等级"
+    },
+    "OperProgress@TrainingSkill2MasterLevel": {
+        "algorithm": "MatchTemplate",
+        "template": ["TrainingCurrentLevel1.png", "TrainingCurrentLevel2.png", "TrainingCurrentLevel3.png"],
+        "method": "HSVCount",
+        "colorScales": [[240, 255]],
+        "roi": [373, 318, 72, 52],
+        "templThreshold": 0.8
+    },
+    "OperProgress@TrainingSkill3MasterLevel": {
+        "algorithm": "MatchTemplate",
+        "template": ["TrainingCurrentLevel1.png", "TrainingCurrentLevel2.png", "TrainingCurrentLevel3.png"],
+        "method": "HSVCount",
+        "colorScales": [[240, 255]],
+        "roi": [373, 528, 72, 52],
+        "templThreshold": 0.8
     },
     "OperProgress@MasterySelectTrainer": {
         "algorithm": "JustReturn",

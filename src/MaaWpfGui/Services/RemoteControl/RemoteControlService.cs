@@ -1,6 +1,6 @@
 // <copyright file="RemoteControlService.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -31,6 +31,7 @@ using MaaWpfGui.States;
 using MaaWpfGui.ViewModels.UI;
 using MaaWpfGui.ViewModels.UserControl.Settings;
 using MaaWpfGui.ViewModels.UserControl.TaskQueue;
+using MaaWpfGui.ViewModels.UserControl.Toolbox;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Serilog;
@@ -204,27 +205,6 @@ public class RemoteControlService
         return (T)methodInfo.Invoke(instance, null);
     }
 
-    private static async Task<T> InvokeInstanceAsyncFunction<T>(object instance, string methodName)
-    {
-        ArgumentNullException.ThrowIfNull(instance);
-
-        if (string.IsNullOrEmpty(methodName))
-        {
-            throw new ArgumentNullException(nameof(methodName));
-        }
-
-        Type type = instance.GetType();
-        MethodInfo methodInfo = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance) ?? throw new ArgumentException($"Method '{methodName}' not found in type '{type.FullName}'.");
-
-        // 检查方法是否是异步方法 (返回Task或Task<T>)
-        if (!typeof(Task).IsAssignableFrom(methodInfo.ReturnType))
-        {
-            throw new ArgumentException($"Method '{methodName}' is not asynchronous.");
-        }
-
-        return await (Task<T>)methodInfo.Invoke(instance, null);
-    }
-
     private static TResult InvokeStaticFunction<TResult>(Type staticType, string methodName)
     {
         ArgumentNullException.ThrowIfNull(staticType);
@@ -296,6 +276,7 @@ public class RemoteControlService
                     case "LinkStart-Mission":
                     case "LinkStart-AutoRoguelike":
                     case "LinkStart-Reclamation":
+                    case "Toolbox-Reclamation":
                     case "Toolbox-GachaOnce":
                     case "Toolbox-GachaTenTimes":
                     case "CaptureImage":
@@ -354,7 +335,6 @@ public class RemoteControlService
                 case "LinkStart-Mall":
                 case "LinkStart-Mission":
                 case "LinkStart-AutoRoguelike":
-                case "LinkStart-Reclamation":
                     {
                         await LinkStart([type.Split('-')[1]]);
                         break;
@@ -373,6 +353,18 @@ public class RemoteControlService
                     {
                         await _runningState.UntilIdleAsync();
                         await Instances.ToolboxViewModel.GachaTenTimes();
+                        await _runningState.UntilIdleAsync();
+
+                        break;
+                    }
+
+                case "Toolbox-Reclamation":
+                case "LinkStart-Reclamation":
+                    {
+                        // 生息演算无导航、不与其他任务衔接，按工具箱形态完整执行，不进 LinkStart 批处理；
+                        // LinkStart-Reclamation 为兼容旧面板保留的别名
+                        await _runningState.UntilIdleAsync();
+                        await Instances.ToolboxViewModel.StartReclamation();
                         await _runningState.UntilIdleAsync();
 
                         break;
@@ -580,7 +572,7 @@ public class RemoteControlService
                 return;
             }
 
-            if (!await InvokeInstanceAsyncFunction<bool>(Instances.TaskQueueViewModel, "ConnectToEmulator"))
+            if (!await Instances.TaskQueueViewModel.ConnectToConnectionTarget())
             {
                 return;
             }
@@ -607,7 +599,7 @@ public class RemoteControlService
                             var tasks = ConfigFactory.CurrentConfig.TaskQueue.OfType<InfrastTask>().ToList();
                             if (tasks.Count == 1)
                             {
-                                taskRet &= InfrastSettingsUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
+                                taskRet &= InfrastTaskUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
                                 break;
                             }
 
@@ -620,7 +612,7 @@ public class RemoteControlService
                             var tasks = ConfigFactory.CurrentConfig.TaskQueue.OfType<StartUpTask>().ToList();
                             if (tasks.Count == 1)
                             {
-                                taskRet &= StartUpSettingsUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
+                                taskRet &= StartUpTaskUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
                                 break;
                             }
 
@@ -633,7 +625,7 @@ public class RemoteControlService
                             var tasks = ConfigFactory.CurrentConfig.TaskQueue.OfType<FightTask>().ToList();
                             if (tasks.Count == 1)
                             {
-                                taskRet &= FightSettingsUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
+                                taskRet &= FightTaskUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
                                 break;
                             }
 
@@ -646,7 +638,7 @@ public class RemoteControlService
                             var tasks = ConfigFactory.CurrentConfig.TaskQueue.OfType<RecruitTask>().ToList();
                             if (tasks.Count == 1)
                             {
-                                taskRet &= RecruitSettingsUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
+                                taskRet &= RecruitTaskUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
                                 break;
                             }
 
@@ -659,7 +651,7 @@ public class RemoteControlService
                             var tasks = ConfigFactory.CurrentConfig.TaskQueue.OfType<MallTask>().ToList();
                             if (tasks.Count == 1)
                             {
-                                taskRet &= MallSettingsUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
+                                taskRet &= MallTaskUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
                                 break;
                             }
 
@@ -672,7 +664,7 @@ public class RemoteControlService
                             var tasks = ConfigFactory.CurrentConfig.TaskQueue.OfType<AwardTask>().ToList();
                             if (tasks.Count == 1)
                             {
-                                taskRet &= AwardSettingsUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
+                                taskRet &= AwardTaskUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
                                 break;
                             }
 
@@ -685,20 +677,7 @@ public class RemoteControlService
                             var tasks = ConfigFactory.CurrentConfig.TaskQueue.OfType<RoguelikeTask>().ToList();
                             if (tasks.Count == 1)
                             {
-                                taskRet &= RoguelikeSettingsUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
-                                break;
-                            }
-
-                            taskRet = false;
-                            break;
-                        }
-
-                    case "Reclamation":
-                        {
-                            var tasks = ConfigFactory.CurrentConfig.TaskQueue.OfType<ReclamationTask>().ToList();
-                            if (tasks.Count == 1)
-                            {
-                                taskRet &= ReclamationSettingsUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
+                                taskRet &= RoguelikeTaskUserControlModel.Instance.SerializeTask(tasks[0]).IsSuccess ?? false;
                                 break;
                             }
 

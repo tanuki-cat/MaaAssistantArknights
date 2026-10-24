@@ -41,7 +41,8 @@ enum class RoguelikeMode
     FindPlaytime = 20'001, // 20001 - 刷常乐节点，第一层进洞，找不到需要的节点就重开
 
     // ------------------ 黑流树海主题专用模式 ------------------
-    BlackFlowBabyAnimal = 30'001 // 30001 - 刷襁褓动物
+    BlackFlowBabyAnimal = 30'001, // 30001 - 刷襁褓动物
+    BlackFlowStartRun = 30'003,   // 30003 - 刷动物组合和开局奖励，保留目标局
 };
 
 struct RoguelikeOper
@@ -78,6 +79,8 @@ public:
 
     // ------------------ 商店 ------------------
     bool trader_no_longer_buy = false; // 不再购买藏品
+    std::string shopping_buy_table = "default";
+    std::string shopping_sell_table;
 
     // ------------------ 萨米 ------------------
     int chaos = 0;                           // 抗干扰指数
@@ -106,7 +109,7 @@ public:
     {
         if (theme == RoguelikeTheme::BlackFlow) {
             return mode == RoguelikeMode::Exp || mode == RoguelikeMode::Investment ||
-                   mode == RoguelikeMode::BlackFlowBabyAnimal;
+                   mode == RoguelikeMode::BlackFlowBabyAnimal || mode == RoguelikeMode::BlackFlowStartRun;
         }
         return mode == RoguelikeMode::Exp || mode == RoguelikeMode::Investment || mode == RoguelikeMode::Collectible ||
                mode == RoguelikeMode::Squad || mode == RoguelikeMode::Exploration ||
@@ -118,8 +121,19 @@ public:
     bool verify_and_load_params(const json::value& params);
     void clear(); // 重置肉鸽局内数据
 
+    const std::vector<std::string>& get_blackflow_start_animals() const { return m_blackflow_start_animals; }
+
+    int get_blackflow_start_rewards() const { return m_blackflow_start_rewards; }
+
+    bool get_blackflow_start_utopia() const { return m_blackflow_start_utopia; }
+
+    // 凹第一层实托邦时目标局的支援选取顺序，元素是 blackflow_start_rewards 的位
+    const std::vector<int>& get_blackflow_start_reward_priority() const { return m_blackflow_start_reward_priority; }
+
     // 解析开局干员顺位：core_char_list 存在且有非空 name 项时用之（逐项读 name/use_support，name 为空的项跳过）
     static std::vector<RoguelikeStartOper> parse_start_opers(const json::value& params);
+    // 逐项读 name/use_support，name 为空的项跳过
+    static std::vector<RoguelikeStartOper> parse_start_oper_list(const json::array& list);
 
     // ================================= 通用参数 =================================
 public:
@@ -184,6 +198,14 @@ private:
     // ------------------ 刷开局模式 ------------------
     bool m_collectible_mode_shopping = false; // 刷开局模式下进入商店时购物
 
+    // ------------------ 黑流刷开局 ------------------
+    std::vector<std::string> m_blackflow_start_animals;
+    int m_blackflow_start_rewards = 0;
+    bool m_blackflow_start_utopia = false;
+    std::vector<int> m_blackflow_start_reward_priority;
+    std::optional<std::string> m_blackflow_preparation_roles;
+    std::optional<std::vector<RoguelikeStartOper>> m_blackflow_preparation_opers;
+
     // ------------------ 刷常乐节点模式 ------------------
     int m_find_playTime_target = 0; // 目标常乐节点子类型 (1=令, 2=黍, 3=年)
 
@@ -208,7 +230,19 @@ public:
     // ------------------ 开局 ------------------
     void set_start_opers(std::vector<RoguelikeStartOper> opers) { m_start_opers = std::move(opers); }
 
-    const std::vector<RoguelikeStartOper>& get_start_opers() const { return m_start_opers; }
+    void set_start_roles(std::string roles) { m_start_roles = std::move(roles); }
+
+    // 刷开局准备局另配了职业组时，准备局用它，目标局用任务参数的 roles
+    const std::string& get_start_roles() const
+    {
+        return m_run_for_collectible && m_blackflow_preparation_roles ? *m_blackflow_preparation_roles : m_start_roles;
+    }
+
+    // 刷开局准备局另配了开局干员时，准备局用它，目标局用任务参数的顺位
+    const std::vector<RoguelikeStartOper>& get_start_opers() const
+    {
+        return m_run_for_collectible && m_blackflow_preparation_opers ? *m_blackflow_preparation_opers : m_start_opers;
+    }
 
     size_t get_start_oper_index() const { return m_start_oper_index; }
 
@@ -217,18 +251,23 @@ public:
     // 顺位无论招募成败都消耗，下一次开局招募使用下一顺位
     void advance_start_oper_index()
     {
-        if (m_start_oper_index < m_start_opers.size()) {
+        if (m_start_oper_index < get_start_opers().size()) {
             ++m_start_oper_index;
         }
     }
 
     const RoguelikeStartOper* get_current_start_oper() const
     {
-        return m_start_oper_index < m_start_opers.size() ? &m_start_opers[m_start_oper_index] : nullptr;
+        const auto& opers = get_start_opers();
+        return m_start_oper_index < opers.size() ? &opers[m_start_oper_index] : nullptr;
     }
 
     // 兼容旧调用方：第 1 顺位干员名，未指定开局干员时为空串
-    std::string get_core_char() const { return m_start_opers.empty() ? std::string {} : m_start_opers.front().name; }
+    std::string get_core_char() const
+    {
+        const auto& opers = get_start_opers();
+        return opers.empty() ? std::string {} : opers.front().name;
+    }
 
     void set_use_nonfriend_support(bool value) { m_use_nonfriend_support = value; }
 
@@ -240,6 +279,7 @@ private:
     // ------------------ 开局 ------------------
     std::vector<RoguelikeStartOper> m_start_opers; // 开局干员顺位列表，任务参数，整局不变
     size_t m_start_oper_index = 0;                 // 下一次开局招募待消耗的顺位，每局重置，跨插件共享
+    std::string m_start_roles;                     // 开局职业组，任务参数，整局不变
     bool m_use_nonfriend_support = false;          // 是否可以是非好友助战干员
 };
 } // namespace asst

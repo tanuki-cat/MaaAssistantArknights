@@ -897,7 +897,7 @@
                     "recruit_priority": 370
                 },
                 {
-                    "name": "艾斯黛尔",
+                    "name": "艾丝黛尔",
                     "skill": 1,
                     "recruit_priority": 320
                 },
@@ -2230,6 +2230,7 @@
                     "promote_priority": 157
                 },
                 {
+                    "role": "CASTER",
                     "name": "阿米娅",
                     "skill": 1,
                     "is_key": true,
@@ -3373,6 +3374,7 @@
                     "name": "雪绒"
                 },
                 {
+                    "role": "CASTER",
                     "name": "阿米娅",
                     "skill": 2
                 },

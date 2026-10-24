@@ -1,6 +1,6 @@
 // <copyright file="Toolbox.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -12,9 +12,9 @@
 // </copyright>
 
 #nullable enable
+using System.Text.Json.Serialization;
 using MaaWpfGui.Models;
 using static MaaWpfGui.Configuration.Factory.ConfigFactory;
-using static MaaWpfGui.ViewModels.UI.ToolboxViewModel;
 
 namespace MaaWpfGui.Configuration.Single.Settings;
 
@@ -26,27 +26,25 @@ public partial class Toolbox : NotifyPropertyChangedWithValue
     public void EventBinding(string prefix)
     {
         PropertyChanged += Handler.OnPropertyChangedFactory(prefix);
+        Recruitment.EventBinding(prefix + nameof(Recruitment) + ".");
+        OperBox.EventBinding(prefix + nameof(OperBox) + ".");
+        Gacha.EventBinding(prefix + nameof(Gacha) + ".");
+        Peep.EventBinding(prefix + nameof(Peep) + ".");
+        MiniGame.EventBinding(prefix + nameof(MiniGame) + ".");
     }
 
-    public OperBoxExportFormat OperBoxExportFormat { get; set; } = OperBoxExportFormat.Clipboard;
+    [JsonInclude]
+    public Recruitment Recruitment { get; private set; } = new();
 
-    public bool GachaShowDisclaimerNoMore { get; set; }
+    [JsonInclude]
+    public OperBox OperBox { get; private set; } = new();
 
-    public int PeepTargetFps { get; set; } = 20;
+    [JsonInclude]
+    public Gacha Gacha { get; private set; } = new();
 
-    public bool ChooseLevel3 { get; set; } = true;
+    [JsonInclude]
+    public Peep Peep { get; private set; } = new();
 
-    public int ChooseLevel3Time { get; set; } = 540;
-
-    public bool ChooseLevel4 { get; set; } = true;
-
-    public int ChooseLevel4Time { get; set; } = 540;
-
-    public bool ChooseLevel5 { get; set; } = true;
-
-    public bool ChooseLevel6 { get; set; } = true;
-
-    public bool AutoSetTime { get; set; } = true;
-
-    public bool ShowPotential { get; set; } = true;
+    [JsonInclude]
+    public MiniGame MiniGame { get; private set; } = new();
 }

@@ -1,6 +1,6 @@
 // <copyright file="ItemListHelper.cs" company="MaaAssistantArknights">
 // Part of the MaaWpfGui project, maintained by the MaaAssistantArknights team (Maa Team)
-// Copyright (C) 2021-2025 MaaAssistantArknights Contributors
+// Copyright (C) 2021-2026 MaaAssistantArknights Contributors
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License v3.0 only as published by
@@ -97,6 +97,25 @@ public static class ItemListHelper
         return ArkItems.TryGetValue(itemId, out var item)
             ? item.Name
             : itemId;
+    }
+
+    /// <summary>
+    /// 反查将指定物品作为合成材料的产物及其配方消耗数，如芯片组 → 对应职业双芯片（每个消耗 2 个芯片组）。
+    /// </summary>
+    /// <param name="materialId">材料物品 id。</param>
+    /// <returns>产物 id 与配方中消耗该材料数量的列表，无合成产物时为空。</returns>
+    public static List<KeyValuePair<string, int>> GetFormulaProducts(string materialId)
+    {
+        List<KeyValuePair<string, int>> products = [];
+        foreach (var (itemId, item) in ArkItems)
+        {
+            if (item.Formula is { } formula && formula.TryGetValue(materialId, out var count) && count > 0)
+            {
+                products.Add(new(itemId, count));
+            }
+        }
+
+        return products;
     }
 
     private static readonly ConcurrentDictionary<string, BitmapSource?> _imageCache = new();

@@ -7,6 +7,8 @@
 #include <unordered_set>
 #include <utility>
 
+#include "Config/Roguelike/RoguelikeShoppingConfig.h"
+
 namespace asst
 {
 namespace
@@ -633,6 +635,30 @@ EncounterRule parse_encounter_rule(const json::value& value)
     return result;
 }
 
+ShoppingRule parse_shopping_rule(const json::value& value)
+{
+    check_keys(
+        value,
+        { "id", "description", "page_intent", "rank", "when", "buy_table", "sell_table" },
+        { "id" },
+        "shopping rule");
+    ShoppingRule result;
+    result.id = value.at("id").as_string();
+    result.description = value.get("description", std::string());
+    result.page_intent = optional_page_intent(value);
+    result.rank = value.get("rank", 0);
+    result.when = optional_condition(value, "when", true);
+    result.buy_table = value.get("buy_table", std::string("default"));
+    result.sell_table = value.get("sell_table", std::string());
+    if (result.id.empty() || result.buy_table.empty()) {
+        invalid_config("shopping rule id and buy table must not be empty");
+    }
+    if (!RoguelikeShopping.has_tables("BlackFlow", result.buy_table, result.sell_table)) {
+        invalid_config("shopping rule references an unknown table: " + result.id);
+    }
+    return result;
+}
+
 PolicyModule parse_module(const json::value& value)
 {
     check_keys(
@@ -644,7 +670,8 @@ PolicyModule parse_module(const json::value& value)
           "reserves",
           "milestones",
           "granted_scraps",
-          "encounter_rules" },
+          "encounter_rules",
+          "shopping_rules" },
         { "id" },
         "module");
     PolicyModule result;
@@ -659,6 +686,14 @@ PolicyModule parse_module(const json::value& value)
         }
         for (const auto& rule : rules->as_array()) {
             result.encounter_rules.emplace_back(parse_encounter_rule(rule));
+        }
+    }
+    if (const auto rules = value.find("shopping_rules"); rules) {
+        if (!rules->is_array()) {
+            invalid_config("module shopping_rules must be an array");
+        }
+        for (const auto& rule : rules->as_array()) {
+            result.shopping_rules.emplace_back(parse_shopping_rule(rule));
         }
     }
     for (const std::string& preference : parse_string_array(value, "route_preferences")) {
@@ -773,11 +808,41 @@ InventoryCleanupPolicy parse_inventory_cleanup_policy(const json::value& value)
     return result;
 }
 
+std::unordered_map<std::string, std::vector<std::string>> parse_last_reward_orders(const json::value& value)
+{
+    if (!value.is_object()) {
+        invalid_config("last_reward_orders must be an object");
+    }
+    std::unordered_map<std::string, std::vector<std::string>> result;
+    for (const auto& entry : value.as_object()) {
+        const std::string& name = entry.first;
+        std::vector<std::string> names = parse_string_array(value, name);
+        const bool permutation = names.size() == LastRewardNames.size() &&
+                                 std::ranges::all_of(LastRewardNames, [&](std::string_view reward) {
+                                     return std::ranges::count(names, reward) == 1;
+                                 });
+        if (!permutation) {
+            invalid_config("last_reward_orders " + name + " must list each support reward exactly once");
+        }
+        result.emplace(name, std::move(names));
+    }
+    if (!result.contains("default")) {
+        invalid_config("last_reward_orders must define default");
+    }
+    return result;
+}
+
 PolicyProfile parse_profile(const json::value& value)
 {
     check_keys(
         value,
-        { "id", "description", "modules", "terminal_rules", "failure_action", "no_AP_is_terminal" },
+        { "id",
+          "description",
+          "modules",
+          "terminal_rules",
+          "failure_action",
+          "no_AP_is_terminal",
+          "last_reward_order" },
         { "id", "modules" },
         "profile");
     PolicyProfile result;
@@ -815,6 +880,12 @@ PolicyProfile parse_profile(const json::value& value)
             result.no_AP_is_terminal_floors.emplace(value_floor);
         }
     }
+    if (const auto order = value.find("last_reward_order"); order) {
+        if (!order->is_string()) {
+            invalid_config("profile last_reward_order must name an entry of last_reward_orders");
+        }
+        result.last_reward_order = order->as_string();
+    }
     if (result.id.empty() || result.modules.empty() || result.failure_action.empty()) {
         invalid_config("profile id, module list, and failure action must be present");
     }
@@ -830,7 +901,7 @@ PolicyProfile parse_profile(const json::value& value)
     return result;
 }
 
-// 整条投影路线算出来的候选事实。它们回答的是「按本拍的计划，以后会经过什么」，而计划逐拍
+// 整条投影路线算出来的候选事实。它们回答的是 ｢按本拍的计划，以后会经过什么｣ ，而计划逐拍
 // 从零重算、从不提交，因此只能当转向依据，不能当许可依据。
 bool is_route_projection_fact(const std::string& name)
 {
@@ -865,7 +936,7 @@ void validate_condition(
     if (!allow_candidate && definition->second.scope == FactScope::Candidate) {
         invalid_config("non-candidate condition references candidate fact: " + condition.fact);
     }
-    // 资源预留一旦释放，那一份资源当拍就被花掉，收不回来。拿「以后会经过」去授权一次不可逆的
+    // 资源预留一旦释放，那一份资源当拍就被花掉，收不回来。拿 ｢以后会经过｣ 去授权一次不可逆的
     // 消耗，等于把单拍的计划当成了承诺；实测过的后果是留给秘境行商的最后一次长距离移动被用来
     // 飞别处。释放条件只能看这一步本身。
     if (!allow_route_projection && is_route_projection_fact(condition.fact)) {
@@ -901,6 +972,12 @@ void validate_module(
     const std::unordered_map<std::string, ResourceDefinition>& resources)
 {
     std::unordered_set<std::string> ids;
+    for (const ShoppingRule& rule : module.shopping_rules) {
+        if (!ids.emplace("shopping_rule:" + rule.id).second) {
+            invalid_config("module contains duplicate shopping rule id: " + rule.id);
+        }
+        validate_condition(rule.when, facts, false);
+    }
     for (const EncounterRule& rule : module.encounter_rules) {
         if (!ids.emplace("encounter_rule:" + rule.id).second) {
             invalid_config("module contains duplicate encounter rule id: " + rule.id);
@@ -1002,6 +1079,7 @@ void validate_profile_definition(
     std::unordered_set<std::string> milestone_ids;
     std::unordered_set<std::string> granted_scrap_ids;
     std::unordered_set<std::string> encounter_rule_ids;
+    std::unordered_set<std::string> shopping_rule_ids;
     std::string error;
     for (const auto& module_id : profile.modules) {
         const auto module = modules.find(module_id);
@@ -1009,6 +1087,12 @@ void validate_profile_definition(
             invalid_config("profile references unknown module: " + module_id);
         }
         if (!append_unique(
+                resolved.shopping_rules,
+                module->second.shopping_rules,
+                shopping_rule_ids,
+                &error,
+                "shopping rule") ||
+            !append_unique(
                 resolved.encounter_rules,
                 module->second.encounter_rules,
                 encounter_rule_ids,
@@ -1077,6 +1161,16 @@ const blackflow::PolicyProfile* BlackFlowStrategyConfig::get_profile(const std::
     return found == m_profiles.end() ? nullptr : &found->second;
 }
 
+const std::vector<std::string>* BlackFlowStrategyConfig::last_reward_order(const std::string& profile_id) const noexcept
+{
+    const blackflow::PolicyProfile* profile = get_profile(profile_id);
+    if (profile == nullptr) {
+        return nullptr;
+    }
+    const auto found = m_last_reward_orders.find(profile->last_reward_order);
+    return found == m_last_reward_orders.end() ? nullptr : &found->second;
+}
+
 std::vector<BlackFlowStrategyConfig::PageIntentWindow> BlackFlowStrategyConfig::page_intent_windows() const
 {
     std::vector<PageIntentWindow> result;
@@ -1115,9 +1209,11 @@ std::optional<blackflow::ResolvedPolicy>
     std::unordered_set<std::string> milestone_ids;
     std::unordered_set<std::string> granted_scrap_ids;
     std::unordered_set<std::string> encounter_rule_ids;
+    std::unordered_set<std::string> shopping_rule_ids;
     for (const auto& module_id : profile->modules) {
         const blackflow::PolicyModule* module = get_module(module_id);
         if (module == nullptr ||
+            !append_unique(result.shopping_rules, module->shopping_rules, shopping_rule_ids, error, "shopping rule") ||
             !append_unique(
                 result.encounter_rules,
                 module->encounter_rules,
@@ -1159,11 +1255,23 @@ bool BlackFlowStrategyConfig::parse(const json::value& json)
 {
     check_keys(
         json,
-        { "schema_version", "resources", "facts", "modules", "inventory_cleanup_policy", "profiles" },
-        { "schema_version", "resources", "facts", "modules", "inventory_cleanup_policy", "profiles" },
+        { "schema_version",
+          "last_reward_orders",
+          "resources",
+          "facts",
+          "modules",
+          "inventory_cleanup_policy",
+          "profiles" },
+        { "schema_version",
+          "last_reward_orders",
+          "resources",
+          "facts",
+          "modules",
+          "inventory_cleanup_policy",
+          "profiles" },
         "root");
     const int schema_version = json.at("schema_version").as_integer();
-    if (schema_version != 14) {
+    if (schema_version != 15) {
         invalid_config("unsupported schema_version: " + std::to_string(schema_version));
     }
     for (const auto key : { "resources", "facts", "modules", "profiles" }) {
@@ -1220,7 +1328,7 @@ bool BlackFlowStrategyConfig::parse(const json::value& json)
         }
     }
 
-    // 里程碑状态与进度自动登记成事实，终止规则和条件才能读到「这条目标错过了/不可能了」。
+    // 里程碑状态与进度自动登记成事实，终止规则和条件才能读到 ｢这条目标错过了/不可能了｣ 。
     // 必须在校验模块之前登记，否则引用了这些名字的条件会被判成未声明事实。
     for (const auto& [module_id, module] : modules) {
         (void)module_id;
@@ -1250,6 +1358,7 @@ bool BlackFlowStrategyConfig::parse(const json::value& json)
 
     blackflow::InventoryCleanupPolicy inventory_cleanup_policy =
         parse_inventory_cleanup_policy(json.at("inventory_cleanup_policy"));
+    auto last_reward_orders = parse_last_reward_orders(json.at("last_reward_orders"));
     std::unordered_map<std::string, blackflow::PolicyProfile> profiles;
     for (const auto& value : json.at("profiles").as_array()) {
         auto profile = parse_profile(value);
@@ -1262,8 +1371,10 @@ bool BlackFlowStrategyConfig::parse(const json::value& json)
         invalid_config("resources, facts, modules, and profiles must not be empty");
     }
     for (const auto& [id, profile] : profiles) {
-        (void)id;
         validate_profile_definition(profile, modules, facts);
+        if (!last_reward_orders.contains(profile.last_reward_order)) {
+            invalid_config("profile " + id + " references unknown last_reward_order: " + profile.last_reward_order);
+        }
     }
 
     m_schema_version = schema_version;
@@ -1271,6 +1382,7 @@ bool BlackFlowStrategyConfig::parse(const json::value& json)
     m_facts = std::move(facts);
     m_modules = std::move(modules);
     m_inventory_cleanup_policy = std::move(inventory_cleanup_policy);
+    m_last_reward_orders = std::move(last_reward_orders);
     m_profiles = std::move(profiles);
     return true;
 }
